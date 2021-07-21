@@ -1,0 +1,32 @@
+/wangyiyun-server/.DS_Store
+/wangyiyun-server/node_modules
+# /wangyiyun-server/*.log
+# /wangyiyun-server/.idea
+# /wangyiyun-server/.vscode
+# /wangyiyun-server/.history
+
+
+/front/.DS_Store
+/front/node_modules
+/front/dist
+
+
+# local env files
+/front/.env.local
+/front/.env.*.local
+
+# Log files
+/front/npm-debug.log*
+/front/yarn-debug.log*
+/front/yarn-error.log*
+/front/pnpm-debug.log*
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.DS_Store
