@@ -124,7 +124,6 @@ export default defineComponent({
     /** 当前播放的歌曲（没有歌曲播放的时候为undefined）*/
     const playingSong = computed(() => {
       if (currentPlayId.value !== -1) {
-        console.log("storeSongList.value", storeSongList.value);
         return storeSongList.value.find(
           (item) => item.id === currentPlayId.value
         );
@@ -310,7 +309,7 @@ export default defineComponent({
           align-items: center;
           margin-bottom: 8px;
           .song-name {
-            width: 200px;
+            max-width: 200px;
             color: #4d4d4d;
             font-size: 14px;
             font-weight: bold;
@@ -321,7 +320,7 @@ export default defineComponent({
             padding: 0 4px;
           }
           .artist {
-            width: 150px;
+            max-width: 150px;
             color: #666666;
             font-size: 13px;
           }

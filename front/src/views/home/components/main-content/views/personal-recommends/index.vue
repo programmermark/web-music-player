@@ -161,7 +161,7 @@ export default defineComponent({
       );
       const list = result.map((item) => {
         let latestMuisc: ILatestMusicFormat = {
-          id: item.album.id,
+          id: item.id,
           mvId: item.mvid,
           name: item.album.name,
           aliasName: item.album.alias[0],

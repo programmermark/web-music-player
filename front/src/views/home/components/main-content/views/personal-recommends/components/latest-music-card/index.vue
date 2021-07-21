@@ -44,6 +44,7 @@
 import MPIcon from "@/components/MPIcon.vue";
 import MPOptIcon from "@/components/MPOptIcon.vue";
 import { computed, defineComponent, PropType, toRefs } from "vue";
+import { useStore } from "vuex";
 import { IArtist } from "../../interface/latestMusicCard";
 
 export default defineComponent({
@@ -89,6 +90,7 @@ export default defineComponent({
   setup(props) {
     const { id, mvId, artists, orderNumber, songName, aliasName } =
       toRefs(props);
+    const store = useStore();
 
     /** 格式化歌手名称 */
     const artistName = computed(() => {
@@ -117,6 +119,7 @@ export default defineComponent({
 
     const playSong = () => {
       console.log("播放歌曲, 歌曲id:", id.value);
+      (store as any).dispatch("player/setCurrentSong", id.value);
     };
 
     const playMV = () => {

@@ -24,6 +24,23 @@ export default {
     },
   },
   actions: {
+    /** 根据id获取歌曲详情 */
+    async setCurrentSong(
+      context: ActionContext<IPlaySong[], IPlayerState>,
+      id: number
+    ) {
+      const songDetailUrl = `${apis.songDetail}?ids=${id}`;
+      const songs = await http<ISongDetail[]>({ url: songDetailUrl }, "songs");
+      const songList: IPlaySong[] = songs.map((song) => ({
+        id: song.id,
+        name: song.name,
+        coverImg: song.al.picUrl,
+        artists: song.ar.map((item) => ({ id: item.id, name: item.name })),
+        songUrl: `https://music.163.com/song/media/outer/url?id=${song.id}.mp3`,
+      }));
+      context.commit("setSongList", songList);
+      context.commit("setCurrentSong", songList[0]);
+    },
     /** 根据id获取歌单的歌曲详情 */
     async setSongList(
       context: ActionContext<IPlaySong[], IPlayerState>,

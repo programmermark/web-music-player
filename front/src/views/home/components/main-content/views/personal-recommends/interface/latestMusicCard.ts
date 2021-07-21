@@ -4,6 +4,7 @@ export interface IArtist {
 }
 
 export interface ILatestMusic {
+  id: number /** 歌曲id */;
   mvid: number /** 歌曲的MV的id */;
   album: {
     id: number;
