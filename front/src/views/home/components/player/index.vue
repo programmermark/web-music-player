@@ -48,8 +48,23 @@
     <!-- 播放器右侧 -->
     <div class="right-part">
       <div class="wrapper">
-        <div class="list-state-wrapper mr-20">
-          <mp-icon icon="in-order-play" color="#4b4b4b" :size="16" :scale="1" />
+        <div
+          class="play-list-wrapper mr-20"
+          @click="changeListState(playerState.listState)"
+        >
+          <el-tooltip
+            placement="top"
+            :content="playerState.listStateDesc"
+            :visible-arrow="false"
+            effect="light"
+          >
+            <mp-icon
+              :icon="playerState.listStateIcon"
+              color="#4b4b4b"
+              :size="16"
+              :scale="1"
+            />
+          </el-tooltip>
         </div>
         <div class="play-list-wrapper mr-20">
           <mp-icon icon="play-list" color="#4b4b4b" :size="16" :scale="1" />
@@ -75,12 +90,11 @@ import {
   reactive,
   Ref,
   ref,
-  toRefs,
   watch,
 } from "vue";
 import { useStore } from "vuex";
-import { IPlayerState, ISongState } from "./interface/index";
-import { useAudio } from "./hooks/index";
+import { ISongState } from "./interface/index";
+import { useAudio, usePlayerState } from "./hooks/index";
 import { transformSecondToMinute } from "./utils/index";
 import MPIcon from "@/components/MPIcon.vue";
 
@@ -89,6 +103,8 @@ export default defineComponent({
   name: "MusicPlayer",
   setup() {
     const store = useStore();
+    const { playerState, changeListState } = usePlayerState();
+
     /** 播放器元素 */
     const audioPlayerRef = ref<HTMLAudioElement>();
 
@@ -101,14 +117,6 @@ export default defineComponent({
       playRate: 0 /** 播放进度 */,
       songDuration: 0 /** 歌曲时长 */,
       playedSongDuration: 0 /** 已播放歌曲时长 */,
-    });
-
-    /** 播放器状态 */
-    const playerState = reactive<IPlayerState>({
-      listState: "in-order",
-      volume: 6,
-      showLyrics: false,
-      expandSong: false,
     });
 
     /** 歌曲列表 */
@@ -247,7 +255,8 @@ export default defineComponent({
       playingSongArtistStr,
       currentSongUrl,
       songState,
-      ...toRefs(playerState),
+      playerState,
+      changeListState,
       playNext,
       playPrev,
       playSong,

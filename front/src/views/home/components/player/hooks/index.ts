@@ -1,5 +1,11 @@
-import { Ref } from "vue";
-import { ISongState } from "../interface";
+import { reactive, Ref } from "vue";
+import {
+  IListState,
+  IPlayerState,
+  ISongState,
+  IUsePlayerState,
+  PlayBackType,
+} from "../interface";
 import { IUseAudioReturn } from "./interface";
 
 export const useAudio = (
@@ -96,5 +102,64 @@ export const useAudio = (
 
   return {
     initAudio,
+  };
+};
+
+/** 播放器状态hooks */
+export const usePlayerState = (): IUsePlayerState => {
+  const playerState = reactive<IPlayerState>({
+    listState: "in-order",
+    listStateDesc: "顺序播放",
+    listStateIcon: "in-order",
+    volume: 6,
+    showLyrics: false,
+    expandSong: false,
+  });
+
+  /** 列表播放状态数组 */
+  const listStateArray: IListState[] = [
+    {
+      listState: "in-order",
+      listStateDesc: "顺序播放",
+      listStateIcon: "in-order",
+    },
+    {
+      listState: "list-loop",
+      listStateDesc: "列表循环",
+      listStateIcon: "list-loop",
+    },
+    {
+      listState: "single-cycle",
+      listStateDesc: "单曲循环",
+      listStateIcon: "single-cycle",
+    },
+    {
+      listState: "shuffle",
+      listStateDesc: "随机播放",
+      listStateIcon: "shuffle",
+    },
+  ];
+
+  /**
+   * 切换播放器列表状态到列表中的下一个状态
+   * @param state 播放器播放列表状态
+   */
+  const changeListState = (state: PlayBackType) => {
+    const result = listStateArray.findIndex(
+      (listState) => listState.listState === state
+    );
+    if (result !== -1) {
+      const currentIndex =
+        result === listStateArray.length - 1 ? 0 : result + 1;
+      const currentListState = listStateArray[currentIndex];
+      playerState.listState = currentListState.listState;
+      playerState.listStateDesc = currentListState.listStateDesc;
+      playerState.listStateIcon = currentListState.listStateIcon;
+    }
+  };
+
+  return {
+    playerState,
+    changeListState,
   };
 };
