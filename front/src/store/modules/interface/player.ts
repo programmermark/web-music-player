@@ -42,4 +42,5 @@ export interface ISongDetail {
   name: string /** 歌曲名称 */;
   al: ISongDetailAlbum;
   ar: IArtist[];
+  dt: number /** 歌曲时长（毫秒） */;
 }

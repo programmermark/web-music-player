@@ -63,6 +63,7 @@ export default {
         coverImg: song.al.picUrl,
         artists: song.ar.map((item) => ({ id: item.id, name: item.name })),
         songUrl: `https://music.163.com/song/media/outer/url?id=${song.id}.mp3`,
+        duration: Math.floor((song.dt || 0) / 1000),
       }));
       context.commit("setSongList", songList);
       context.commit("setCurrentSong", songList[0]);

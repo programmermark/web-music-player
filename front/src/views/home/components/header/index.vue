@@ -28,6 +28,7 @@ export default defineComponent({
 .header {
   width: 100%;
   height: 50px;
+  z-index: 100;
   .header-left {
     position: relative;
     background-color: #f6f6f6;

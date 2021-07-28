@@ -1,4 +1,5 @@
 <template>
+  <!-- 底部播放器 -->
   <div class="music-player">
     <audio
       ref="audioPlayerRef"
@@ -66,8 +67,13 @@
             />
           </el-tooltip>
         </div>
-        <div class="play-list-wrapper mr-20">
-          <mp-icon icon="play-list" color="#4b4b4b" :size="16" :scale="1" />
+        <div class="play-list-wrapper mr-20" @click="toggleExpandSong">
+          <mp-icon
+            icon="play-list"
+            :color="playerState.expandSong ? '#d33a30' : '#4b4b4b'"
+            :size="16"
+            :scale="1"
+          />
         </div>
         <div class="show-word-wrapper mr-20">
           <mp-icon icon="word" color="#4b4b4b" :size="16" :scale="1" />
@@ -77,6 +83,64 @@
         </div>
       </div>
     </div>
+  </div>
+  <!-- 右侧播放列表 -->
+  <div class="music-song-list" v-if="playerState.expandSong">
+    <div class="list-title">当前播放</div>
+    <div class="operates">
+      <div class="left">总{{ storeSongList.length }}首</div>
+      <div class="right">
+        <div class="collect-all">
+          <mp-icon class="icon" icon="add-collect" :size="16" :scale="1" />
+          收藏全部
+        </div>
+        <div class="clear-all">清空列表</div>
+      </div>
+    </div>
+    <!-- 播放列表 -->
+    <el-scrollbar>
+      <div class="song-list-wrapper">
+        <div
+          class="song-list"
+          :class="[playingSong.id === song.id && 'song-list-active']"
+          v-for="song in storeSongList"
+          :key="song.id"
+          @dblclick="playSongById(song.id)"
+        >
+          <mp-icon
+            v-if="playingSong.id === song.id"
+            class="icon-in-play"
+            icon="in-play"
+            :size="16"
+            :scale="1"
+            color="#d33a30"
+          />
+          <div
+            class="song-name text-ellipsis"
+            :class="[playingSong.id === song.id && 'active']"
+          >
+            {{ song.name }}
+          </div>
+          <div
+            class="artist text-ellipsis"
+            :class="[playingSong.id === song.id && 'active']"
+          >
+            {{ formatArtistListToString(song.artists) }}
+          </div>
+          <mp-icon
+            class="icon-link"
+            icon="link"
+            :scale="1"
+            :size="14"
+            color="#a3a3a3"
+            bgColor="none"
+          />
+          <div class="duration">
+            {{ transformSecondToMinute(song.duration) }}
+          </div>
+        </div>
+      </div>
+    </el-scrollbar>
   </div>
 </template>
 
@@ -95,7 +159,10 @@ import {
 import { useStore } from "vuex";
 import { ISongState } from "./interface/index";
 import { useAudio, usePlayerState } from "./hooks/index";
-import { transformSecondToMinute } from "./utils/index";
+import {
+  transformSecondToMinute,
+  formatArtistListToString,
+} from "./utils/index";
 import MPIcon from "@/components/MPIcon.vue";
 
 export default defineComponent({
@@ -103,7 +170,7 @@ export default defineComponent({
   name: "MusicPlayer",
   setup() {
     const store = useStore();
-    const { playerState, changeListState } = usePlayerState();
+    const { playerState, changeListState, toggleExpandSong } = usePlayerState();
 
     /** 播放器元素 */
     const audioPlayerRef = ref<HTMLAudioElement>();
@@ -207,18 +274,33 @@ export default defineComponent({
        */
       if (currentPlayId.value === -1 || findIndex === -1) {
         currentPlayId.value = storeSongList.value[0].id;
-        store.commit("player/setSongList", storeSongList.value[0]);
+        store.commit("player/setCurrentSong", storeSongList.value[0]);
         return;
       } else if (findIndex === 0) {
         /** 当前播放的是第一首，点击播放上一首歌曲则播放列表中的最后一首 */
         const length = storeSongList.value.length;
         currentPlayId.value = storeSongList.value[length - 1].id;
-        store.commit("player/setSongList", storeSongList.value[length - 1]);
+        store.commit("player/setCurrentSong", storeSongList.value[length - 1]);
         return;
       }
       const nextSong = storeSongList.value[findIndex - 1];
       currentPlayId.value = nextSong.id;
-      store.commit("player/setSongList", nextSong);
+      store.commit("player/setCurrentSong", nextSong);
+    };
+
+    const playSongById = (id: number) => {
+      console.log("song.id", id);
+
+      const findIndex = storeSongList.value.findIndex((song) => song.id === id);
+      /**
+       * 当前无播放歌曲或者当前播放歌曲在列表中找不到，则播放下一首歌曲
+       */
+      if (id === -1 || findIndex === -1) {
+        playNext();
+      }
+      const nextSong = storeSongList.value[findIndex];
+      currentPlayId.value = nextSong.id;
+      store.commit("player/setCurrentSong", nextSong);
     };
 
     /** 播放音乐 */
@@ -256,12 +338,16 @@ export default defineComponent({
       currentSongUrl,
       songState,
       playerState,
+      storeSongList,
       changeListState,
+      toggleExpandSong,
       playNext,
       playPrev,
       playSong,
       playPause,
       transformSecondToMinute,
+      formatArtistListToString,
+      playSongById,
     };
   },
 });
@@ -392,5 +478,113 @@ export default defineComponent({
     overflow: hidden;
     word-break: break-all;
   }
+}
+
+.music-song-list {
+  position: absolute;
+  z-index: 99;
+  top: 50px;
+  right: 0;
+  width: 420px;
+  min-height: calc(100% - 110px);
+  background-color: #ffffff;
+  box-shadow: 0 4px 4px 0 #fafafa;
+
+  .list-title {
+    padding: 20px 0 20px 20px;
+    font-size: 20px;
+    color: #333333;
+    font-weight: bold;
+  }
+
+  .operates {
+    display: flex;
+    align-items: center;
+    padding: 0 20px 16px 20px;
+
+    .left {
+      flex: 1;
+      color: #bababa;
+      font-size: 13px;
+    }
+
+    .right {
+      display: flex;
+      align-items: center;
+      .collect-all {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        color: #333333;
+        font-size: 14px;
+        margin-right: 20px;
+
+        .icon {
+          margin-right: 5px;
+        }
+      }
+      .clear-all {
+        cursor: pointer;
+        color: #4d7abd;
+        font-size: 14px;
+      }
+    }
+  }
+
+  .song-list-wrapper {
+    border-top: 1px solid #f0f0f0;
+    height: 395px;
+
+    .song-list {
+      display: flex;
+      align-items: center;
+      height: 35px;
+      font-size: 13px;
+      position: relative;
+
+      &:nth-child(2n) {
+        background-color: #fafafa;
+      }
+
+      .icon-in-play {
+        position: absolute;
+        transform: scale(0.5);
+        padding: 0 5px;
+      }
+      .song-name {
+        width: 185px;
+        margin-left: 20px;
+        margin-right: 10px;
+        color: #333333;
+      }
+      .artist {
+        width: 80px;
+        margin-right: 10px;
+        color: #666666;
+        cursor: pointer;
+      }
+      .icon-link {
+        cursor: pointer;
+        margin-right: 10px;
+      }
+      .duration {
+        flex: 1;
+        color: #bfbfbf;
+      }
+      .active {
+        color: #d33a30;
+      }
+    }
+    .song-list-active {
+      background-color: #f0f0f0 !important;
+    }
+  }
+}
+
+.text-ellipsis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  word-break: break-all;
 }
 </style>
