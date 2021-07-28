@@ -1,4 +1,5 @@
 import { reactive, Ref } from "vue";
+import { ElMessage } from "element-plus";
 import {
   IListState,
   IPlayerState,
@@ -38,7 +39,6 @@ export const useAudio = (
     };
     // 当前音乐播放完毕
     ele.onended = () => {
-      console.log("歌曲播放完毕");
       // if (that.mode === playMode.loop) {
       //   that.loop();
       // } else {
@@ -48,6 +48,16 @@ export const useAudio = (
     };
     // 音乐播放出错
     ele.onerror = () => {
+      ElMessage({
+        showClose: true,
+        message: "当前音乐不可播放，已自动播放下一曲",
+        type: "error",
+        duration: 2000,
+      });
+      const timer = setTimeout(() => {
+        clearTimeout(timer);
+        playNext();
+      }, 1000);
       // if (retry === 0) {
       //   let toastText = "当前音乐不可播放，已自动播放下一曲";
       //   if (that.playlist.length === 1) {
@@ -86,6 +96,8 @@ export const useAudio = (
     };
     // 音频数据不可用时
     ele.onstalled = () => {
+      console.log("音频数据不可用时");
+
       // ele.load();
       // that.setPlaying(false);
       // let timer;
@@ -158,8 +170,14 @@ export const usePlayerState = (): IUsePlayerState => {
     }
   };
 
+  /** 展开｜关闭 播放列表 */
+  const toggleExpandSong = () => {
+    playerState.expandSong = !playerState.expandSong;
+  };
+
   return {
     playerState,
     changeListState,
+    toggleExpandSong,
   };
 };
