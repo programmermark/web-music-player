@@ -67,7 +67,7 @@
             />
           </el-tooltip>
         </div>
-        <div class="play-list-wrapper mr-20" @click="toggleExpandSong">
+        <div class="play-list-wrapper mr-20" @click.stop="toggleExpandSong()">
           <mp-icon
             icon="play-list"
             :color="playerState.expandSong ? '#d33a30' : '#4b4b4b'"
@@ -85,7 +85,12 @@
     </div>
   </div>
   <!-- 右侧播放列表 -->
-  <div class="music-song-list" v-if="playerState.expandSong">
+  <div
+    id="music-song-list"
+    class="music-song-list"
+    v-if="playerState.expandSong"
+    @click.stop="toggleExpandSong(true)"
+  >
     <div class="list-title">当前播放</div>
     <div class="operates">
       <div class="left">总{{ storeSongList.length }}首</div>
@@ -118,12 +123,14 @@
           <div
             class="song-name text-ellipsis"
             :class="[playingSong.id === song.id && 'active']"
+            :title="song.name"
           >
             {{ song.name }}
           </div>
           <div
             class="artist text-ellipsis"
             :class="[playingSong.id === song.id && 'active']"
+            :title="formatArtistListToString(song.artists)"
           >
             {{ formatArtistListToString(song.artists) }}
           </div>
@@ -328,6 +335,14 @@ export default defineComponent({
         );
         initAudio();
       }
+
+      const songListEle = document.querySelector("#music-song-list");
+      document.addEventListener("click", function (e) {
+        /** 被点击的元素不是songListEle，就隐藏songListEle */
+        if (e.target !== songListEle && playerState.expandSong) {
+          toggleExpandSong(false);
+        }
+      });
     });
 
     return {

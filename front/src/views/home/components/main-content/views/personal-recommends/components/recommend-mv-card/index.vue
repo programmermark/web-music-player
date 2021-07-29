@@ -22,7 +22,7 @@
     <!-- MV名称 -->
     <div class="cover">{{ name }}</div>
     <!-- MV作者 -->
-    <div class="singer-wrapper">
+    <div class="singer-wrapper text-ellipsis">
       <div
         class="singer"
         v-for="(artist, index) in artists"
@@ -186,6 +186,7 @@ export default defineComponent({
   .singer-wrapper {
     display: flex;
     align-items: center;
+    width: 100%;
     .singer {
       display: flex;
       align-items: center;
@@ -214,5 +215,12 @@ export default defineComponent({
   .subTitle-leave-active {
     transition: all 1s ease;
   }
+}
+
+.text-ellipsis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  word-break: break-all;
 }
 </style>

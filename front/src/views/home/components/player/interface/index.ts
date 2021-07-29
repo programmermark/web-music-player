@@ -41,5 +41,7 @@ export interface IListState {
 export interface IUsePlayerState {
   playerState: IPlayerState /** 歌曲列表当前状态 */;
   changeListState: (state: PlayBackType) => void /** 切换当前播放状态 */;
-  toggleExpandSong: () => void /** 展开｜关闭 播放列表 */;
+  toggleExpandSong: (
+    state?: boolean | undefined
+  ) => void /** 展开｜关闭 播放列表 */;
 }

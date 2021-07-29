@@ -48,16 +48,19 @@ export const useAudio = (
     };
     // 音乐播放出错
     ele.onerror = () => {
-      ElMessage({
-        showClose: true,
-        message: "当前音乐不可播放，已自动播放下一曲",
-        type: "error",
-        duration: 2000,
-      });
-      const timer = setTimeout(() => {
-        clearTimeout(timer);
-        playNext();
-      }, 1000);
+      if (!songState.isPause) {
+        ElMessage({
+          showClose: true,
+          message: "当前音乐不可播放，已自动播放下一曲",
+          type: "error",
+          duration: 2000,
+        });
+        const timer = setTimeout(() => {
+          clearTimeout(timer);
+          playNext();
+        }, 1000);
+      }
+
       // if (retry === 0) {
       //   let toastText = "当前音乐不可播放，已自动播放下一曲";
       //   if (that.playlist.length === 1) {
@@ -171,8 +174,12 @@ export const usePlayerState = (): IUsePlayerState => {
   };
 
   /** 展开｜关闭 播放列表 */
-  const toggleExpandSong = () => {
-    playerState.expandSong = !playerState.expandSong;
+  const toggleExpandSong = (state: boolean | undefined = undefined) => {
+    if (state !== undefined) {
+      playerState.expandSong = state;
+    } else {
+      playerState.expandSong = !playerState.expandSong;
+    }
   };
 
   return {
