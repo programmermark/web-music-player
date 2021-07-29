@@ -99,7 +99,7 @@
           <mp-icon class="icon" icon="add-collect" :size="16" :scale="1" />
           收藏全部
         </div>
-        <div class="clear-all">清空列表</div>
+        <div class="clear-all" @click="clearPlayList">清空列表</div>
       </div>
     </div>
     <!-- 播放列表 -->
@@ -296,8 +296,6 @@ export default defineComponent({
     };
 
     const playSongById = (id: number) => {
-      console.log("song.id", id);
-
       const findIndex = storeSongList.value.findIndex((song) => song.id === id);
       /**
        * 当前无播放歌曲或者当前播放歌曲在列表中找不到，则播放下一首歌曲
@@ -324,6 +322,13 @@ export default defineComponent({
         songState.isPause = true;
         audioPlayerRef.value.pause();
       }
+    };
+
+    /** 清空播放列表 */
+    const clearPlayList = () => {
+      songState.isPause = true;
+      store.commit("player/setCurrentSong", undefined);
+      store.commit("player/setSongList", []);
     };
 
     onMounted(() => {
@@ -363,6 +368,7 @@ export default defineComponent({
       transformSecondToMinute,
       formatArtistListToString,
       playSongById,
+      clearPlayList,
     };
   },
 });
