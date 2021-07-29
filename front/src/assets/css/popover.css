@@ -1,0 +1,7 @@
+.volume-popover {
+  width: 20px !important;
+  display: flex;
+  justify-content: center;
+  padding: 12px 0 10px 0 !important;
+  min-width: unset !important;
+}

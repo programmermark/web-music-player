@@ -126,7 +126,7 @@ export const usePlayerState = (): IUsePlayerState => {
     listState: "in-order",
     listStateDesc: "顺序播放",
     listStateIcon: "in-order",
-    volume: 6,
+    volume: 0.6,
     showLyrics: false,
     expandSong: false,
   });
@@ -182,9 +182,24 @@ export const usePlayerState = (): IUsePlayerState => {
     }
   };
 
+  /**
+   * 调整音量
+   * @param volume 音量，0-1之间的数字
+   */
+  const adjustVolume = (volume: number) => {
+    let volumeNum = 0;
+    if (volume < 0) {
+      volumeNum = 0;
+    } else if (volume > 1) {
+      volumeNum = 1;
+    }
+    playerState.volume = volumeNum;
+  };
+
   return {
     playerState,
     changeListState,
     toggleExpandSong,
+    adjustVolume,
   };
 };

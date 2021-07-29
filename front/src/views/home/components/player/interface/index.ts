@@ -44,4 +44,5 @@ export interface IUsePlayerState {
   toggleExpandSong: (
     state?: boolean | undefined
   ) => void /** 展开｜关闭 播放列表 */;
+  adjustVolume: (volume: number) => void /** 调整音量 */;
 }

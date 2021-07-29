@@ -78,9 +78,13 @@
         <div class="show-word-wrapper mr-20">
           <mp-icon icon="word" color="#4b4b4b" :size="16" :scale="1" />
         </div>
-        <div class="adjust-volume-wrapper mr-20">
-          <mp-icon icon="horn" color="#4b4b4b" :size="16" :scale="1" />
-        </div>
+        <volume-adjuster @change-volume="onChangeVolume">
+          <template v-slot:content>
+            <div class="adjust-volume-wrapper mr-20">
+              <mp-icon icon="horn" color="#4b4b4b" :size="16" :scale="1" />
+            </div>
+          </template>
+        </volume-adjuster>
       </div>
     </div>
   </div>
@@ -152,7 +156,6 @@
 </template>
 
 <script lang="ts">
-import { IPlaySong } from "@/store/modules/interface/player";
 import {
   computed,
   defineComponent,
@@ -163,6 +166,7 @@ import {
   ref,
   watch,
 } from "vue";
+import { IPlaySong } from "@/store/modules/interface/player";
 import { useStore } from "vuex";
 import { ISongState } from "./interface/index";
 import { useAudio, usePlayerState } from "./hooks/index";
@@ -171,13 +175,15 @@ import {
   formatArtistListToString,
 } from "./utils/index";
 import MPIcon from "@/components/MPIcon.vue";
+import VolumeAdjuster from "./components/volume-adjuster/index.vue";
 
 export default defineComponent({
-  components: { "mp-icon": MPIcon },
+  components: { "mp-icon": MPIcon, "volume-adjuster": VolumeAdjuster },
   name: "MusicPlayer",
   setup() {
     const store = useStore();
-    const { playerState, changeListState, toggleExpandSong } = usePlayerState();
+    const { playerState, changeListState, toggleExpandSong, adjustVolume } =
+      usePlayerState();
 
     /** 播放器元素 */
     const audioPlayerRef = ref<HTMLAudioElement>();
@@ -331,8 +337,17 @@ export default defineComponent({
       store.commit("player/setSongList", []);
     };
 
+    /** 调整音量 */
+    const onChangeVolume = (volume: number) => {
+      if (audioPlayerRef.value) {
+        adjustVolume(volume);
+        audioPlayerRef.value.volume = volume;
+      }
+    };
+
     onMounted(() => {
       if (audioPlayerRef.value !== undefined) {
+        audioPlayerRef.value.volume = playerState.volume;
         const { initAudio } = useAudio(
           audioPlayerRef as Ref<HTMLAudioElement>,
           songState,
@@ -369,6 +384,7 @@ export default defineComponent({
       formatArtistListToString,
       playSongById,
       clearPlayList,
+      onChangeVolume,
     };
   },
 });
@@ -489,7 +505,7 @@ export default defineComponent({
     display: none;
   }
 
-  .mr-20 {
+  :deep(.mr-20) {
     margin-right: 20px;
   }
 
