@@ -20,7 +20,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent } from "vue";
 import VolumeProgress from "../progress/index.vue";
 
 export default defineComponent({

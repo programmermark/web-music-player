@@ -1,0 +1,82 @@
+<template>
+  <div class="userinfo">
+    <mp-opt-icon
+      class="icon-reset"
+      icon="user-avatar"
+      color="#ffffff"
+      :size="40"
+      bgColor="#e0e0e0"
+      scale="60%"
+      display="always"
+    />
+    <div class="username">未登录</div>
+    <el-popover
+      v-if="hasLogged"
+      class="operate"
+      placement="right"
+      trigger="click"
+    >
+      <template #reference>
+        <i class="el-icon-caret-right icon"></i>
+      </template>
+    </el-popover>
+    <div v-else class="operate" @click="toogleLoginDialog">
+      <i class="el-icon-caret-right icon"></i>
+    </div>
+    <!-- 登录弹窗 -->
+    <login-box />
+  </div>
+</template>
+
+<script lang="ts">
+import { defineComponent, ref } from "vue";
+import MPOptIcon from "@/components/MPOptIcon.vue";
+import LoginBox from "../login-box/index.vue";
+
+export default defineComponent({
+  name: "UserInfo",
+  components: { "mp-opt-icon": MPOptIcon, "login-box": LoginBox },
+  setup() {
+    const hasLogged = ref(false);
+    const showLoginDialog = ref(false);
+
+    /** 切换登录弹窗显示与隐藏状态 */
+    const toogleLoginDialog = () => {
+      showLoginDialog.value = !showLoginDialog.value;
+    };
+
+    return {
+      hasLogged,
+      showLoginDialog,
+      toogleLoginDialog,
+    };
+  },
+});
+</script>
+
+<style lang="scss" scoped>
+.userinfo {
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
+
+  .icon-reset {
+    margin: 0 8px;
+    border: 1px solid #d4d4d4;
+  }
+
+  .username {
+    color: #333333;
+    font-size: 14px;
+    font-weight: bold;
+    margin-right: 8px;
+  }
+
+  .operate {
+    .icon {
+      cursor: pointer;
+      color: #8e8e8e;
+    }
+  }
+}
+</style>

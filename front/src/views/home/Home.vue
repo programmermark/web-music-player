@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div id="home">
     <!-- Header -->
     <Header />
     <div id="content">
@@ -38,7 +38,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.home {
+#home {
   position: relative;
   min-width: 1000px;
   max-width: 1200px;
