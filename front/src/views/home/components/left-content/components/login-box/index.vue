@@ -105,6 +105,7 @@ export default defineComponent({
             password: formState.password,
           };
           store.dispatch("login/setUserInfo", userInfo);
+          emit("change-visible", false);
         }
       });
     };
