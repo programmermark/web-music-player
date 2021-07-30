@@ -20,11 +20,16 @@
         <i class="el-icon-caret-right icon"></i>
       </template>
     </el-popover>
-    <div v-else class="operate" @click="toogleLoginDialog">
+    <div v-else class="operate" @click.stop="toogleLoginDialog">
       <i class="el-icon-caret-right icon"></i>
     </div>
     <!-- 登录弹窗 -->
-    <login-box />
+    <template v-if="showLoginDialog">
+      <login-box
+        :visible="showLoginDialog"
+        @change-visible="handleLoginBoxVisible"
+      />
+    </template>
   </div>
 </template>
 
@@ -42,13 +47,21 @@ export default defineComponent({
 
     /** 切换登录弹窗显示与隐藏状态 */
     const toogleLoginDialog = () => {
+      console.log("toggle");
       showLoginDialog.value = !showLoginDialog.value;
+      console.log("showLoginDialog.value", showLoginDialog.value);
+    };
+
+    const handleLoginBoxVisible = (visible: boolean) => {
+      console.log("visible", visible);
+      showLoginDialog.value = visible;
     };
 
     return {
       hasLogged,
       showLoginDialog,
       toogleLoginDialog,
+      handleLoginBoxVisible,
     };
   },
 });

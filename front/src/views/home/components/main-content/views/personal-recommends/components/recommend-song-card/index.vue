@@ -30,7 +30,7 @@
 import MPIcon from "@/components/MPIcon.vue";
 import MPOptIcon from "@/components/MPOptIcon.vue";
 import { defineComponent, ref, toRefs } from "vue";
-import { useStore } from "vuex";
+import { useStore } from "@/store";
 
 export default defineComponent({
   components: { "mp-icon": MPIcon, "mp-opt-icon": MPOptIcon },
@@ -87,7 +87,7 @@ export default defineComponent({
     };
     const playSong = (e: Event) => {
       console.log("点击播放音乐", id.value);
-      (store as any).dispatch("player/setSongList", id.value);
+      store.dispatch("player/setSongList", id.value);
       e.stopPropagation();
     };
 

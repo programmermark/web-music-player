@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { apis } from "@/api";
 import { http } from "@/common/js/http";
-import { ActionContext } from "vuex";
+import { ActionContext, Module } from "vuex";
+import { IRootStateTypes } from "./interface";
 import {
   IPlayerState,
   IPlaylistDetail,
@@ -9,7 +10,7 @@ import {
   ISongDetail,
 } from "./interface/player";
 
-export default {
+const ModulePlayer: Module<IPlayerState, IRootStateTypes> = {
   namespaced: true,
   state: (): IPlayerState => ({
     currentSong: undefined,
@@ -26,7 +27,7 @@ export default {
   actions: {
     /** 根据id获取歌曲详情 */
     async setCurrentSong(
-      context: ActionContext<IPlaySong[], IPlayerState>,
+      context: ActionContext<IPlayerState, IRootStateTypes>,
       id: number
     ) {
       const songDetailUrl = `${apis.songDetail}?ids=${id}`;
@@ -43,7 +44,7 @@ export default {
     },
     /** 根据id获取歌单的歌曲详情 */
     async setSongList(
-      context: ActionContext<IPlaySong[], IPlayerState>,
+      context: ActionContext<IPlayerState, IRootStateTypes>,
       id: number
     ) {
       /** 根据id获取歌单详情 */
@@ -71,3 +72,5 @@ export default {
   },
   getters: {},
 };
+
+export default ModulePlayer;

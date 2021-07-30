@@ -192,7 +192,7 @@ import {
   watch,
 } from "vue";
 import { IPlaySong } from "@/store/modules/interface/player";
-import { useStore } from "vuex";
+import { useStore } from "@/store";
 import { ISongState } from "./interface/index";
 import { useAudio, usePlayerState } from "./hooks/index";
 import {
@@ -231,7 +231,7 @@ export default defineComponent({
 
     /** 当前播放的歌曲 */
     const storeCurrentSong = computed<IPlaySong>(() => {
-      return store.state.player.currentSong;
+      return store.state.player.currentSong as IPlaySong;
     });
 
     /** 当前播放的歌曲（没有歌曲播放的时候为undefined）*/

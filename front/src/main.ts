@@ -6,7 +6,7 @@ import "element-plus/lib/theme-chalk/index.css";
 
 import App from "./App.vue";
 import router from "./router";
-import store from "./store";
+import store, { key } from "./store";
 import "./assets/css/popover.css";
 
 const app = createApp(App);
@@ -41,4 +41,4 @@ requireComponent.keys().forEach((fileName: string) => {
   );
 });
 
-app.use(store).use(router).use(ElementPlus).mount("#app");
+app.use(store, key).use(router).use(ElementPlus).mount("#app");

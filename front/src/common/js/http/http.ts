@@ -11,7 +11,7 @@ import { HttpParams } from "./interface";
  * @param {String} keyName 返回结果的键名
  */
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-function http<T>(params: HttpParams, keyName: string) {
+function http<T>(params: HttpParams, keyName?: string) {
   const { method = "get", url, data, withCredentials = true } = params;
   return new Promise<T>((resolve, reject) => {
     axios({
@@ -24,10 +24,16 @@ function http<T>(params: HttpParams, keyName: string) {
         const result: any = res.data;
         if (result.code == 200) {
           result.message && message.success(result.message);
-          resolve(result[keyName]);
+          if (keyName) {
+            resolve(result[keyName]);
+          }
+          resolve(result);
         } else {
           result.message && message.warning(result.message);
-          resolve(result[keyName]);
+          if (keyName) {
+            resolve(result[keyName]);
+          }
+          resolve(result);
           /** 调用接口没有注册，回到登录页面 */
           if (result.unlogin) {
             if (window.location.pathname !== "/login") {
