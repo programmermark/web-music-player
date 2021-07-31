@@ -13,10 +13,18 @@
     <img v-else class="avatar" :src="userInfo.avatarUrl" alt="用户头像" />
 
     <div class="username">{{ hasLogged ? userInfo.nickname : "未登录" }}</div>
-    <el-popover v-if="hasLogged" placement="right" trigger="click">
+    <el-popover
+      v-if="hasLogged"
+      placement="right-start"
+      trigger="click"
+      width="320px"
+      :show-arrow="false"
+      popper-class="user-info-box-popover"
+    >
       <template #reference>
         <i class="el-icon-caret-right operate-icon"></i>
       </template>
+      <userinfo-box />
     </el-popover>
     <div v-else class="operate" @click.stop="toogleLoginDialog">
       <i class="el-icon-caret-right operate-icon"></i>
@@ -35,11 +43,16 @@
 import { computed, defineComponent, ref } from "vue";
 import MPOptIcon from "@/components/MPOptIcon.vue";
 import LoginBox from "../login-box/index.vue";
+import UserInfoBox from "../userinfo-box/index.vue";
 import { useStore } from "@/store";
 
 export default defineComponent({
   name: "UserInfo",
-  components: { "mp-opt-icon": MPOptIcon, "login-box": LoginBox },
+  components: {
+    "mp-opt-icon": MPOptIcon,
+    "login-box": LoginBox,
+    "userinfo-box": UserInfoBox,
+  },
   setup() {
     const store = useStore();
 
@@ -78,13 +91,11 @@ export default defineComponent({
 
   .icon-reset {
     margin: 0 8px;
-    border: 1px solid #d4d4d4;
   }
 
   .avatar {
     width: 40px;
     margin: 0 8px;
-    border: 1px solid #d4d4d4;
     border-radius: 50%;
   }
 

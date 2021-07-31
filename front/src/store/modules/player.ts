@@ -69,6 +69,7 @@ const ModulePlayer: Module<IPlayerState, IRootStateTypes> = {
       context.commit("setSongList", songList);
       context.commit("setCurrentSong", songList[0]);
     },
+    /** 清空播放列表 */
   },
   getters: {},
 };

@@ -18,6 +18,10 @@ const ModuleLogin: Module<ILoginState, IRootStateTypes> = {
     setUserInfo(state: ILoginState, userInfo: IUser) {
       state.userInfo = userInfo;
     },
+    setLogOut(state: ILoginState) {
+      state.hasLogged = false;
+      state.userInfo = undefined;
+    },
   },
   actions: {
     /** 用户登录 */
@@ -40,6 +44,11 @@ const ModuleLogin: Module<ILoginState, IRootStateTypes> = {
       };
       context.commit("setHasLogged", true);
       context.commit("setUserInfo", userInfo);
+    },
+    /** 用户退出登录 */
+    async setLogOut(context: ActionContext<ILoginState, IRootStateTypes>) {
+      await http({ url: apis.logout });
+      context.commit("setLogOut");
     },
   },
   getters: {},

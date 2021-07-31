@@ -5,18 +5,22 @@
     <!-- 发现音乐、私人FM、视频、朋友 -->
     <!-- 我的音乐 -->
     <!-- 创建的歌单 -->
+    <created-playlist />
+    <!-- 收藏的歌单 -->
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 import UserInfo from "./components/userinfo/index.vue";
+import CreatedPlayList from "./components/created-playlist/index.vue";
 
 /** 左侧主要内容 */
 export default defineComponent({
   name: "LeftContent",
   components: {
     "user-info": UserInfo,
+    "created-playlist": CreatedPlayList,
   },
   setup() {
     return {};
