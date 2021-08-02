@@ -25,6 +25,19 @@ export interface IPlayDetailTrackId {
   id: number /** 歌曲id */;
 }
 
+/**
+ * 0: 未知
+ * 1: 男
+ * 2: 女
+ */
+export type Gender = 0 | 1 | 2;
+export interface IPlayListSubscriber {
+  id: number;
+  nickname: string /** 订阅用户名 */;
+  avatarUrl: string /** 订阅用户名头像 */;
+  gender: Gender;
+}
+
 /** 歌曲列表详情 */
 export interface IPlaylistDetail {
   id: number /** 歌单id */;
@@ -37,12 +50,13 @@ export interface IPlaylistDetail {
   subscribedCount: number /** 收藏数 */;
   createTime: number /** 创建时间（时间戳） */;
   creator: {
-    id: number /** 创建者id */;
+    userId: number /** 创建者id */;
     nickname: string /** 创建者名 */;
     avatarUrl: string /** 创建者头像 */;
   };
   trackIds: IPlayDetailTrackId[];
   tracks: ISongDetail[] /** 歌曲track列表 */;
+  subscribers: IPlayListSubscriber[] /** 歌单订阅用户列表 */;
 }
 
 export interface ISongDetailAlbum {
@@ -59,4 +73,12 @@ export interface ISongDetail {
   alia: string[] /** 歌曲别名列表 */;
   ar: IArtist[] /** 歌手列表 */;
   dt: number /** 歌曲时长（毫秒） */;
+}
+
+/**
+ * SetSongList 参数类型
+ */
+export interface ISetSongListPayload {
+  id: number /** 歌单id */;
+  noSetCurrentSong: boolean /** 是否设置当前歌曲，默认false，设置当前歌曲 */;
 }

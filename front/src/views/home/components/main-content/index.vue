@@ -24,7 +24,7 @@ export default defineComponent({
   height: 100%;
   display: flex;
   .main-content {
-    height: 100%;
+    height: calc(100% - 60px);
     overflow: auto;
     flex: 1;
     padding: 0 30px;

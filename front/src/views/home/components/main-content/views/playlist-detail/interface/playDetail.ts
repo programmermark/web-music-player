@@ -9,7 +9,7 @@ export interface IPlaylistInfo {
   subscribedCount: number /** 收藏数 */;
   createTime: number /** 创建时间（时间戳） */;
   creator: {
-    id: number /** 创建者id */;
+    userId: number /** 创建者id */;
     nickname: string /** 创建者名 */;
     avatarUrl: string /** 创建者头像 */;
   };

@@ -7,6 +7,7 @@ import {
   IPlayerState,
   IPlaylistDetail,
   IPlaySong,
+  ISetSongListPayload,
   ISongDetail,
 } from "./interface/player";
 
@@ -19,6 +20,9 @@ const ModulePlayer: Module<IPlayerState, IRootStateTypes> = {
   mutations: {
     setCurrentSong(state: IPlayerState, song: IPlaySong) {
       state.currentSong = song;
+    },
+    setCurrentSongById(state: IPlayerState, songId: number) {
+      state.currentSong = state.songList.find((song) => song.id === songId);
     },
     setSongList(state: IPlayerState, list: IPlaySong[]) {
       state.songList = list;
@@ -45,8 +49,9 @@ const ModulePlayer: Module<IPlayerState, IRootStateTypes> = {
     /** 根据id获取歌单的歌曲详情 */
     async setSongList(
       context: ActionContext<IPlayerState, IRootStateTypes>,
-      id: number
+      payload: ISetSongListPayload
     ) {
+      const { id, noSetCurrentSong } = payload;
       /** 根据id获取歌单详情 */
       const playlist = await http<IPlaylistDetail>(
         { url: apis.playlistDetail + `?id=${id}` },
@@ -67,7 +72,9 @@ const ModulePlayer: Module<IPlayerState, IRootStateTypes> = {
         duration: Math.floor((song.dt || 0) / 1000),
       }));
       context.commit("setSongList", songList);
-      context.commit("setCurrentSong", songList[0]);
+      if (!noSetCurrentSong) {
+        context.commit("setCurrentSong", songList[0]);
+      }
     },
     /** 清空播放列表 */
   },

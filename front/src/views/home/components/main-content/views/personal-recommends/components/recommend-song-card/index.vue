@@ -86,8 +86,7 @@ export default defineComponent({
       console.log("点击card，打开播放列表详情");
     };
     const playSong = (e: Event) => {
-      console.log("点击播放音乐", id.value);
-      store.dispatch("player/setSongList", id.value);
+      store.dispatch("player/setSongList", { id: id.value });
       e.stopPropagation();
     };
 

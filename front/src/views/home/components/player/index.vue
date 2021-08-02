@@ -21,9 +21,11 @@
                   playingSong.name
                 }}</span>
                 <div class="parting-line">-</div>
-                <span class="artist word-ellipsis">{{
-                  playingSongArtistStr
-                }}</span>
+                <span
+                  class="artist word-ellipsis"
+                  :title="playingSongArtistStr"
+                  >{{ playingSongArtistStr }}</span
+                >
               </div>
               <div class="play-pace">
                 <span class="time">
@@ -195,10 +197,9 @@ import { IPlaySong } from "@/store/modules/interface/player";
 import { useStore } from "@/store";
 import { ISongState } from "./interface/index";
 import { useAudio, usePlayerState } from "./hooks/index";
-import {
-  transformSecondToMinute,
-  formatArtistListToString,
-} from "./utils/index";
+import { formatArtistListToString } from "./utils/index";
+import { transformSecondToMinute } from "@/common/js/util/index";
+
 import MPIcon from "@/components/MPIcon.vue";
 import VolumeAdjuster from "./components/volume-adjuster/index.vue";
 

@@ -1,4 +1,4 @@
-import { lazyLoad } from "@/util/router";
+import { lazyLoad } from "@/common/js/util/index";
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 
 const routes: Array<RouteRecordRaw> = [
