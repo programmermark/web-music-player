@@ -14,7 +14,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onBeforeMount } from "vue";
+import { computed, defineComponent, onMounted } from "vue";
 import UserInfo from "./components/userinfo/index.vue";
 import CreatedPlayList from "./components/created-playlist/index.vue";
 import CollectedPlayList from "./components/collected-playlist/index.vue";
@@ -50,7 +50,7 @@ export default defineComponent({
       store.dispatch("playlist/setAllPlaylist", userId);
     };
 
-    onBeforeMount(() => {
+    onMounted(() => {
       if (userId.value) {
         fetchUserPlaylist(userId.value);
       }
@@ -74,3 +74,6 @@ export default defineComponent({
   }
 }
 </style>
+
+function onMount(arg0: () => void) { throw new Error("Function not
+implemented."); }

@@ -3,31 +3,41 @@
     <!-- 歌单信息 -->
     <playlist-info v-if="playlistInfo" :playlist-info="playlistInfo" />
     <!-- 歌单列表 -->
+    <song-list
+      v-if="playlistInfo"
+      :playlistId="playlistInfo.id"
+      :songList="songList"
+      :subscribers="subscribers"
+    />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, reactive, toRefs } from "vue";
-import { useRouter } from "vue-router";
+import { defineComponent, onMounted, reactive, toRefs, watch } from "vue";
+import { useRoute } from "vue-router";
 import { apis } from "@/api";
 import { http } from "@/common/js/http";
-import { IPlaylistDetail } from "@/store/modules/interface/player";
+import { IPlaylistDetail, ISongDetail } from "@/store/modules/interface/player";
 import { IPlaylistDetailState } from "./interface/index";
 import PlaylistInfo from "./components/playlist-info/index.vue";
+import SongList from "./components/song-list/index.vue";
 
 export default defineComponent({
   name: "PlaylistDetail",
   components: {
     "playlist-info": PlaylistInfo,
+    "song-list": SongList,
   },
   setup() {
-    const router = useRouter();
+    const route = useRoute();
 
     const state = reactive<IPlaylistDetailState>({
       /** 歌单信息 */
       playlistInfo: undefined,
       /** 歌单歌曲列表 */
       songList: [],
+      /** 歌曲订阅用户列表 */
+      subscribers: [],
     });
 
     /** 获取歌单详情 */
@@ -48,15 +58,51 @@ export default defineComponent({
         playCount: playlist.playCount,
         subscribedCount: playlist.subscribedCount,
         createTime: playlist.createTime,
-        creator: playlist.creator,
+        creator: {
+          userId: playlist.creator.userId,
+          nickname: playlist.creator.nickname,
+          avatarUrl: playlist.creator.avatarUrl,
+        },
       };
-      state.songList = playlist.tracks;
+      const songIdStr = playlist.trackIds
+        .map((item) => String(item.id))
+        .reduce((initValue, currentValue) => initValue + "," + currentValue);
+      const songDetailUrl = `${apis.songDetail}?ids=${songIdStr}`;
+      /** 根据id数组获取歌曲详情 */
+      const songs = await http<ISongDetail[]>({ url: songDetailUrl }, "songs");
+      state.songList = songs.map((song) => ({
+        id: song.id,
+        name: song.name,
+        al: {
+          id: song.al.id,
+          name: song.al.name,
+          picUrl: song.al.picUrl,
+        },
+        alia: song.alia,
+        ar: song.ar.map((ar) => ({
+          id: ar.id,
+          name: ar.name,
+        })),
+        dt: song.dt,
+      }));
+      state.subscribers = playlist.subscribers.map((subscriber) => ({
+        id: subscriber.id,
+        nickname: subscriber.nickname,
+        avatarUrl: subscriber.avatarUrl,
+        gender: subscriber.gender,
+      }));
     };
 
-    onMounted(() => {
-      const { params } = router.currentRoute.value;
-      if (typeof params.id === "string") {
+    watch(
+      () => route.params,
+      (params) => {
         getPlaylistDetail(Number(params.id));
+      }
+    );
+
+    onMounted(() => {
+      if (route.params) {
+        getPlaylistDetail(Number(route.params.id));
       }
     });
 
