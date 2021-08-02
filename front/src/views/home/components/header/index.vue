@@ -7,7 +7,7 @@
     </el-col>
     <el-col class="header-right" :span="20">
       <!-- 导航内容 -->
-      <nav-bars />
+      <nav-bars v-show="showNavs" />
       <!-- 搜索框 -->
       <!-- 右侧操作 -->
     </el-col>
@@ -15,12 +15,29 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "@vue/runtime-core";
+import { computed, defineComponent, reactive } from "@vue/runtime-core";
+import { useRouter } from "vue-router";
 import LeftOpts from "./left-opts/index.vue";
 import NavBars from "./navbars/index.vue";
 
 export default defineComponent({
   components: { LeftOpts, NavBars },
+  setup() {
+    const router = useRouter();
+
+    const currentPath = computed(() => {
+      return router.currentRoute.value.path;
+    });
+
+    const showNavUrls = reactive(["/"]);
+
+    const showNavs = computed(() => showNavUrls.includes(currentPath.value));
+
+    return {
+      currentPath,
+      showNavs,
+    };
+  },
 });
 </script>
 

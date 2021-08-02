@@ -27,7 +27,22 @@ export interface IPlayDetailTrackId {
 
 /** 歌曲列表详情 */
 export interface IPlaylistDetail {
+  id: number /** 歌单id */;
+  name: string /** 歌单名 */;
+  coverImgUrl: string /** 歌单封面 */;
+  description: string /** 描述 */;
+  tags: string[] /** 歌单标签 */;
+  trackCount: number /** 歌曲数量 */;
+  playCount: number /** 歌曲播放数 */;
+  subscribedCount: number /** 收藏数 */;
+  createTime: number /** 创建时间（时间戳） */;
+  creator: {
+    id: number /** 创建者id */;
+    nickname: string /** 创建者名 */;
+    avatarUrl: string /** 创建者头像 */;
+  };
   trackIds: IPlayDetailTrackId[];
+  tracks: ISongDetail[] /** 歌曲track列表 */;
 }
 
 export interface ISongDetailAlbum {
@@ -40,7 +55,8 @@ export interface ISongDetailAlbum {
 export interface ISongDetail {
   id: number /** 歌曲id */;
   name: string /** 歌曲名称 */;
-  al: ISongDetailAlbum;
-  ar: IArtist[];
+  al: ISongDetailAlbum /** 专辑信息 */;
+  alia: string[] /** 歌曲别名列表 */;
+  ar: IArtist[] /** 歌手列表 */;
   dt: number /** 歌曲时长（毫秒） */;
 }

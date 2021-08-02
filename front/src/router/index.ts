@@ -23,6 +23,13 @@ const routes: Array<RouteRecordRaw> = [
           "home/components/main-content/views/personal-recommends/index"
         ),
       },
+      {
+        path: "playlistDetail/:id",
+        name: "PlaylistDetail",
+        component: lazyLoad(
+          "home/components/main-content/views/playlist-detail/index"
+        ),
+      },
     ],
   },
 ];

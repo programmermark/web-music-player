@@ -5,38 +5,11 @@
         :class="hasCollapsed ? 'el-icon-caret-bottom' : 'el-icon-caret-right'"
         class="icon-reset"
       />
-      <span>创建的歌单</span>
+      <span>收藏的歌单</span>
     </div>
     <!-- 歌单列表 -->
     <div class="all-playlist" v-show="hasCollapsed">
-      <div class="liked-playlist">
-        <div
-          class="content-left"
-          @click="handlePlayListClick(likedPlayList.id)"
-        >
-          <mp-icon
-            icon="heart"
-            color="#494949"
-            :size="16"
-            :scale="1"
-            bgColor="none"
-          />
-          <span class="text">我喜欢的音乐</span>
-        </div>
-        <mp-icon
-          class="icon-reset"
-          icon="heart-beat"
-          color="#494949"
-          :size="16"
-          :scale="1"
-          bgColor="none"
-        />
-      </div>
-      <div
-        class="playlist"
-        v-for="playlist in otherPlayLists"
-        :key="playlist.id"
-      >
+      <div class="playlist" v-for="playlist in playlists" :key="playlist.id">
         <div class="content-left" @click="handlePlayListClick(playlist.id)">
           <mp-icon
             icon="music-list"
@@ -55,12 +28,12 @@
 <script lang="ts">
 import MPIcon from "@/components/MPIcon.vue";
 import { IPlaylist } from "@/store/modules/interface/playlist";
-import { computed, defineComponent, PropType, ref, toRefs } from "vue";
+import { defineComponent, PropType, ref } from "vue";
 import { useRouter } from "vue-router";
 
 export default defineComponent({
   components: { "mp-icon": MPIcon },
-  name: "CreatedPlayList",
+  name: "CollectedPlayList",
   props: {
     /** 歌单 */
     playlists: {
@@ -68,19 +41,9 @@ export default defineComponent({
       required: true,
     },
   },
-  setup(props) {
+  setup() {
     const router = useRouter();
-    const { playlists } = toRefs(props);
-
     const hasCollapsed = ref(true);
-
-    /** 我喜欢的音乐（歌单） */
-    const likedPlayList = computed(() => playlists.value[0]);
-
-    /** 其他歌单 */
-    const otherPlayLists = computed(() => {
-      return playlists.value.filter((playlist, index) => index !== 0);
-    });
 
     const toggleCollapse = () => {
       hasCollapsed.value = !hasCollapsed.value;
@@ -92,8 +55,6 @@ export default defineComponent({
 
     return {
       hasCollapsed,
-      likedPlayList,
-      otherPlayLists,
       toggleCollapse,
       handlePlayListClick,
     };

@@ -3,6 +3,7 @@ import { createStore, Store, useStore as baseUseStore } from "vuex";
 import createPersistedState from "vuex-persistedstate";
 import ModulePlayer from "./modules/player";
 import ModuleLogin from "./modules/login";
+import ModulePlaylist from "./modules/playlist";
 import { IAllStateTypes, IRootStateTypes } from "./modules/interface";
 import { InjectionKey } from "vue";
 
@@ -13,6 +14,8 @@ const dataSet = createPersistedState({
     "login.userInfo",
     "player.currentSong",
     "player.songList",
+    "playlist.currentPlaylist",
+    "playlist.allPlayList",
   ],
 });
 
@@ -23,6 +26,7 @@ export default createStore<IRootStateTypes>({
   modules: {
     player: ModulePlayer,
     login: ModuleLogin,
+    playlist: ModulePlaylist,
   },
   plugins: [dataSet],
 });
