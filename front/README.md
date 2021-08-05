@@ -1,24 +1,29 @@
-# front
+<h1 align="center">Welcome to web-music-player 👋</h1>
+<p>
+  <img alt="Version" src="https://img.shields.io/badge/version-0.1.0-blue.svg?cacheSeconds=2592000" />
+  <a href="#" target="_blank">
+    <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg" />
+  </a>
+</p>
 
-## Project setup
-```
-yarn install
-```
+> 仿网易云音乐（mac客户端）web版，使用Vue3 + Typescript开发
 
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
+## Install
 
-### Compiles and minifies for production
-```
-yarn build
-```
-
-### Lints and fixes files
-```
-yarn lint
+```sh
+cd front && yarn  then cd ../wangyiyun-server && yarn 
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## Author
+
+👤 **马克豚**
+
+* Website: https://immortalboy.cn
+* Github: [@noobhui](https://github.com/noobhui)
+
+## Show your support
+
+Give a ⭐️ if this project helped you!
+
+***
+_This README was generated with ❤️ by [readme-md-generator](https://github.com/kefranabg/readme-md-generator)_

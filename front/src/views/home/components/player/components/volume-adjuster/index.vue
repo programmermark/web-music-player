@@ -48,7 +48,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-/deep/ .popover {
+:deep() .popover {
   width: 20px;
   .content {
     width: 30px;
