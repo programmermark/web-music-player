@@ -1,9 +1,30 @@
-# web-music-player
+<h1 align="center">Welcome to web-music-player 👋</h1>
+<p>
+  <img alt="Version" src="https://img.shields.io/badge/version-0.1.0-blue.svg?cacheSeconds=2592000" />
+  <a href="#" target="_blank">
+    <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg" />
+  </a>
+</p>
 
-基于 vue3.0 + typescript + 网易云音乐 api 开发的 web 音乐播放器
+> 仿网易云音乐（mac 客户端）web 版，使用 Vue3 + Typescript + 网易云音乐 api 开发
 
-### 目录结构
+## Install
 
-front -- 音乐播放器前端
-server -- 音乐播放器后端服务
-resources -- 各类资源文件
+```sh
+cd front && yarn  then cd ../wangyiyun-server && yarn
+```
+
+## Author
+
+👤 **马克豚**
+
+- Website: https://immortalboy.cn
+- Github: [@noobhui](https://github.com/noobhui)
+
+## Show your support
+
+Give a ⭐️ if this project helped you!
+
+---
+
+_This README was generated with ❤️ by [readme-md-generator](https://github.com/kefranabg/readme-md-generator)_
