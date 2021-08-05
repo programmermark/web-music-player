@@ -1,4 +1,6 @@
 /node_modules
+/package-lock.json
+/yarn.lock
 
 /wangyiyun-server/.DS_Store
 /wangyiyun-server/node_modules
@@ -17,6 +19,12 @@
 # local env files
 /front/.env.local
 /front/.env.*.local
+
+# lock files
+/wangyiyun-server/package-lock.json
+/wangyiyun-server/yarn.lock
+/front/package-lock.json
+/front/yarn.lock
 
 # Log files
 /front/npm-debug.log*
