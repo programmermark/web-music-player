@@ -6,7 +6,7 @@ function resolve(dir) {
 }
 
 module.exports = {
-  outputDir: "webMusicPlayer",
+  outputDir: "web-music-player",
   productionSourceMap: false, // 关闭生产环境sourcemap
   chainWebpack: (config) => {
     config.resolve.alias
@@ -19,7 +19,6 @@ module.exports = {
     proxy: {
       "/": {
         // 以/api开头的接口都代理到target指定的域名下
-        // target: 'https://immortalboy.cn'
         target: "http://127.0.0.1:4000",
       },
     },
