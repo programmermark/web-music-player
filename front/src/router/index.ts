@@ -1,4 +1,9 @@
-import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
+import {
+  createRouter,
+  createWebHashHistory,
+  createWebHistory,
+  RouteRecordRaw,
+} from "vue-router";
 import { lazyLoad } from "@/common/js/util/index";
 
 const routes: Array<RouteRecordRaw> = [
@@ -27,8 +32,10 @@ const routes: Array<RouteRecordRaw> = [
 
 const router = createRouter({
   // 本地使用hash模式，使用history模式刷新会404
-  // history: createWebHistory(process.env.BASE_URL),
-  history: createWebHashHistory(process.env.BASE_URL),
+  history:
+    process.env.NODE_ENV === "production"
+      ? createWebHistory(process.env.BASE_URL)
+      : createWebHashHistory(process.env.BASE_URL),
   routes,
 });
 
