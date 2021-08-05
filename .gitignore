@@ -1,3 +1,5 @@
+/node_modules
+
 /wangyiyun-server/.DS_Store
 /wangyiyun-server/node_modules
 # /wangyiyun-server/*.log

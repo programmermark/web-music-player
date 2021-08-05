@@ -19,7 +19,7 @@ cd front && yarn  then cd ../wangyiyun-server && yarn
 👤 **马克豚**
 
 - Website: https://immortalboy.cn
-- Github: [@noobhui](https://github.com/noobhui)
+- Github: [@callmehui](https://github.com/callmehui)
 
 ## Show your support
 

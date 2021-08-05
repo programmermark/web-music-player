@@ -1,0 +1,20 @@
+{
+  "name": "web-music-player",
+  "version": "1.0.0",
+  "description": "仿网易云音乐（mac 客户端）web 版，使用 Vue3 + Typescript + 网易云音乐 api 开发",
+  "main": "index.js",
+  "scripts": {
+    "install": "cd front && npm install && cd ../wangyiyun-server && npm install cd .. && exit 0",
+    "start": "cd wangyiyun-server && npm start & cd front && npm run serve"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/callmehui/web-music-player.git"
+  },
+  "author": "马克豚",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/callmehui/web-music-player/issues"
+  },
+  "homepage": "https://github.com/callmehui/web-music-player#readme"
+}
