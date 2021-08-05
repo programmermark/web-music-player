@@ -11,7 +11,7 @@
 /front/.DS_Store
 /front/node_modules
 /front/dist
-/front/web-music-player
+/front/music-player
 
 
 # local env files
