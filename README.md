@@ -12,7 +12,7 @@
   </a>
 </p>
 
-> 仿网易云音乐（mac 客户端）web 版，使用 Vue3 + Typescript + 网易云音乐 api 开发
+> 仿网易云音乐（mac 客户端）web 版，使用 Vue3 + Typescript + 网易云音乐 api([NeteaseCloudMusicApi](https://github.com/Binaryify/NeteaseCloudMusicApi)) 开发
 
 ### 🏠 [Homepage](https://github.com/callmehui/web-music-player#readme)
 
