@@ -6,7 +6,7 @@ function resolve(dir) {
 }
 
 module.exports = {
-  outputDir: "web-music-player",
+  outputDir: "music-player",
   productionSourceMap: false, // 关闭生产环境sourcemap
   chainWebpack: (config) => {
     config.resolve.alias
