@@ -20,6 +20,13 @@ const routes: Array<RouteRecordRaw> = [
         ),
       },
       {
+        path: "/playlist",
+        name: "Playlist",
+        component: lazyLoad(
+          "home/components/main-content/views/playlist/index"
+        ),
+      },
+      {
         path: "playlistDetail/:id",
         name: "PlaylistDetail",
         component: lazyLoad(

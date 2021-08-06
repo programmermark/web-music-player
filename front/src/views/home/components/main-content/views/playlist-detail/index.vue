@@ -96,7 +96,9 @@ export default defineComponent({
     watch(
       () => route.params,
       (params) => {
-        getPlaylistDetail(Number(params.id));
+        if (params.id) {
+          getPlaylistDetail(Number(params.id));
+        }
       }
     );
 
