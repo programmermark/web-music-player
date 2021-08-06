@@ -40,7 +40,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 #home {
   position: relative;
-  min-width: 1000px;
+  min-width: 1200px;
   max-width: 1200px;
   height: 600px;
   margin: 30px;

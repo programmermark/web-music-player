@@ -23,8 +23,8 @@ export default defineComponent({
 
     const state = reactive({
       navs: [
-        { text: "个性推荐", url: "", active: true },
-        { text: "歌单", url: "", active: false },
+        { text: "个性推荐", url: "/", active: true },
+        { text: "歌单", url: "/playlist", active: false },
         { text: "主播电台", url: "", active: false },
         { text: "排行榜", url: "", active: false },
         { text: "歌手", url: "", active: false },
@@ -55,11 +55,11 @@ export default defineComponent({
 .navbars {
   display: flex;
   align-items: center;
-  margin-left: 30px;
   list-style: none;
   height: 100%;
   line-height: 100%;
   margin: 0;
+  margin-left: 30px;
 
   .nav {
     display: inline-flex;

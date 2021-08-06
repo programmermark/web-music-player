@@ -1,11 +1,13 @@
 import PersonalRecommendApis from "./right-content/personal-recommend/index";
-import LoginBox from "./left-content/login-box/index";
-import UserPlayList from "./left-content/playlist/index";
+import PlaylistApis from "./right-content/playlist/index";
+import LoginBoxApis from "./left-content/login-box/index";
+import UserPlayListApis from "./left-content/playlist/index";
 
 const apis = {
   ...PersonalRecommendApis,
-  ...LoginBox,
-  ...UserPlayList,
+  ...PlaylistApis,
+  ...LoginBoxApis,
+  ...UserPlayListApis,
 };
 
 export { apis };
