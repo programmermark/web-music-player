@@ -10,6 +10,7 @@ export interface IPlayListItem {
 }
 
 export interface IPlaylistState {
+  loading: boolean /** 是否显示loading */;
   limit: number /** 分页条数 */;
   page: number /** 当前分页数 */;
   total: number /** 总歌单数量 */;

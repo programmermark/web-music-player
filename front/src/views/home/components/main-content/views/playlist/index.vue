@@ -7,7 +7,15 @@
       <hot-cat-list />
     </div>
     <!-- 歌单列表（10 * 10） -->
-    <div class="card-wrapper">
+    <div
+      class="card-wrapper-loading"
+      v-show="loading"
+      v-loading="loading"
+      element-loading-text="载入中..."
+      element-loading-spinner="el-icon-loading"
+      element-loading-background="rgba(255, 255, 255)"
+    ></div>
+    <div class="card-wrapper" v-show="!loading">
       <playlist-card
         v-for="listItem in playlists"
         :key="listItem.id"
@@ -38,7 +46,6 @@ import {
   defineComponent,
   onMounted,
   reactive,
-  toRef,
   toRefs,
   watch,
 } from "vue";
@@ -58,6 +65,7 @@ export default defineComponent({
     const store = useStore();
 
     const state = reactive<IPlaylistState>({
+      loading: false,
       limit: 100,
       page: 1,
       total: 0,
@@ -69,6 +77,7 @@ export default defineComponent({
     const currentLimit = computed(() => state.limit);
 
     const fetchPlayList = async (tag: string, page = 1, limit = 100) => {
+      state.loading = true;
       const url = `${apis.playlistTop}?offset=${
         (page - 1) * limit
       }&limit=${limit}&cat=${tag}`;
@@ -84,6 +93,7 @@ export default defineComponent({
         },
       }));
       state.total = total;
+      state.loading = false;
     };
 
     /**
@@ -114,6 +124,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .playlist-wrapper {
+  height: 100%;
   .cat-wrapper {
     display: flex;
     align-items: center;
@@ -121,6 +132,23 @@ export default defineComponent({
     margin-bottom: 16px;
     .flex-1 {
       flex: 1;
+    }
+  }
+  .card-wrapper-loading {
+    height: calc(100% - 70px);
+    :deep(.el-loading-spinner) {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    :deep(.el-icon-loading) {
+      color: #666;
+    }
+
+    :deep(.el-loading-text) {
+      margin-left: 2px;
+      color: #666;
     }
   }
   .card-wrapper {
