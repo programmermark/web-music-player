@@ -31,6 +31,7 @@ import MPIcon from "@/components/MPIcon.vue";
 import MPOptIcon from "@/components/MPOptIcon.vue";
 import { defineComponent, ref, toRefs } from "vue";
 import { useStore } from "@/store";
+import { translatePlayCount } from "@/common/js/util";
 
 export default defineComponent({
   components: { "mp-icon": MPIcon, "mp-opt-icon": MPOptIcon },
@@ -68,14 +69,6 @@ export default defineComponent({
 
     const showIcon = ref(false);
 
-    /** 转换播放量数量为显示值 */
-    const translatePlayCount = (count: number) => {
-      if (count > 100000) {
-        return Math.ceil(count / 10000) + "万";
-      } else {
-        return count;
-      }
-    };
     const handleMouseEnter = () => {
       showIcon.value = true;
     };

@@ -107,3 +107,12 @@ export const transformSecondToMinute = (secondCount: number): string => {
   }
   return "00:00";
 };
+
+/** 转换播放量数量为显示值 */
+export const translatePlayCount = (count: number): string | number => {
+  if (count > 100000) {
+    return Math.ceil(count / 10000) + "万";
+  } else {
+    return count;
+  }
+};

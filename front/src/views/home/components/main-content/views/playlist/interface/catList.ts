@@ -1,3 +1,5 @@
+import { IHotCat } from "@/store/modules/interface/catlist";
+
 export interface ICategory {
   /** 分类id: 分类名称 */
   [index: number]: string;
@@ -25,17 +27,16 @@ export interface ICatList {
 export interface IStateCatList {
   category: number /** 分类key值  */;
   name: string /** 分类名称 */;
+  icon: string /** 分类的图标类名 */;
 }
 
 export interface ICatListState {
-  currentCat: {
-    level:
-      | 0
-      | 1
-      | 2 /** 0: 全部分类，1: 从一级分类中寻找，2：从二级分类中寻找 */;
-    name: string /** 分类名 */;
-  };
   allCat: string /** 全部分类 */;
   catList: IStateCatList[] /** 一级歌单分类 */;
   subCatList: ISubCategory[] /** 二级歌单分类 */;
+}
+
+export interface IHotCatListState {
+  currentCat: string /** 当前选中的分类 */;
+  catList: IHotCat[];
 }
