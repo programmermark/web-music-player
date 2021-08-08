@@ -28,6 +28,9 @@ export default defineComponent({
     overflow: auto;
     flex: 1;
     padding: 0 30px;
+    :deep(.el-scrollbar__view) {
+      height: 100%;
+    }
   }
   .main-content-scrollbar {
     height: 100%;
