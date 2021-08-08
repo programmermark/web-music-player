@@ -38,7 +38,8 @@
 
 <script lang="ts">
 import MPIcon from "@/components/MPIcon.vue";
-import { defineComponent, Events, PropType, ref } from "vue";
+import { defineComponent, PropType, ref } from "vue";
+import { translatePlayCount } from "@/common/js/util";
 import { IArtist } from "../../interface/latestMusicCard";
 
 /** 推荐MV卡片组件 */
@@ -78,15 +79,6 @@ export default defineComponent({
   },
   setup() {
     const subTitleIsShow = ref(true);
-
-    /** 转换播放量数量为显示值 */
-    const translatePlayCount = (count: number) => {
-      if (count > 100000) {
-        return Math.ceil(count / 10000) + "万";
-      } else {
-        return count;
-      }
-    };
 
     /** 跳转至MV详情页面 */
     const gotoMvDetail = (id: number) => {
