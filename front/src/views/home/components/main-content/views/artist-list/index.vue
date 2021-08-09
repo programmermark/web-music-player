@@ -19,17 +19,10 @@
 </template>
 
 <script lang="ts">
-import {
-  computed,
-  defineComponent,
-  onMounted,
-  reactive,
-  toRefs,
-  watch,
-} from "vue";
+import { computed, defineComponent, onMounted, reactive, watch } from "vue";
 import Filters from "./components/filters/index.vue";
 import ArtistCard from "./components/artist-card/index.vue";
-import ArtistRankCard from "./components/artist-rank-card /index.vue";
+import ArtistRankCard from "./components/artist-rank-card/index.vue";
 import { IFiltersState } from "./components/interface/filters";
 import { ISetArtistListPayload } from "@/store/modules/interface/artistlist";
 import { useStore } from "@/store";
