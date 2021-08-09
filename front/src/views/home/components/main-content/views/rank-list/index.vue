@@ -1,27 +1,37 @@
 <template>
   <div class="rank-list">
-    <!-- 官方榜：前4个歌曲榜单 + 歌手榜单 -->
-    <div class="official-wrapper">
-      <div class="title">官方榜</div>
+    <div class="content-wrapper" v-show="!loading">
+      <!-- 官方榜：前4个歌曲榜单 + 歌手榜单 -->
+      <div class="official-wrapper">
+        <div class="title">官方榜</div>
 
-      <official-rank-list
-        v-for="rankList in songRankListOfficial"
-        :key="rankList.id"
-        :rankList="rankList"
-      />
-      <official-rank-list :rankList="artistRank" type="artist" />
-    </div>
-    <!-- 全球榜：除去前4个之外的歌曲榜单 -->
-    <div class="gloabl-wrapper">
-      <div class="title">全球榜</div>
-      <div class="card-wrapper">
-        <rank-card
-          v-for="rankList in songRankListGlobal"
+        <official-rank-list
+          v-for="rankList in songRankListOfficial"
           :key="rankList.id"
           :rankList="rankList"
         />
+        <official-rank-list :rankList="artistRank" type="artist" />
+      </div>
+      <!-- 全球榜：除去前4个之外的歌曲榜单 -->
+      <div class="gloabl-wrapper">
+        <div class="title">全球榜</div>
+        <div class="card-wrapper">
+          <rank-card
+            v-for="rankList in songRankListGlobal"
+            :key="rankList.id"
+            :rankList="rankList"
+          />
+        </div>
       </div>
     </div>
+    <div
+      class="rank-list-loading"
+      v-show="loading"
+      v-loading="loading"
+      element-loading-text="载入中..."
+      element-loading-spinner="el-icon-loading"
+      element-loading-background="rgba(255, 255, 255)"
+    ></div>
   </div>
 </template>
 
@@ -39,6 +49,9 @@ export default defineComponent({
   },
   setup() {
     const store = useStore();
+
+    /** 是否显示loading */
+    const loading = computed(() => store.state.rankList.loading);
 
     /** 歌单官方排行榜 */
     const songRankListOfficial = computed(
@@ -61,6 +74,7 @@ export default defineComponent({
     });
 
     return {
+      loading,
       songRankListOfficial,
       artistRank,
       songRankListGlobal,
@@ -71,25 +85,47 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .rank-list {
-  margin-top: 30px;
-  .official-wrapper {
-    margin-bottom: 40px;
-    .title {
-      color: #333;
-      font-size: 18px;
-      font-weight: bold;
-      margin-bottom: 12px;
+  height: 100%;
+
+  .content-wrapper {
+    padding-top: 30px;
+    .official-wrapper {
+      margin-bottom: 40px;
+      .title {
+        color: #333;
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 12px;
+      }
+    }
+    .gloabl-wrapper {
+      .title {
+        color: #333;
+        font-size: 16px;
+        font-weight: bold;
+        margin-bottom: 12px;
+      }
+      .card-wrapper {
+        padding-bottom: 60px;
+      }
     }
   }
-  .gloabl-wrapper {
-    .title {
-      color: #333;
-      font-size: 16px;
-      font-weight: bold;
-      margin-bottom: 12px;
+
+  .rank-list-loading {
+    height: calc(100% - 50px);
+    :deep(.el-loading-spinner) {
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-    .card-wrapper {
-      padding-bottom: 60px;
+
+    :deep(.el-icon-loading) {
+      color: #666;
+    }
+
+    :deep(.el-loading-text) {
+      margin-left: 2px;
+      color: #666;
     }
   }
 }
