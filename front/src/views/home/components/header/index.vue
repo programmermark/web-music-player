@@ -30,7 +30,12 @@ export default defineComponent({
     });
 
     /** 列表中的routerName会显示导航条 */
-    const showNavRouteNames = reactive(["Personal", "Playlist", "RankList"]);
+    const showNavRouteNames = reactive([
+      "Personal",
+      "Playlist",
+      "RankList",
+      "ArtistList",
+    ]);
 
     const showNavs = computed(() =>
       showNavRouteNames.includes(currentRouteName.value as string)

@@ -83,6 +83,7 @@ const ModuleRankList: Module<IRankListState, IRootStateTypes> = {
             artistStr: track.second,
           })),
         }));
+
       context.commit("setSongRankListOfficial", songRankListOfficial);
 
       /** 获取所有歌手榜单 */

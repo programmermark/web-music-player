@@ -1,16 +1,21 @@
 <template>
   <div class="rank-list">
-    <div class="content-wrapper" v-show="!loading">
+    <div class="content-wrapper" v-if="!loading">
       <!-- 官方榜：前4个歌曲榜单 + 歌手榜单 -->
       <div class="official-wrapper">
         <div class="title">官方榜</div>
-
-        <official-rank-list
-          v-for="rankList in songRankListOfficial"
-          :key="rankList.id"
-          :rankList="rankList"
-        />
-        <official-rank-list :rankList="artistRank" type="artist" />
+        <template
+          v-if="songRankListOfficial && songRankListOfficial.length > 0"
+        >
+          <official-rank-list
+            v-for="rankList in songRankListOfficial"
+            :key="rankList.id"
+            :rankList="rankList"
+          />
+        </template>
+        <template v-if="artistRank">
+          <official-rank-list :rankList="artistRank" type="artist" />
+        </template>
       </div>
       <!-- 全球榜：除去前4个之外的歌曲榜单 -->
       <div class="gloabl-wrapper">
@@ -57,6 +62,7 @@ export default defineComponent({
     const songRankListOfficial = computed(
       () => store.state.rankList.songRankListOfficial
     );
+
     /**  歌手排行榜 */
     const artistRank = computed(() => store.state.rankList.artistRank);
     /** 全球歌单排行榜 */
