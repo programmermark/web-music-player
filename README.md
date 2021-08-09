@@ -28,12 +28,46 @@ yarn install
 yarn run start
 ```
 
+## Online Site
+
+[music-player.immortalboy.cn](https://music-player.immortalboy.cn/)
+
+## ToDoList
+
+### 页面
+
+- [ ] 主播电台
+- [ ] 电台详情
+- [ ] 歌手
+- [ ] 最新音乐
+- [ ] 歌手排行榜
+- [ ] 歌手详情
+- [ ] MV 详情（不开发评论功能）
+
+### 功能
+
+- [ ] 个性推荐页面优化
+- [ ] 顶部搜索功能
+- [ ] 歌词功能
+- [ ] 全屏播放页面与功能
+- [ ] 播放顺序功能（随机播放、单曲播放等等）
+- [ ] 更新公告功能（自定义）
+- [ ] 更换背景图片功能（自定义）
+
+### 杂项
+
+- [ ] 添加单元测试
+- [ ] 完善 README 文件
+- [ ] 引入 vite
+- [ ] 探索实现项目的自动化部署
+
 ## Author
 
 👤 **钟辉**
 
 - Website: https://immortalboy.cn
 - Github: [@callmehui](https://github.com/callmehui)
+- WeChat: a13720141463
 
 ## 🤝 Contributing
 
