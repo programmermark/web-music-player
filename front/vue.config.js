@@ -14,6 +14,10 @@ module.exports = {
       .set("common", resolve("src/common"))
       .set("components", resolve("src/components"))
       .set("store", resolve("src/store"));
+    config.plugin("html").tap((args) => {
+      args[0].title = "仿网易云音乐播放器";
+      return args;
+    });
   },
   devServer: {
     proxy: {

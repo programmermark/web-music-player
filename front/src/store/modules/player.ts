@@ -24,6 +24,12 @@ const ModulePlayer: Module<IPlayerState, IRootStateTypes> = {
     setCurrentSongById(state: IPlayerState, songId: number) {
       state.currentSong = state.songList.find((song) => song.id === songId);
     },
+    setCurrentSongByName(state: IPlayerState, songName: string) {
+      state.currentSong = state.songList.find((song) => song.name === songName);
+    },
+    setCurrentSongByIndex(state: IPlayerState, index: number) {
+      state.currentSong = state.songList[index];
+    },
     setSongList(state: IPlayerState, list: IPlaySong[]) {
       state.songList = list;
     },
