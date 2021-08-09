@@ -16,25 +16,27 @@
 
 <script lang="ts">
 import { computed, defineComponent, reactive } from "@vue/runtime-core";
-import { useRouter } from "vue-router";
+import { useRoute } from "vue-router";
 import LeftOpts from "./left-opts/index.vue";
 import NavBars from "./navbars/index.vue";
 
 export default defineComponent({
   components: { LeftOpts, NavBars },
   setup() {
-    const router = useRouter();
+    const route = useRoute();
 
-    const currentPath = computed(() => {
-      return router.currentRoute.value.path;
+    const currentRouteName = computed(() => {
+      return route.name;
     });
 
-    const showNavUrls = reactive(["/"]);
+    /** 列表中的routerName会显示导航条 */
+    const showNavRouteNames = reactive(["Personal", "Playlist", "RankList"]);
 
-    const showNavs = computed(() => showNavUrls.includes(currentPath.value));
+    const showNavs = computed(() =>
+      showNavRouteNames.includes(currentRouteName.value as string)
+    );
 
     return {
-      currentPath,
       showNavs,
     };
   },

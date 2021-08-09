@@ -188,7 +188,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 .official-rank-list {
   display: flex;
-  margin-bottom: 30px;
+  padding-bottom: 30px;
   .img-wrapper {
     width: 170px;
     height: 170px;
