@@ -30,6 +30,7 @@ export interface IArtistRank extends IArtistRankListResponse {
 }
 
 export interface IRankListState {
+  loading: boolean /** 是否显示loading */;
   artistRank?: IArtistRank /** 歌手榜 */;
   songRankList: ISongRank[] /** 所有的歌曲榜单 */;
   songRankListOfficial: ISongRankOfficial[] /** 歌曲榜单（官方榜：前4的歌曲榜单） */;

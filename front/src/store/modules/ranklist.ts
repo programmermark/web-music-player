@@ -16,12 +16,16 @@ import {
 const ModuleRankList: Module<IRankListState, IRootStateTypes> = {
   namespaced: true,
   state: (): IRankListState => ({
+    loading: false,
     artistRank: undefined,
     songRankList: [],
     songRankListOfficial: [],
     songRankListGlobal: [],
   }),
   mutations: {
+    setLoading(state: IRankListState, loading: boolean) {
+      state.loading = loading;
+    },
     /** 设置歌手榜单 */
     setArtistRank(state: IRankListState, artistRank: IArtistRank) {
       state.artistRank = artistRank;
@@ -44,6 +48,7 @@ const ModuleRankList: Module<IRankListState, IRootStateTypes> = {
     async setAllRankList(
       context: ActionContext<IRankListState, IRootStateTypes>
     ) {
+      context.commit("setLoading", true);
       /** 获取所有歌单榜单 */
       const { artistToplist, list: allRankList } =
         await http<IRankListResponse>({
@@ -102,6 +107,7 @@ const ModuleRankList: Module<IRankListState, IRootStateTypes> = {
         artistList: artistRankList,
       };
       context.commit("setArtistRank", artistRank);
+      context.commit("setLoading", false);
     },
   },
   getters: {},
