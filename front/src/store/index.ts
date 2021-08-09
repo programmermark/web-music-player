@@ -8,6 +8,7 @@ import { IAllStateTypes, IRootStateTypes } from "./modules/interface";
 import { InjectionKey } from "vue";
 import ModuleCatList from "./modules/catlist";
 import ModuleRankList from "./modules/ranklist";
+import ModuleArtistList from "./modules/artistlist";
 
 const dataSet = createPersistedState({
   /** 被持久化的状态格式为：模块名.状态名 */
@@ -25,6 +26,8 @@ const dataSet = createPersistedState({
     "rankList.songRankList",
     "rankList.songRankListOfficial",
     "rankList.songRankListGlobal",
+    "artistList.loading",
+    "artistList.artistList",
   ],
 });
 
@@ -38,6 +41,7 @@ export default createStore<IRootStateTypes>({
     playlist: ModulePlaylist,
     catList: ModuleCatList,
     rankList: ModuleRankList,
+    artistList: ModuleArtistList,
   },
   plugins: [dataSet],
 });

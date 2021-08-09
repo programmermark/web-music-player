@@ -27,7 +27,7 @@ export default defineComponent({
         { text: "歌单", url: "/playlist", active: false },
         { text: "主播电台", url: "", active: false },
         { text: "排行榜", url: "/rankList", active: false },
-        { text: "歌手", url: "", active: false },
+        { text: "歌手", url: "/artistList", active: false },
         { text: "最新音乐", url: "", active: false },
       ],
     });
