@@ -131,8 +131,6 @@ export default defineComponent({
       color: white;
       font-size: 12px;
       font-weight: bold;
-      .name {
-      }
     }
     .play-button {
       position: absolute;

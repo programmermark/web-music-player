@@ -79,8 +79,8 @@ export default defineComponent({
       console.log("点击card，打开播放列表详情");
     };
     const playSong = (e: Event) => {
-      store.dispatch("player/setSongList", { id: id.value });
       e.stopPropagation();
+      store.dispatch("player/setSongList", { id: id.value });
     };
 
     return {

@@ -33,6 +33,13 @@ const routes: Array<RouteRecordRaw> = [
           "home/components/main-content/views/playlist-detail/index"
         ),
       },
+      {
+        path: "rankList",
+        name: "RankList",
+        component: lazyLoad(
+          "home/components/main-content/views/rank-list/index"
+        ),
+      },
     ],
   },
 ];
