@@ -7,7 +7,11 @@
   >
     <!-- card图片 -->
     <div class="content">
-      <img :src="playlist.coverImgUrl" alt="歌单封面" />
+      <el-image class="image" :src="playlist.coverImgUrl" alt="歌单封面">
+        <template #placeholder>
+          <img class="image" src="@/assets/image/no-img.png" alt="歌单封面" />
+        </template>
+      </el-image>
       <div class="play-count">
         <mp-icon icon="play-caret" color="#fff" bgColor="none" />
         <span>{{ translatePlayCount(playlist.playCount) }}</span>
@@ -104,7 +108,7 @@ export default defineComponent({
     width: 100%;
     cursor: pointer;
     position: relative;
-    & > img {
+    & .image {
       width: 100%;
       height: 100%;
       border-radius: 8px;
