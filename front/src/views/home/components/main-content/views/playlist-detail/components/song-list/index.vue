@@ -49,7 +49,15 @@
           v-for="subscriber in subscribers"
           :key="subscriber.id"
         >
-          <img :src="subscriber.avatarUrl" alt="用户头像" />
+          <el-image class="image" :src="subscriber.avatarUrl" alt="用户头像">
+            <template #placeholder>
+              <img
+                class="image"
+                src="@/assets/image/no-img.png"
+                alt="用户头像"
+              />
+            </template>
+          </el-image>
           <span class="name">{{ subscriber.nickname }}</span>
           <mp-icon
             v-if="subscriber.gender === 1"
@@ -243,7 +251,7 @@ export default defineComponent({
       display: flex;
       align-items: center;
       margin-top: 20px;
-      & > img {
+      & > .image {
         width: 90px;
         height: 90px;
         border-radius: 50%;
