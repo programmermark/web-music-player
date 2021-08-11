@@ -6,7 +6,11 @@
       @mouseenter="handleMouseEnter"
       @mouseleave="handleMouseLeave"
     >
-      <img :src="rankList.coverImgUrl" alt="歌单封面" />
+      <el-image class="image" :src="rankList.coverImgUrl" alt="歌单封面">
+        <template #placeholder>
+          <img class="image" src="@/assets/image/no-img.png" alt="歌单封面" />
+        </template>
+      </el-image>
       <div class="play-count">
         <mp-icon icon="play-caret" color="#fff" bgColor="none" />
         <span>{{ translatePlayCount(rankList.playCount) }}</span>
@@ -107,7 +111,7 @@ export default defineComponent({
     height: 140px;
     border-radius: 8px;
     position: relative;
-    & > img {
+    .image {
       width: 100%;
       border-radius: 8px;
     }
