@@ -9,6 +9,7 @@ import { InjectionKey } from "vue";
 import ModuleCatList from "./modules/catlist";
 import ModuleRankList from "./modules/ranklist";
 import ModuleArtistList from "./modules/artistlist";
+import ModuleRecommend from "./modules/recommend";
 
 const dataSet = createPersistedState({
   /** 被持久化的状态格式为：模块名.状态名 */
@@ -28,6 +29,12 @@ const dataSet = createPersistedState({
     "rankList.songRankListGlobal",
     "artistList.loading",
     "artistList.artistList",
+    "recommend.banners",
+    "recommend.recommendSongList",
+    "recommend.exclusiveBroadcastList",
+    "recommend.latestMusicList",
+    "recommend.recommendMvList",
+    "recommend.recommendDjList",
   ],
 });
 
@@ -42,6 +49,7 @@ export default createStore<IRootStateTypes>({
     catList: ModuleCatList,
     rankList: ModuleRankList,
     artistList: ModuleArtistList,
+    recommend: ModuleRecommend,
   },
   plugins: [dataSet],
 });

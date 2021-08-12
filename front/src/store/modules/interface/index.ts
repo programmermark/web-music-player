@@ -4,6 +4,7 @@ import { ILoginState } from "./login";
 import { IPlayerState } from "./player";
 import { IPlaylistState } from "./playlist";
 import { IRankListState } from "./ranklist";
+import { IRecommendState } from "./recommend";
 
 export interface IRootStateTypes {
   player: IPlayerState;
@@ -12,6 +13,7 @@ export interface IRootStateTypes {
   catList: ICatListState;
   rankList: IRankListState;
   artistList: IArtistListState;
+  recommend: IRecommendState;
 }
 export interface IAllStateTypes extends IRootStateTypes {
   ModulePlayer: IPlayerState;
@@ -20,4 +22,5 @@ export interface IAllStateTypes extends IRootStateTypes {
   ModuleCatList: ICatListState;
   ModuleRankList: IRankListState;
   ModuleArtistList: IArtistListState;
+  ModuleRecommend: IRecommendState;
 }
