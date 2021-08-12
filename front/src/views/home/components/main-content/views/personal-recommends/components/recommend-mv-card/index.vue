@@ -1,12 +1,19 @@
 <template>
   <div class="recommend-mv-card" @click="gotoMvDetail(id)">
     <!-- MV封面 + MV播放量 -->
-    <img
+    <!-- <img
       :src="imgUrl"
       alt="MV封面"
       @mouseover="subTitleIsShow = true"
       @mouseleave="subTitleIsShow = false"
-    />
+    /> -->
+    <div
+      class="image"
+      :style="{ 'background-image': `url(${imgUrl})` }"
+      alt="MV封面"
+      @mouseover="subTitleIsShow = true"
+      @mouseleave="subTitleIsShow = false"
+    ></div>
     <transition>
       <div v-show="!subTitleIsShow" class="play-count">
         <mp-icon icon="play-caret" color="#fff" bgColor="none" />
@@ -112,9 +119,11 @@ export default defineComponent({
     margin-right: 0;
   }
 
-  & > img {
+  & > .image {
     width: 100%;
+    height: 125px;
     border-radius: 4px;
+    background-size: 100% auto;
   }
 
   .play-count {

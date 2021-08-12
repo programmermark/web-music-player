@@ -3,7 +3,11 @@
     <div class="wrapper">
       <!-- 封面 -->
       <div class="cover">
-        <img :src="imgUrl" alt="电台封面" />
+        <el-image class="image" :src="imgUrl" alt="电台封面">
+          <template #placeholder>
+            <img class="image" src="@/assets/image/no-img.png" alt="电台封面" />
+          </template>
+        </el-image>
       </div>
       <!-- title + 歌手名 -->
       <div class="singer-wrapper">
@@ -83,7 +87,7 @@ export default defineComponent({
       margin-right: 20px;
       border-radius: 4px;
 
-      & > img {
+      & > .image {
         border-radius: 4px;
         width: 100%;
         height: 100%;

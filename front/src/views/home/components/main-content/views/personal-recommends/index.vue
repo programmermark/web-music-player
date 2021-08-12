@@ -8,12 +8,16 @@
       height="200px"
     >
       <el-carousel-item v-for="banner in banners" :key="banner.targetId">
-        <router-link class="banner-item" to="/">
+        <div
+          class="banner-item"
+          @click="playSongById(banner.targetId)"
+          title="点击播放歌曲"
+        >
           <img :src="banner.imageUrl" :alt="banner.typeTitle" />
           <span :style="{ backgroundColor: banner.titleColor }">{{
             banner.typeTitle
           }}</span>
-        </router-link>
+        </div>
       </el-carousel-item>
     </el-carousel>
     <!-- 推荐歌单 -->
@@ -43,7 +47,7 @@
     </div>
     <!-- 最新音乐 -->
     <link-title url="" title="最新音乐" />
-    <div class="wrapper mt-40 card-move">
+    <div class="wrapper pd-40 card-move">
       <latest-music-card
         v-for="(latestMusic, index) in latestMusicList"
         :key="latestMusic.id"
@@ -58,7 +62,7 @@
     </div>
     <!-- 推荐MV -->
     <link-title url="" title="推荐MV" />
-    <div class="wrapper mt-40">
+    <div class="wrapper pd-40">
       <recommend-mv-card
         v-for="recommendMv in recommendMvList"
         :key="recommendMv.id"
@@ -72,7 +76,7 @@
     </div>
     <!-- 主播电台 -->
     <link-title url="" title="主播电台" />
-    <div class="wrapper mt-100 card-move">
+    <div class="wrapper pd-100 card-move">
       <recommend-dj-card
         v-for="recommendDj in recommendDjList"
         :key="recommendDj.id"
@@ -86,7 +90,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, reactive, toRefs } from "vue";
+import { computed, defineComponent, onMounted } from "vue";
 import LinkTitle from "./components/link-title/index.vue";
 import RecommendSongCard from "./components/recommend-song-card/index.vue";
 import RecommendSongSpecialCard from "./components/recommend-song-special-card/index.vue";
@@ -94,15 +98,7 @@ import ExclusiveBroadcastCard from "./components/exclusive-broadcast-card/index.
 import LatestMusicCard from "./components/latest-music-card/index.vue";
 import RecommendMvCard from "./components/recommend-mv-card/index.vue";
 import RecommendDjCard from "./components/recommend-dj-card/index.vue";
-import { http } from "@/common/js/http";
-import { apis } from "@/api";
-import { ILatestMusicFormat, IState } from "./interface";
-import { IBanner } from "./interface/banner";
-import { IRecommendSong } from "./interface/recommendSongList";
-import { IExclusiveBroadcast } from "./interface/exclusiveBroadcastCard";
-import { ILatestMusic } from "./interface/latestMusicCard";
-import { IRecommendMv } from "./interface/recommendMvCard";
-import { IRecommendDj } from "./interface/recommend-dj-card";
+import { useStore } from "@/store";
 
 export default defineComponent({
   name: "PersonalRecommend",
@@ -116,91 +112,71 @@ export default defineComponent({
     RecommendDjCard,
   },
   setup() {
-    const state = reactive<IState>({
-      banners: [],
-      recommendSongList: [],
-      exclusiveBroadcastList: [],
-      latestMusicList: [],
-      recommendMvList: [],
-      recommendDjList: [],
-    });
+    const store = useStore();
 
-    /**
-     * 获取轮播图列表
-     */
-    const fetchBanner = async () => {
-      const result = await http<IBanner[]>(
-        {
-          url: apis.personalBanner,
-        },
-        "banners"
-      );
-      state.banners = result;
+    const banners = computed(() => store.state.recommend.banners);
+    const recommendSongList = computed(
+      () => store.state.recommend.recommendSongList
+    );
+    const exclusiveBroadcastList = computed(
+      () => store.state.recommend.exclusiveBroadcastList
+    );
+    const latestMusicList = computed(
+      () => store.state.recommend.latestMusicList
+    );
+    const recommendMvList = computed(
+      () => store.state.recommend.recommendMvList
+    );
+    const recommendDjList = computed(
+      () => store.state.recommend.recommendDjList
+    );
+
+    const fetchBanner = () => {
+      store.dispatch("recommend/fetchBanner");
     };
 
-    const fetchSongList = async () => {
-      const result = await http<IRecommendSong[]>(
-        { url: apis.personalSongList },
-        "result"
-      );
-      state.recommendSongList = result;
+    const fetchRecommendSongList = () => {
+      store.dispatch("recommend/fetchRecommendSongList");
     };
 
-    const fetchBroadcastList = async () => {
-      const result = await http<IExclusiveBroadcast[]>(
-        { url: apis.personalBroadcastList },
-        "result"
-      );
-      state.exclusiveBroadcastList = result;
+    const fetchBroadcastList = () => {
+      store.dispatch("recommend/fetchBroadcastList");
     };
 
-    const fetchNewSongList = async () => {
-      const result = await http<ILatestMusic[]>(
-        { url: apis.personalNewSongList },
-        "data"
-      );
-      const list = result.map((item) => {
-        let latestMuisc: ILatestMusicFormat = {
-          id: item.id,
-          mvId: item.mvid,
-          name: item.album.name,
-          aliasName: item.album.alias[0],
-          picUrl: item.album.picUrl,
-          artists: item.album.artists,
-        };
-        return latestMuisc;
-      });
-      /** 只获取前10条数据 */
-      state.latestMusicList = list.splice(0, 10);
+    const fetchLatestSongList = async () => {
+      store.dispatch("recommend/fetchLatestSongList");
     };
 
     const fetchRecommendMv = async () => {
-      const result = await http<IRecommendMv[]>(
-        { url: apis.personalMV },
-        "result"
-      );
-      state.recommendMvList = result;
+      store.dispatch("recommend/fetchRecommendMv");
     };
 
     const fetchRecommendDj = async () => {
-      const result = await http<IRecommendDj[]>(
-        { url: apis.personalDj },
-        "data"
-      );
-      state.recommendDjList = result;
+      store.dispatch("recommend/fetchRecommendDj");
+    };
+
+    /** 播放一首歌曲 */
+    const playSongById = (id: number) => {
+      store.dispatch("player/setCurrentSong", id);
     };
 
     onMounted(() => {
       fetchBanner();
-      fetchSongList();
+      fetchRecommendSongList();
       fetchBroadcastList();
-      fetchNewSongList();
+      fetchLatestSongList();
       fetchRecommendMv();
       fetchRecommendDj();
     });
 
     return {
-      ...toRefs(state),
+      banners,
+      recommendSongList,
+      exclusiveBroadcastList,
+      latestMusicList,
+      recommendMvList,
+      recommendDjList,
+      playSongById,
     };
   },
 });
@@ -241,11 +217,11 @@ export default defineComponent({
   display: flex;
   flex-wrap: wrap;
 }
-.mt-40 {
-  margin-bottom: 40px;
+.pd-40 {
+  padding-bottom: 40px;
 }
-.mt-100 {
-  margin-bottom: 100px;
+.pd-100 {
+  padding-bottom: 100px;
 }
 .card-move {
   position: relative;

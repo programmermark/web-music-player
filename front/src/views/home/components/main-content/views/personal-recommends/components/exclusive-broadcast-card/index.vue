@@ -1,6 +1,6 @@
 <template>
   <div class="card">
-    <img :src="imgUrl" />
+    <img class="image" :src="imgUrl" alt="歌单封面" />
     <div class="icon">
       <mp-icon icon="play-caret" color="#fff" bgColor="none" />
     </div>
@@ -47,7 +47,7 @@ export default defineComponent({
     margin-right: 0;
   }
 
-  & > img {
+  & > .image {
     width: 100%;
     border-radius: 4px;
   }

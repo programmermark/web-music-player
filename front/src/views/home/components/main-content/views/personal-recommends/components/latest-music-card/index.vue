@@ -3,7 +3,15 @@
     <div class="wrapper">
       <!-- 歌曲封面（单击播放） -->
       <div class="cover" @click="playSong">
-        <img :src="coverImg" alt="歌曲封面图片" />
+        <el-image class="image" :src="coverImg" alt="歌曲封面图片">
+          <template #placeholder>
+            <img
+              class="image"
+              src="@/assets/image/no-img.png"
+              alt="歌曲封面图片"
+            />
+          </template>
+        </el-image>
         <mp-opt-icon
           class="play-button"
           :size="24"
@@ -173,7 +181,7 @@ export default defineComponent({
       height: 60px;
       position: relative;
 
-      & > img {
+      & > .image {
         width: 100%;
         height: 100%;
         border-radius: 4px;

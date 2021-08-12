@@ -6,7 +6,11 @@
     @click="handleCardClick"
   >
     <div class="card">
-      <img :src="imgUrl" />
+      <el-image class="image" :src="imgUrl" alt="歌单封面">
+        <template #placeholder>
+          <img class="image" src="@/assets/image/no-img.png" alt="歌单封面" />
+        </template>
+      </el-image>
       <div class="play-count" v-if="playCount">
         <mp-icon icon="play-caret" color="#fff" bgColor="none" />
         <span>{{ translatePlayCount(playCount) }}</span>
@@ -107,7 +111,7 @@ export default defineComponent({
     position: relative;
     border-radius: 4px;
     cursor: pointer;
-    & > img {
+    .image {
       width: 100%;
       border-radius: 4px;
       border: 1px solid #e8e8e8;
