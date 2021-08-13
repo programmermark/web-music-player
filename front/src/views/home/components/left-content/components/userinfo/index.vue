@@ -62,9 +62,7 @@ export default defineComponent({
 
     /** 切换登录弹窗显示与隐藏状态 */
     const toogleLoginDialog = () => {
-      console.log("toggle");
       showLoginDialog.value = !showLoginDialog.value;
-      console.log("showLoginDialog.value", showLoginDialog.value);
     };
 
     const handleLoginBoxVisible = (visible: boolean) => {

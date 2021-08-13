@@ -14,11 +14,12 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted } from "vue";
+import { computed, defineComponent, onMounted, watch } from "vue";
 import UserInfo from "./components/userinfo/index.vue";
 import CreatedPlayList from "./components/created-playlist/index.vue";
 import CollectedPlayList from "./components/collected-playlist/index.vue";
 import { useStore } from "@/store";
+import { useRouter } from "vue-router";
 
 /** 左侧主要内容 */
 export default defineComponent({
@@ -30,6 +31,7 @@ export default defineComponent({
   },
   setup() {
     const store = useStore();
+    const router = useRouter();
 
     /** 用户id */
     const userId = computed(() => store.state.login.userInfo?.id);
@@ -44,6 +46,32 @@ export default defineComponent({
     const userCollectedPlaylists = computed(() =>
       userPlaylists.value.filter((playlist) => !playlist.isSelfCreated)
     );
+
+    watch(userId, (userId) => {
+      if (userId) {
+        refreshPage(userId);
+      }
+    });
+
+    /**
+     * 登陆后刷新用户歌单，跳转到个性推荐并刷新页面接口
+     */
+    const refreshPage = (userId: number) => {
+      /** 更新用户歌单 */
+      store.dispatch("playlist/setAllPlaylist", userId);
+      /** 跳转到首页（当前在首页则不跳转） */
+      if (router.currentRoute.value.path !== "/") {
+        router.push("/");
+      } else {
+        /** 刷新首页的数据 */
+        store.dispatch("recommend/fetchBanner");
+        store.dispatch("recommend/fetchRecommendSongList");
+        store.dispatch("recommend/fetchBroadcastList");
+        store.dispatch("recommend/fetchLatestSongList");
+        store.dispatch("recommend/fetchRecommendMv");
+        store.dispatch("recommend/fetchRecommendDj");
+      }
+    };
 
     /** 获取用户歌单 */
     const fetchUserPlaylist = (userId: number) => {

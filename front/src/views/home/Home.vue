@@ -28,6 +28,7 @@ import MainContent from "./components/main-content/index.vue";
 import MusicPlayer from "./components/player/index.vue";
 import { logs } from "@/bulletins/logs/2021-08";
 import { useStore } from "@/store";
+import { ILog } from "@/store/modules/interface/bulletin";
 
 export default defineComponent({
   name: "Home",
@@ -47,6 +48,19 @@ export default defineComponent({
     const currentBulletin = computed(
       () => store.state.bulletin.currentBulletin
     );
+
+    /**
+     * 更新公告sotre
+     */
+    const updateBulletinStore = (
+      hasNotified: boolean,
+      currentBulletin: ILog,
+      bulletinList: ILog[]
+    ) => {
+      store.commit("bulletin/setHasNotified", hasNotified);
+      store.commit("bulletin/setCurrentBulletin", currentBulletin);
+      store.commit("bulletin/setBulletinList", bulletinList);
+    };
 
     /** 打开更新公告弹窗 */
     const openBulletinDialog = () => {
@@ -68,11 +82,9 @@ export default defineComponent({
             customClass: "custom-notification",
             dangerouslyUseHTMLString: true,
             message: log.briefContent,
-            duration: 0,
+            duration: 60000,
+            onClose: () => updateBulletinStore(true, log, logs),
           });
-          store.commit("bulletin/setHasNotified", true);
-          store.commit("bulletin/setCurrentBulletin", log);
-          store.commit("bulletin/setBulletinList", logs);
         }
       }
     };

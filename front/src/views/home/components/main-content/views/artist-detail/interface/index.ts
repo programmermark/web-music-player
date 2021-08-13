@@ -5,6 +5,7 @@ export interface IArtist {
   musicSize: number /** 单曲数 */;
   mvSize: number /** 专辑数 */;
   videoCount: number /** MV数 */;
+  alias: string[] /** 歌手别名（英文名｜中文名） */;
 }
 
 export interface IAlbum {
