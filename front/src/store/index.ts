@@ -10,6 +10,7 @@ import ModuleCatList from "./modules/catlist";
 import ModuleRankList from "./modules/ranklist";
 import ModuleArtistList from "./modules/artistlist";
 import ModuleRecommend from "./modules/recommend";
+import ModuleBulletin from "./modules/bulletin";
 
 const dataSet = createPersistedState({
   /** 被持久化的状态格式为：模块名.状态名 */
@@ -35,6 +36,9 @@ const dataSet = createPersistedState({
     "recommend.latestMusicList",
     "recommend.recommendMvList",
     "recommend.recommendDjList",
+    "bulletin.hasNotified",
+    "bulletin.currentBulletin",
+    "bulletin.bulletinList",
   ],
 });
 
@@ -50,6 +54,7 @@ export default createStore<IRootStateTypes>({
     rankList: ModuleRankList,
     artistList: ModuleArtistList,
     recommend: ModuleRecommend,
+    bulletin: ModuleBulletin,
   },
   plugins: [dataSet],
 });
