@@ -28,14 +28,14 @@ export default defineComponent({
         { url: `${apis.artistDetail}?id=${id}` },
         "data"
       );
-      state.briefInfo = {
-        id: artist.id,
-        cover: artist.cover,
-        name: artist.name,
-        musicSize: artist.musicSize,
-        mvSize: artist.mvSize,
-        videoCount: artist.videoCount,
-      };
+      // state.briefInfo = {
+      //   id: artist.id,
+      //   cover: artist.cover,
+      //   name: artist.name,
+      //   musicSize: artist.musicSize,
+      //   mvSize: artist.mvSize,
+      //   videoCount: artist.videoCount,
+      // };
     };
 
     /** 获取歌手详情 + 歌手专辑 */
@@ -47,14 +47,14 @@ export default defineComponent({
       const { artist } = await http<IArtistBriefInfo>({
         url: `${apis.artistAlbum}?id=${id}&limit=${limit}&offset=${offset}`,
       });
-      state.briefInfo = {
-        id: artist.id,
-        cover: artist.cover,
-        name: artist.name,
-        musicSize: artist.musicSize,
-        mvSize: artist.mvSize,
-        videoCount: artist.videoCount,
-      };
+      // state.briefInfo = {
+      //   id: artist.id,
+      //   cover: artist.cover,
+      //   name: artist.name,
+      //   musicSize: artist.musicSize,
+      //   mvSize: artist.mvSize,
+      //   videoCount: artist.videoCount,
+      // };
     };
 
     watch(
