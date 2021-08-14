@@ -197,7 +197,7 @@ import { IPlaySong } from "@/store/modules/interface/player";
 import { useStore } from "@/store";
 import { ISongState } from "./interface/index";
 import { useAudio, usePlayerState } from "./hooks/index";
-import { formatArtistListToString } from "./utils/index";
+import { formatArtistListToString } from "@/common/js/util";
 import { transformSecondToMinute } from "@/common/js/util/index";
 
 import MPIcon from "@/components/MPIcon.vue";

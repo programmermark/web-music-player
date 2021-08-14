@@ -47,6 +47,13 @@ const routes: Array<RouteRecordRaw> = [
           "home/components/main-content/views/artist-list/index"
         ),
       },
+      {
+        path: "latestMusic",
+        name: "LatestMusic",
+        component: lazyLoad(
+          "home/components/main-content/views/latest-music/index"
+        ),
+      },
     ],
   },
 ];

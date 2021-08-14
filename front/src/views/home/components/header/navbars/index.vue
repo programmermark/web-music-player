@@ -12,14 +12,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, toRefs } from "vue";
-import { useRouter } from "vue-router";
+import { defineComponent, onMounted, reactive, toRefs, watch } from "vue";
+import { useRoute, useRouter } from "vue-router";
 
 /** 顶部导航条 */
 export default defineComponent({
   name: "NavBar",
   setup() {
     const router = useRouter();
+    const route = useRoute();
 
     const state = reactive({
       navs: [
@@ -28,9 +29,19 @@ export default defineComponent({
         { text: "主播电台", url: "", active: false },
         { text: "排行榜", url: "/rankList", active: false },
         { text: "歌手", url: "/artistList", active: false },
-        { text: "最新音乐", url: "", active: false },
+        { text: "最新音乐", url: "/latestMusic", active: false },
       ],
     });
+
+    watch(
+      () => route.path,
+      (path) => {
+        state.navs = state.navs.map((item) => ({
+          ...item,
+          active: item.url === path,
+        }));
+      }
+    );
 
     /**
      * 点击nav高亮当前nav并跳转到指定的路由
@@ -42,6 +53,13 @@ export default defineComponent({
       }));
       router.push(url);
     };
+
+    onMounted(() => {
+      state.navs = state.navs.map((item) => ({
+        ...item,
+        active: item.url === route.path,
+      }));
+    });
 
     return {
       ...toRefs(state),

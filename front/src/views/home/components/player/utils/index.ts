@@ -21,14 +21,3 @@ export const transformSecondToMinute = (secondCount: number): string => {
   }
   return "00:00";
 };
-
-/**
- * 格式化歌手数组为字符串
- * @param artists 歌手数组
- * @returns
- */
-export const formatArtistListToString = (artists: IArtist[]): string => {
-  return artists
-    .map((artist) => artist.name)
-    .reduce((initValue, currentValue) => initValue + "/" + currentValue);
-};
