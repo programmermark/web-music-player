@@ -82,3 +82,8 @@ export interface ISetSongListPayload {
   id: number /** 歌单id */;
   noSetCurrentSong: boolean /** 是否设置当前歌曲，默认false，设置当前歌曲 */;
 }
+
+export interface ISetSongListByIdsPayload {
+  ids: number[] /** 歌曲id数组 */;
+  currentId?: number /** 当前播放的歌曲id */;
+}

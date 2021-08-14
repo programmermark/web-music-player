@@ -9,6 +9,7 @@ import router from "./router";
 import store, { key } from "./store";
 import "./assets/css/popover.scss";
 import "./assets/css/notification.scss";
+import "./common/css/common.scss";
 
 const app = createApp(App);
 

@@ -4,6 +4,6 @@ export interface ITab {
 }
 
 export interface ITabsState {
-  currentTab: string | number;
-  tabs: ITab[];
+  currentTab: string | number /** 当前歌曲类型 */;
+  tabs: ITab[] /** 类型tabs */;
 }
