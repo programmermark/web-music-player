@@ -149,18 +149,5 @@ export default defineComponent({
     color: #333;
     line-height: 1.5;
   }
-
-  .text-ellipsis-2 {
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-    overflow: hidden;
-  }
-  .text-ellipsis {
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    word-break: break-all;
-  }
 }
 </style>

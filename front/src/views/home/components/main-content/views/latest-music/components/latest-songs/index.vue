@@ -34,9 +34,22 @@
           class="song-item"
           v-for="(song, index) in currentSongs"
           :key="song.id"
-          @click="playSong(song.id)"
+          @dblclick="playSong(song.id)"
+          title="双击播放歌曲"
         >
-          <span class="no">{{ formatNo(index + 1) }}</span>
+          <span class="no" v-show="currentSongId !== song.id">{{
+            formatNo(index + 1)
+          }}</span>
+          <mp-opt-icon
+            v-show="currentSongId === song.id"
+            class="icon-reset"
+            icon="horn-playing-solid"
+            color="#d33a31"
+            :size="14"
+            scale="1"
+            bgColor="none"
+            display="always"
+          />
           <div class="image-wrapper">
             <el-image class="image" :src="song.album.picUrl" alt="歌曲专辑封面">
               <template #placeholder>
@@ -48,12 +61,14 @@
               </template>
             </el-image>
           </div>
-          <div class="song-name">
+          <div class="song-name text-ellipsis">
             {{ song.name
             }}{{ song.alias && song.alias[0] ? `(${song.alias[0]})` : "" }}
           </div>
-          <div class="artist">{{ formatArtistListToString(song.artists) }}</div>
-          <div class="album">{{ song.album.name }}</div>
+          <div class="artist text-ellipsis">
+            {{ formatArtistListToString(song.artists) }}
+          </div>
+          <div class="album text-ellipsis">{{ song.album.name }}</div>
           <div class="duration">
             {{
               transformSecondToMinute(Math.floor((song.duration || 0) / 1000))
@@ -76,7 +91,7 @@ import {
   toRefs,
   watch,
 } from "vue";
-import { ITabsState } from "../../interface";
+import { ITabsState } from "../../interface/latest-songs";
 import { formatNo } from "@/common/js/util";
 import {
   formatArtistListToString,
@@ -98,6 +113,7 @@ export default defineComponent({
         { label: "日本", value: 8 },
         { label: "韩国", value: 12 },
       ],
+      currentSongId: undefined,
     });
 
     /** 新歌速递(全部) */
@@ -130,6 +146,11 @@ export default defineComponent({
       return allSongs.value;
     });
 
+    /** 当前歌曲id */
+    const currentSongIds = computed(() =>
+      currentSongs.value.map((item) => item.id)
+    );
+
     /** 切换歌曲tab */
     const toggleTab = (value: string | number) => {
       tabsState.currentTab = value;
@@ -138,11 +159,18 @@ export default defineComponent({
     /** 播放全部 */
     const playAllSong = () => {
       console.log("播放全部歌曲");
+      store.dispatch("player/setSongListByIds", {
+        ids: currentSongIds.value,
+      });
     };
 
     /** 播放当前歌曲 */
     const playSong = (id: number) => {
-      store.dispatch("player/setSongList", { id });
+      tabsState.currentSongId = id;
+      store.dispatch("player/setSongListByIds", {
+        ids: currentSongIds.value,
+        currentId: id,
+      });
     };
 
     /** 获取歌曲 */
@@ -260,26 +288,38 @@ export default defineComponent({
           margin-left: 10px;
           padding: 0 4px;
         }
+        .icon-reset {
+          margin-left: 10px;
+          padding: 0 4px;
+        }
         .image-wrapper {
           padding: 0 10px;
           .image {
             width: 60px;
             height: 60px;
+            box-sizing: border-box;
+            border: 1px solid #eaeaea;
             border-radius: 4px;
           }
         }
         .song-name {
           flex: 1;
+          padding: 0 8px;
+          box-sizing: border-box;
           color: #333;
           font-size: 14px;
         }
         .artist {
           width: 160px;
+          padding: 0 8px;
+          box-sizing: border-box;
           color: #666;
           font-size: 12px;
         }
         .album {
           width: 240px;
+          padding: 0 8px;
+          box-sizing: border-box;
           color: #666;
           font-size: 12px;
         }

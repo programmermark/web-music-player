@@ -143,12 +143,5 @@ export default defineComponent({
     font-size: 14px;
     margin-top: 8px;
   }
-
-  .text-ellipsis-2 {
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-    overflow: hidden;
-  }
 }
 </style>

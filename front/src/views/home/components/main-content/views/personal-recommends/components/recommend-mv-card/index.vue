@@ -217,11 +217,4 @@ export default defineComponent({
     transition: all 1s ease;
   }
 }
-
-.text-ellipsis {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  word-break: break-all;
-}
 </style>

@@ -268,11 +268,4 @@ export default defineComponent({
     }
   }
 }
-
-.text-ellipsis {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  word-break: break-all;
-}
 </style>
