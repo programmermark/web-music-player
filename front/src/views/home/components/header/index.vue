@@ -35,6 +35,7 @@ export default defineComponent({
       "Playlist",
       "RankList",
       "ArtistList",
+      "LatestMusic",
     ]);
 
     const showNavs = computed(() =>
