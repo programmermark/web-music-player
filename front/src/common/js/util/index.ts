@@ -128,3 +128,15 @@ export const formatArtistListToString = (artists: IArtist[]): string => {
     .map((artist) => artist.name)
     .reduce((initValue, currentValue) => initValue + "/" + currentValue);
 };
+
+/**
+ * 格式化月份
+ * @param month 月份
+ * @returns
+ */
+export const formatMonth = (month: number): string => {
+  if (month < 10) {
+    return `0${month}`;
+  }
+  return `${month}`;
+};

@@ -19,9 +19,16 @@ export interface ILatestMusicState {
   koreaSongs: ISong[];
   japaneseSongs: ISong[];
   /** 新碟上架 */
-  allAlbums: [];
-  chineseAlbums: [];
-  europeAndAmericaAlbums: [];
-  koreaAlbums: [];
-  japanAlbums: [];
+  allAlbums: IAlbum[];
+  chineseAlbums: IAlbum[];
+  europeAndAmericaAlbums: IAlbum[];
+  koreaAlbums: IAlbum[];
+  japaneseAlbums: IAlbum[];
+}
+
+export interface IAlbumsPayload {
+  offset: number;
+  limit: number;
+  area: string;
+  type: string;
 }
