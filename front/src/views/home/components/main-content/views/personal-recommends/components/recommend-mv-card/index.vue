@@ -47,7 +47,7 @@
 import MPIcon from "@/components/MPIcon.vue";
 import { defineComponent, PropType, ref } from "vue";
 import { translatePlayCount } from "@/common/js/util";
-import { IArtist } from "../../interface/latestMusicCard";
+import { IArtist } from "../../../artist-detail/interface";
 
 /** 推荐MV卡片组件 */
 export default defineComponent({

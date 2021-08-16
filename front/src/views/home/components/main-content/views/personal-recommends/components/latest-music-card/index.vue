@@ -53,7 +53,7 @@ import MPIcon from "@/components/MPIcon.vue";
 import MPOptIcon from "@/components/MPOptIcon.vue";
 import { computed, defineComponent, PropType, toRefs } from "vue";
 import { useStore } from "@/store";
-import { IArtist } from "../../interface/latestMusicCard";
+import { IArtist } from "../../../artist-detail/interface";
 
 export default defineComponent({
   components: { "mp-opt-icon": MPOptIcon, "mp-icon": MPIcon },

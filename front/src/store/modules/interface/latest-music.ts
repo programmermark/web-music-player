@@ -1,12 +1,14 @@
-import { IAlbum } from "@/views/home/components/main-content/views/artist-detail/interface";
-import { IArtist } from "./artistlist";
+import {
+  IAlbum,
+  IArtist,
+} from "@/views/home/components/main-content/views/artist-detail/interface";
 
 export interface ISong {
   id: number /** 歌曲id */;
   name: string /** 歌曲名 */;
   alias: string[] /** 歌曲别名数组 */;
   duration: number /** 歌曲时长（毫秒） */;
-  mp3Url: string /** 歌曲链接 */;
+  mp3Url?: string /** 歌曲链接 */;
   artists: IArtist[] /** 歌曲作者 */;
   album: IAlbum /** 歌曲专辑 */;
 }
@@ -31,4 +33,9 @@ export interface IAlbumsPayload {
   limit: number;
   area: string;
   type: string;
+}
+
+export interface IAlbumsMutation {
+  albums: IAlbum[] /** 专辑列表 */;
+  isConcat: boolean /** 是否拼接到已有数据上 */;
 }

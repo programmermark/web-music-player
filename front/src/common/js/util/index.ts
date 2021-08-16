@@ -1,4 +1,4 @@
-import { IArtist } from "@/store/modules/interface/artistlist";
+import { IArtist } from "@/views/home/components/main-content/views/artist-detail/interface";
 import { IDateFormat } from "./interface";
 
 /**

@@ -2,8 +2,8 @@ export interface IArtist {
   id: number /** 歌手id */;
   name: string /** 歌手名 */;
   picUrl: string /** 歌手封面图片 */;
-  score: number /** 歌手热度 */;
-  lastRank: number /** 上一次的排行：用于计算在榜单上排名的升降 */;
+  score?: number /** 歌手热度 */;
+  lastRank?: number /** 上一次的排行：用于计算在榜单上排名的升降 */;
 }
 
 export interface ISongRank {

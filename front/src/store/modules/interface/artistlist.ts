@@ -1,10 +1,5 @@
+import { IArtist } from "@/views/home/components/main-content/views/artist-detail/interface";
 import { IFiltersState } from "@/views/home/components/main-content/views/artist-list/components/interface/filters";
-
-export interface IArtist {
-  id: number /** 歌手id */;
-  name: string /** 歌手名称 */;
-  picUrl: string /** 歌手头像 */;
-}
 
 export interface IArtistListState {
   loading: boolean /** 是否显示loading */;

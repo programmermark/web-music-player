@@ -1,7 +1,4 @@
-export interface IArtist {
-  id: number;
-  name: string /** 歌手/作者 名称 */;
-}
+import { IArtist } from "../../artist-detail/interface";
 
 export interface ILatestMusic {
   id: number /** 歌曲id */;

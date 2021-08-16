@@ -25,100 +25,66 @@
             class="list-item"
             v-for="(song, index) in songList"
             :key="song.id"
-            @dblclick="playSong(song.id, playlistId)"
+            @dblclick="playSong(song.id)"
           >
             <div class="no">{{ formatNo(index + 1) }}</div>
             <div class="song-name text-ellipsis">{{ song.name }}</div>
             <div class="singer text-ellipsis">
-              {{ formatArtist(song.ar) }}
+              {{ formatArtist(song.artists) }}
             </div>
-            <div class="album text-ellipsis">{{ song.al.name }}</div>
+            <div class="album text-ellipsis">{{ song.album.name }}</div>
             <div class="duration">
-              {{ transformSecondToMinute(Math.floor((song.dt || 0) / 1000)) }}
+              {{
+                transformSecondToMinute(Math.floor((song.duration || 0) / 1000))
+              }}
             </div>
           </div>
         </div>
       </div>
       <!-- 收藏者 -->
-      <div
-        class="subscriber-list-wrapper"
-        v-show="currentTab.value === tabs[1].value"
-      >
-        <div
-          class="subscriber"
-          v-for="subscriber in subscribers"
-          :key="subscriber.id"
-        >
-          <el-image class="image" :src="subscriber.avatarUrl" alt="用户头像">
-            <template #placeholder>
-              <img
-                class="image"
-                src="@/assets/image/no-img.png"
-                alt="用户头像"
-              />
-            </template>
-          </el-image>
-          <span class="name">{{ subscriber.nickname }}</span>
-          <mp-icon
-            v-if="subscriber.gender === 1"
-            icon="male"
-            :size="16"
-            :scale="0.6"
-            color="#339cd0"
-            bgColor="#caf3ff"
-          />
-          <mp-icon
-            v-else-if="subscriber.gender === 2"
-            icon="female"
-            :size="16"
-            :scale="0.6"
-            color="#e33579"
-            bgColor="#ffcde8"
-          />
-        </div>
+      <div class="album-detail" v-show="currentTab.value === tabs[1].value">
+        <div class="title">专辑介绍</div>
+        <div class="desc" v-html="description"></div>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import {
-  IPlayListSubscriber,
-  ISongDetail,
-} from "@/store/modules/interface/player";
-import { defineComponent, PropType, ref } from "vue";
+import { defineComponent, PropType, ref, toRefs } from "vue";
 import { ITabOption } from "../../interface/songList";
 import { formatNo, transformSecondToMinute } from "@/common/js/util";
 import { useStore } from "@/store";
-import MPIcon from "@/components/MPIcon.vue";
 import { IArtist } from "../../../artist-detail/interface";
+import { ISong } from "@/store/modules/interface/latest-music";
 
 export default defineComponent({
-  components: { "mp-icon": MPIcon },
   name: "SongList",
   props: {
-    /** 歌单id */
-    playlistId: {
+    /** 专辑id */
+    albumId: {
       type: Number,
       required: true,
     },
     /** 歌曲列表 */
     songList: {
-      type: Array as PropType<ISongDetail[]>,
+      type: Array as PropType<ISong[]>,
       required: true,
     },
-    /** 歌曲订阅用户列表 */
-    subscribers: {
-      type: Array as PropType<IPlayListSubscriber[]>,
+    /** 专辑描述 */
+    description: {
+      type: String,
       required: true,
     },
   },
-  setup() {
+  setup(props) {
     const store = useStore();
+
+    const { songList } = toRefs(props);
 
     const tabs: ITabOption[] = [
       { label: "歌曲列表", value: "songlist" },
-      { label: "收藏者", value: "collectors" },
+      { label: "专辑详情", value: "albumDetail" },
     ];
     const currentTab = ref<ITabOption>(tabs[0]);
 
@@ -137,12 +103,12 @@ export default defineComponent({
     };
 
     /** 播放当前歌曲 */
-    const playSong = (songId: number, playlistId: number) => {
-      store.dispatch("player/setSongList", {
-        id: playlistId,
-        noSetCurrentSong: true,
+    const playSong = (songId: number) => {
+      const songIds = songList.value.map((song) => song.id);
+      store.dispatch("player/setSongListByIds", {
+        ids: songIds,
+        currentId: songId,
       });
-      store.commit("player/setCurrentSongById", songId);
     };
 
     return {
@@ -240,28 +206,20 @@ export default defineComponent({
     }
   }
 
-  .subscriber-list-wrapper {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    height: 100%;
+  .album-detail {
     padding-bottom: 20px;
-    .subscriber {
-      width: 50%;
-      display: flex;
-      align-items: center;
+
+    .title {
       margin-top: 20px;
-      & > .image {
-        width: 90px;
-        height: 90px;
-        border-radius: 50%;
-        margin-right: 8px;
-      }
-      .name {
-        color: #333;
-        font-size: 14px;
-        margin-right: 4px;
-      }
+      color: #333;
+      font-size: 14px;
+      font-weight: bold;
+    }
+    .desc {
+      margin-top: 24px;
+      color: #666;
+      font-size: 13px;
+      line-height: 2;
     }
   }
 }

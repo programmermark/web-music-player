@@ -5,6 +5,7 @@ import { IAlbum } from "@/views/home/components/main-content/views/artist-detail
 import { ActionContext, Module } from "vuex";
 import { IRootStateTypes } from "./interface";
 import {
+  IAlbumsMutation,
   IAlbumsPayload,
   ILatestMusicState,
   ISong,
@@ -42,20 +43,49 @@ const ModuleLatestMusic: Module<ILatestMusicState, IRootStateTypes> = {
     setJapaneseSongs(state: ILatestMusicState, songs: ISong[]) {
       state.japaneseSongs = songs;
     },
-    setAllAlbums(state: ILatestMusicState, albums: IAlbum[]) {
-      state.allAlbums = albums;
+    setAllAlbums(state: ILatestMusicState, payload: IAlbumsMutation) {
+      const { albums, isConcat = false } = payload;
+      if (isConcat) {
+        state.allAlbums = state.allAlbums.concat(albums);
+      } else {
+        state.allAlbums = albums;
+      }
     },
-    setChineseAlbums(state: ILatestMusicState, albums: IAlbum[]) {
-      state.chineseAlbums = albums;
+    setChineseAlbums(state: ILatestMusicState, payload: IAlbumsMutation) {
+      const { albums, isConcat = false } = payload;
+      if (isConcat) {
+        state.chineseAlbums = state.chineseAlbums.concat(albums);
+      } else {
+        state.chineseAlbums = albums;
+      }
     },
-    setEuropeAndAmericaAlbums(state: ILatestMusicState, albums: IAlbum[]) {
-      state.europeAndAmericaAlbums = albums;
+    setEuropeAndAmericaAlbums(
+      state: ILatestMusicState,
+      payload: IAlbumsMutation
+    ) {
+      const { albums, isConcat = false } = payload;
+      if (isConcat) {
+        state.europeAndAmericaAlbums =
+          state.europeAndAmericaAlbums.concat(albums);
+      } else {
+        state.europeAndAmericaAlbums = albums;
+      }
     },
-    setKoreaAlbums(state: ILatestMusicState, albums: IAlbum[]) {
-      state.koreaAlbums = albums;
+    setKoreaAlbums(state: ILatestMusicState, payload: IAlbumsMutation) {
+      const { albums, isConcat = false } = payload;
+      if (isConcat) {
+        state.koreaAlbums = state.koreaAlbums.concat(albums);
+      } else {
+        state.koreaAlbums = albums;
+      }
     },
-    setJapaneseAlbums(state: ILatestMusicState, albums: IAlbum[]) {
-      state.japaneseAlbums = albums;
+    setJapaneseAlbums(state: ILatestMusicState, payload: IAlbumsMutation) {
+      const { albums, isConcat = false } = payload;
+      if (isConcat) {
+        state.japaneseAlbums = state.japaneseAlbums.concat(albums);
+      } else {
+        state.japaneseAlbums = albums;
+      }
     },
   },
   actions: {
@@ -84,7 +114,7 @@ const ModuleLatestMusic: Module<ILatestMusicState, IRootStateTypes> = {
         artists: songs.artists.map((item) => ({
           id: item.id,
           name: item.name,
-          picUrl: item.picUrl,
+          cover: item.cover,
         })),
       }));
       if (type === 0) {
@@ -120,21 +150,37 @@ const ModuleLatestMusic: Module<ILatestMusicState, IRootStateTypes> = {
         alias: album.alias,
         picUrl: album.picUrl,
         publishTime: album.publishTime,
-        artists: album.artists.map((artist) => ({
+        artists: (album.artists || []).map((artist) => ({
           id: artist.id,
           name: artist.name,
         })),
       }));
-      if (area === "ALL") {
-        context.commit("setAllAlbums", albumList);
-      } else if (area === "ZH") {
-        context.commit("setChineseAlbums", albumList);
-      } else if (area === "EA") {
-        context.commit("setEuropeAndAmericaAlbums", albumList);
-      } else if (area === "KR") {
-        context.commit("setKoreaAlbums", albumList);
-      } else if (area === "JP") {
-        context.commit("setJapaneseAlbums", albumList);
+      if (offset === 0) {
+        const albumPayload = { albums: albumList, isConcat: false };
+        if (area === "ALL") {
+          context.commit("setAllAlbums", albumPayload);
+        } else if (area === "ZH") {
+          context.commit("setChineseAlbums", albumPayload);
+        } else if (area === "EA") {
+          context.commit("setEuropeAndAmericaAlbums", albumPayload);
+        } else if (area === "KR") {
+          context.commit("setKoreaAlbums", albumPayload);
+        } else if (area === "JP") {
+          context.commit("setJapaneseAlbums", albumPayload);
+        }
+      } else {
+        const albumPayload = { albums: albumList, isConcat: true };
+        if (area === "ALL") {
+          context.commit("setAllAlbums", albumPayload);
+        } else if (area === "ZH") {
+          context.commit("setChineseAlbums", albumPayload);
+        } else if (area === "EA") {
+          context.commit("setEuropeAndAmericaAlbums", albumPayload);
+        } else if (area === "KR") {
+          context.commit("setKoreaAlbums", albumPayload);
+        } else if (area === "JP") {
+          context.commit("setJapaneseAlbums", albumPayload);
+        }
       }
     },
   },

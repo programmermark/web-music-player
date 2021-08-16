@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { apis } from "@/api";
 import { http } from "@/common/js/http";
+import { IArtist } from "@/views/home/components/main-content/views/artist-detail/interface";
 import { ActionContext, Module } from "vuex";
 import { IRootStateTypes } from "./interface";
 import {
-  IArtist,
   IArtistListState,
   ISetArtistListPayload,
 } from "./interface/artistlist";
@@ -48,7 +48,7 @@ const ModuleArtistList: Module<IArtistListState, IRootStateTypes> = {
       const artistList = list.map((artist) => ({
         id: artist.id,
         name: artist.name,
-        picUrl: artist.picUrl,
+        cover: artist.cover,
       }));
       if (offset === 0) {
         context.commit("setArtistList", artistList);

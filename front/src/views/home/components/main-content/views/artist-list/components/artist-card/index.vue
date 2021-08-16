@@ -23,8 +23,8 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
-import { IArtist } from "@/store/modules/interface/artistlist";
 import { useRouter } from "vue-router";
+import { IArtist } from "../../../artist-detail/interface";
 
 export default defineComponent({
   name: "ArtistCard",

@@ -32,30 +32,12 @@
         <span class="month">{{ formatMonth(new Date().getMonth() + 1) }}</span>
         <span class="year">{{ formatMonth(new Date().getFullYear()) }}</span>
       </div>
-      <div class="albums">
-        <div class="album-item" v-for="album in currentAlbums" :key="album.id">
-          <div class="wrapper">
-            <el-image
-              class="image"
-              :src="album.picUrl"
-              alt="专辑封面"
-              @click="gotoAlbumDetail(album.id)"
-            >
-              <template #placeholder>
-                <img
-                  class="image"
-                  src="@/assets/image/no-img.png"
-                  alt="专辑封面"
-                  @click="gotoArtistDetail(album.id)"
-                />
-              </template>
-            </el-image>
-            <div class="name text-ellipsis-2">{{ album.name }}</div>
-            <div class="artist text-ellipsis">
-              {{ formatArtistListToString(album.artists) }}
-            </div>
-          </div>
-        </div>
+      <div class="albums" v-infinite-scroll="onPageChange">
+        <album-card
+          v-for="album in currentAlbums"
+          :key="album.id"
+          :album="album"
+        />
       </div>
     </div>
   </div>
@@ -74,9 +56,13 @@ import { useStore } from "@/store";
 import { IAlbumsPayload } from "@/store/modules/interface/latest-music";
 import { ITabsState } from "../../interface/latest-albums";
 import { formatMonth, formatArtistListToString } from "@/common/js/util";
+import AlbumCard from "../album-card/index.vue";
 
 export default defineComponent({
   name: "LatestAlbums",
+  components: {
+    "album-card": AlbumCard,
+  },
   setup() {
     const store = useStore();
 
@@ -102,6 +88,7 @@ export default defineComponent({
     const currentTab = computed(() => tabsState.currentTab);
     const currentType = computed(() => tabsState.currentType);
     const limit = computed(() => tabsState.limit);
+    const offset = computed(() => tabsState.offset);
 
     /** 新歌速递(全部) */
     const allAlbums = computed(() => store.state.latestMusic.allAlbums);
@@ -153,57 +140,72 @@ export default defineComponent({
       }
     };
 
+    /**
+     * 向下滚动时加载数据
+     */
+    const onPageChange = () => {
+      tabsState.offset += tabsState.limit;
+    };
+
     /** 获取专辑 */
     const fetchAlbums = (payload: IAlbumsPayload) => {
       store.dispatch("latestMusic/setAlbumsByType", payload);
     };
 
-    /** 前往专辑id */
-    const gotoAlbumDetail = (id: number) => {
-      console.log("专辑id", id);
-    };
-
     watch(
-      [currentTab, currentType],
-      ([currentTab, currentType], [oldCurrentTab, oldCurrentType]) => {
+      [currentTab, currentType, limit, offset],
+      (
+        [currentTab, currentType, limit, offset],
+        [oldCurrentTab, oldCurrentType, oldLimit, oldOffset]
+      ) => {
+        let payload: IAlbumsPayload;
         /** 如果当前tab的歌曲列表有数据则不再请求，使用缓存的数据（最新歌曲数据短时间不会变化） */
-        if (
-          currentTab === tabsState.tabs[0].value &&
-          allAlbums.value.length > 0 &&
-          currentType === oldCurrentType
-        ) {
-          return;
-        } else if (
-          currentTab === tabsState.tabs[1].value &&
-          chineseAlbums.value.length > 0 &&
-          currentType === oldCurrentType
-        ) {
-          return;
-        } else if (
-          currentTab === tabsState.tabs[2].value &&
-          europeAndAmericaAlbums.value.length > 0 &&
-          currentType === oldCurrentType
-        ) {
-          return;
-        } else if (
-          currentTab === tabsState.tabs[3].value &&
-          koreaAlbums.value.length > 0 &&
-          currentType === oldCurrentType
-        ) {
-          return;
-        } else if (
-          currentTab === tabsState.tabs[4].value &&
-          japaneseAlbums.value.length > 0 &&
-          currentType === oldCurrentType
-        ) {
-          return;
+        if (limit === oldLimit && offset === oldOffset) {
+          if (
+            currentTab === tabsState.tabs[0].value &&
+            allAlbums.value.length > 0 &&
+            currentType === oldCurrentType
+          ) {
+            return;
+          } else if (
+            currentTab === tabsState.tabs[1].value &&
+            chineseAlbums.value.length > 0 &&
+            currentType === oldCurrentType
+          ) {
+            return;
+          } else if (
+            currentTab === tabsState.tabs[2].value &&
+            europeAndAmericaAlbums.value.length > 0 &&
+            currentType === oldCurrentType
+          ) {
+            return;
+          } else if (
+            currentTab === tabsState.tabs[3].value &&
+            koreaAlbums.value.length > 0 &&
+            currentType === oldCurrentType
+          ) {
+            return;
+          } else if (
+            currentTab === tabsState.tabs[4].value &&
+            japaneseAlbums.value.length > 0 &&
+            currentType === oldCurrentType
+          ) {
+            return;
+          }
+          payload = {
+            offset: 0,
+            limit: limit,
+            area: currentTab,
+            type: currentType,
+          };
+        } else {
+          payload = {
+            offset,
+            limit,
+            area: currentTab,
+            type: currentType,
+          };
         }
-        const payload: IAlbumsPayload = {
-          offset: 0,
-          limit: limit.value,
-          area: currentTab,
-          type: currentType,
-        };
         fetchAlbums(payload);
       }
     );
@@ -225,7 +227,7 @@ export default defineComponent({
       formatArtistListToString,
       toggleTab,
       toggleType,
-      gotoAlbumDetail,
+      onPageChange,
     };
   },
 });
@@ -303,27 +305,6 @@ export default defineComponent({
       display: flex;
       flex-wrap: wrap;
       width: calc(100% - 56px);
-      .album-item {
-        width: 20%;
-        box-sizing: border-box;
-        &:nth-child(5n) {
-          .wrapper {
-            margin-right: 0;
-          }
-        }
-
-        .wrapper {
-          margin-right: calc(100% - 140px);
-        }
-
-        .image {
-          width: 140px;
-          height: 140px;
-          border-radius: 8px;
-          border: 1px solid #efefef;
-          box-sizing: border-box;
-        }
-      }
     }
   }
 }
