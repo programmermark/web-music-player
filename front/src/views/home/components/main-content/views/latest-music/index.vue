@@ -17,6 +17,7 @@
     <!-- tab content -->
     <div class="content-wrapper">
       <latest-songs v-show="currentTab === tabs[0].value" />
+      <latest-albums v-show="currentTab === tabs[1].value" />
     </div>
   </div>
 </template>
@@ -25,11 +26,13 @@
 import { defineComponent, reactive, toRefs } from "vue";
 import { ITabsState } from "./interface/index";
 import LatestSongs from "./components/latest-songs/index.vue";
+import LatestAlbums from "./components/latest-albums/index.vue";
 
 export default defineComponent({
   name: "LatestMusic",
   components: {
     "latest-songs": LatestSongs,
+    "latest-albums": LatestAlbums,
   },
   setup() {
     /** tabs state */

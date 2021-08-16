@@ -1,9 +1,14 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { apis } from "@/api";
 import { http } from "@/common/js/http";
+import { IAlbum } from "@/views/home/components/main-content/views/artist-detail/interface";
 import { ActionContext, Module } from "vuex";
 import { IRootStateTypes } from "./interface";
-import { ILatestMusicState, ISong } from "./interface/latest-music";
+import {
+  IAlbumsPayload,
+  ILatestMusicState,
+  ISong,
+} from "./interface/latest-music";
 
 const ModuleLatestMusic: Module<ILatestMusicState, IRootStateTypes> = {
   namespaced: true,
@@ -19,7 +24,7 @@ const ModuleLatestMusic: Module<ILatestMusicState, IRootStateTypes> = {
     chineseAlbums: [],
     europeAndAmericaAlbums: [],
     koreaAlbums: [],
-    japanAlbums: [],
+    japaneseAlbums: [],
   }),
   mutations: {
     setAllSongs(state: ILatestMusicState, songs: ISong[]) {
@@ -37,9 +42,24 @@ const ModuleLatestMusic: Module<ILatestMusicState, IRootStateTypes> = {
     setJapaneseSongs(state: ILatestMusicState, songs: ISong[]) {
       state.japaneseSongs = songs;
     },
+    setAllAlbums(state: ILatestMusicState, albums: IAlbum[]) {
+      state.allAlbums = albums;
+    },
+    setChineseAlbums(state: ILatestMusicState, albums: IAlbum[]) {
+      state.chineseAlbums = albums;
+    },
+    setEuropeAndAmericaAlbums(state: ILatestMusicState, albums: IAlbum[]) {
+      state.europeAndAmericaAlbums = albums;
+    },
+    setKoreaAlbums(state: ILatestMusicState, albums: IAlbum[]) {
+      state.koreaAlbums = albums;
+    },
+    setJapaneseAlbums(state: ILatestMusicState, albums: IAlbum[]) {
+      state.japaneseAlbums = albums;
+    },
   },
   actions: {
-    /** 根据类型获取新歌速递获取用户的歌单 */
+    /** 新歌速递：根据类型获取最新歌单 */
     async setSongsByType(
       context: ActionContext<ILatestMusicState, IRootStateTypes>,
       type: number
@@ -77,6 +97,44 @@ const ModuleLatestMusic: Module<ILatestMusicState, IRootStateTypes> = {
         context.commit("setKoreaSongs", songList);
       } else if (type === 16) {
         context.commit("setJapaneseSongs", songList);
+      }
+    },
+    /** 新歌速递: 根据类型获取最新专辑 */
+    async setAlbumsByType(
+      context: ActionContext<ILatestMusicState, IRootStateTypes>,
+      payload: IAlbumsPayload
+    ) {
+      const { offset, limit, area, type } = payload;
+      /** 根据id获取歌单详情 */
+      const allAlbums = await http<IAlbum[]>(
+        {
+          url:
+            apis.latestSongsTopAlbum +
+            `?limit=${limit}&offset=${offset}&area=${area}&type=${type}`,
+        },
+        "albums"
+      );
+      const albumList = allAlbums.map((album) => ({
+        id: album.id,
+        name: album.name,
+        alias: album.alias,
+        picUrl: album.picUrl,
+        publishTime: album.publishTime,
+        artists: album.artists.map((artist) => ({
+          id: artist.id,
+          name: artist.name,
+        })),
+      }));
+      if (area === "ALL") {
+        context.commit("setAllAlbums", albumList);
+      } else if (area === "ZH") {
+        context.commit("setChineseAlbums", albumList);
+      } else if (area === "EA") {
+        context.commit("setEuropeAndAmericaAlbums", albumList);
+      } else if (area === "KR") {
+        context.commit("setKoreaAlbums", albumList);
+      } else if (area === "JP") {
+        context.commit("setJapaneseAlbums", albumList);
       }
     },
   },

@@ -101,6 +101,11 @@ export default defineComponent({
       store.dispatch("artistList/setArtistList", state);
     };
 
+    /** 获取所有排行榜数据 */
+    const fetchAllRankList = () => {
+      store.dispatch("rankList/setAllRankList");
+    };
+
     watch(
       [
         currentLanguageCat,
@@ -123,6 +128,9 @@ export default defineComponent({
     );
 
     onMounted(() => {
+      if (!artistRankImg.value) {
+        fetchAllRankList();
+      }
       fetchArtistList(state);
     });
 
