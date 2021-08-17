@@ -5,3 +5,8 @@ export interface ITabsState {
   tabs: ITab[] /** 类型tabs */;
   currentSongId: undefined | number /** 当前歌曲id */;
 }
+
+export interface ICurrentSongsState {
+  limit: 10 /** 分页参数 */;
+  offset: 0 /** 分页参数 */;
+}
