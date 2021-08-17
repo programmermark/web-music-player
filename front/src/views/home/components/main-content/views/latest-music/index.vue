@@ -16,8 +16,8 @@
     </div>
     <!-- tab content -->
     <div class="content-wrapper">
-      <latest-songs v-show="currentTab === tabs[0].value" />
-      <latest-albums v-show="currentTab === tabs[1].value" />
+      <latest-songs v-if="currentTab === tabs[0].value" />
+      <latest-albums v-if="currentTab === tabs[1].value" />
     </div>
   </div>
 </template>

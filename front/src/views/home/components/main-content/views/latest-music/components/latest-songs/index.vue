@@ -29,12 +29,12 @@
       </div>
     </div>
     <div class="content">
-      <div class="song-list">
+      <div class="song-list" v-infinite-scroll="onPageChange">
         <div
           class="song-item"
           v-for="(song, index) in currentSongs"
           :key="song.id"
-          @dblclick="playSong(song.id)"
+          @dblclick="playSong(item.id)"
           title="双击播放歌曲"
         >
           <span class="no" v-show="currentSongId !== song.id">{{
@@ -51,7 +51,12 @@
             display="always"
           />
           <div class="image-wrapper">
-            <el-image class="image" :src="song.album.picUrl" alt="歌曲专辑封面">
+            <el-image
+              class="image"
+              :src="song.album.picUrl"
+              alt="歌曲专辑封面"
+              lazy
+            >
               <template #placeholder>
                 <img
                   class="image"
@@ -81,8 +86,6 @@
 </template>
 
 <script lang="ts">
-import MPOptIcon from "@/components/MPOptIcon.vue";
-import { useStore } from "@/store";
 import {
   computed,
   defineComponent,
@@ -91,12 +94,15 @@ import {
   toRefs,
   watch,
 } from "vue";
-import { ITabsState } from "../../interface/latest-songs";
+import { useStore } from "@/store";
+import MPOptIcon from "@/components/MPOptIcon.vue";
+import { ICurrentSongsState, ITabsState } from "../../interface/latest-songs";
 import { formatNo } from "@/common/js/util";
 import {
   formatArtistListToString,
   transformSecondToMinute,
 } from "@/common/js/util";
+import { ISong } from "@/store/modules/interface/latest-music";
 
 export default defineComponent({
   components: { "mp-opt-icon": MPOptIcon },
@@ -116,6 +122,12 @@ export default defineComponent({
       currentSongId: undefined,
     });
 
+    /** 当前歌曲分页参数 */
+    const currentSongsState = reactive<ICurrentSongsState>({
+      limit: 10,
+      offset: 0,
+    });
+
     /** 新歌速递(全部) */
     const allSongs = computed(() => store.state.latestMusic.allSongs);
     /** 新歌速递(华语) */
@@ -129,27 +141,48 @@ export default defineComponent({
     /** 新歌速递(日本) */
     const japaneseSongs = computed(() => store.state.latestMusic.japaneseSongs);
 
-    /** 当前歌曲 */
-    const currentSongs = computed(() => {
+    /** 当前歌曲(没有被分页筛选过的所有歌曲) */
+    const allCurrentSongs = computed(() => {
       const { currentTab, tabs } = toRefs(tabsState);
+      let songList: ISong[] = [];
       if (currentTab.value === tabs.value[0].value) {
-        return allSongs.value;
+        songList = allSongs.value;
       } else if (currentTab.value === tabs.value[1].value) {
-        return chineseSongs.value;
+        songList = chineseSongs.value;
       } else if (currentTab.value === tabs.value[2].value) {
-        return europeAndAmericaSongs.value;
+        songList = europeAndAmericaSongs.value;
       } else if (currentTab.value === tabs.value[3].value) {
-        return koreaSongs.value;
+        songList = koreaSongs.value;
       } else if (currentTab.value === tabs.value[4].value) {
-        return japaneseSongs.value;
+        songList = japaneseSongs.value;
       }
-      return allSongs.value;
+      return songList;
     });
+
+    /** 当前歌曲（所有）的条数 */
+    const allCurrentSongsLength = computed(() => allCurrentSongs.value.length);
+
+    /** 当前歌曲 */
+    const currentSongs = computed(() =>
+      allCurrentSongs.value.filter(
+        (item, index) =>
+          index < currentSongsState.limit + currentSongsState.offset
+      )
+    );
 
     /** 当前歌曲id */
     const currentSongIds = computed(() =>
       currentSongs.value.map((item) => item.id)
     );
+
+    /**
+     * 向下滚动时加载数据
+     */
+    const onPageChange = () => {
+      if (currentSongsState.offset < allCurrentSongsLength.value) {
+        currentSongsState.offset += currentSongsState.limit;
+      }
+    };
 
     /** 切换歌曲tab */
     const toggleTab = (value: string | number) => {
@@ -215,9 +248,10 @@ export default defineComponent({
 
     return {
       ...toRefs(tabsState),
+      currentSongs,
+      onPageChange,
       formatNo,
       playAllSong,
-      currentSongs,
       toggleTab,
       fetchSongs,
       playSong,

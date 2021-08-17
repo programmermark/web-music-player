@@ -81,7 +81,7 @@ export default defineComponent({
         { label: "全部", value: "new" },
       ],
       currentAlbumId: undefined,
-      limit: 30,
+      limit: 20,
       offset: 0,
     });
 
