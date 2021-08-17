@@ -12,52 +12,85 @@
   </a>
 </p>
 
-> 仿网易云音乐（mac 客户端）web 版，使用 Vue3 + Typescript + 网易云音乐 api([NeteaseCloudMusicApi](https://github.com/Binaryify/NeteaseCloudMusicApi)) 开发
+> 仿网易云音乐（mac 客户端）web 版，使用 Vue3 + Typescript + 网易云音乐 api([NeteaseCloudMusicApi](https://github.com/Binaryify/NeteaseCloudMusicApi)) 开发。
 
 ### 🏠 [Homepage](https://github.com/callmehui/web-music-player#readme)
 
-## Install
+## 免责声明
+
+本项目的图片、音频文件均来自第三方平台，本项目只做展示用，不会修改任何资源。
+
+音频版权来自各网站，本站只提供数据查询服务，不提供任何音频存储和贩卖服务。
+
+本项目仅用于学习和交流，请勿用作商业用途，请勿通过本项目下载盗版歌曲资源，否则后果自负！
+
+## 安装和使用
+
+### 环境要求
 
 ```sh
-yarn install
+# 查看 node 版本，确保 node 版本高于 12 版本
+node -v
 ```
 
-## Usage
+### 安装
 
 ```sh
-yarn run start
+# 根目录安装项目依赖
+yarn install or npm install
 ```
 
-## Online Site
+### 使用
 
-[music-player.immortalboy.cn](https://music-player.immortalboy.cn/)
+```sh
+# 本地运行
+yarn run start or npm run start
+```
 
-## ToDoList
+部署到线上环境与本地运行不同，因为项目中的前端部分是 SPA，所以需要部署到服务器软件（nginx 等）的静态目录下，所以前端需要单独打包，而后端本身就是一个 node 服务，只需要启动即可运行。但是，后端服务需要服务器转发才可以生效。
+
+```sh
+# 获取打包后的SPA
+yarn build
+# 进入到后端服务目录单独启动后端服务
+cd wangyiyun-server & yarn start
+or
+cd wangyiyun-server & npm start
+
+# 为前端网站配置好相应的域名，为后端服务做好反向代理
+# 把打包好的静态文件迁移到对应的服务器软件目录中
+```
+
+## 在线访问地址
+
+地址：[music-player.immortalboy.cn](https://music-player.immortalboy.cn/)
+
+## 待办清单
 
 ### 页面
 
 - [ ] 主播电台
 - [ ] 电台详情
 - [x] 歌手
-- [ ] 最新音乐
+- [x] 最新音乐
 - [ ] 歌手排行榜
 - [ ] 歌手详情
 - [ ] MV 详情（不开发评论功能）
 
 ### 功能
 
-- [ ] 个性推荐页面优化
+- [x] 个性推荐页面优化
 - [ ] 顶部搜索功能
 - [ ] 歌词功能
 - [ ] 全屏播放页面与功能
 - [ ] 播放顺序功能（随机播放、单曲播放等等）
-- [ ] 更新公告功能（自定义）
+- [x] 更新公告功能（自定义）
 - [ ] 更换背景图片功能（自定义）
 
 ### 杂项
 
 - [ ] 添加单元测试
-- [ ] 完善 README 文件
+- [x] 完善 README 文件
 - [ ] 引入 vite
 - [ ] 探索实现项目的自动化部署
 
@@ -71,11 +104,11 @@ yarn run start
 
 ## 🤝 Contributing
 
-Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](https://github.com/callmehui/web-music-player/issues). You can also take a look at the [contributing guide](https://github.com/callmehui/web-music-player/blob/main/CONTRIBUTING.md).
+欢迎贡献代码与我一起共建这个开源项目，欢迎 issues!<br />请随时查看 [问题页](https://github.com/callmehui/web-music-player/issues).
 
-## Show your support
+## 支持与赞助
 
-Give a ⭐️ if this project helped you!
+如果这个项目对您有任何帮助，欢迎 ⭐️，欢迎 fork！
 
 ## 📝 License
 
