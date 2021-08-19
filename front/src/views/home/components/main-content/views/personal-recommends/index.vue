@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="pdl-30 pdr-30">
     <!-- 轮播 -->
     <el-carousel
       class="carousel-wrapper"

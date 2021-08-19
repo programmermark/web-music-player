@@ -1,5 +1,5 @@
 <template>
-  <div class="latest-albums">
+  <div class="latest-albums pdl-30 pdr-30">
     <div class="header">
       <div class="tab-wrapper">
         <div

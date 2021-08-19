@@ -1,5 +1,5 @@
 <template>
-  <div class="rank-list">
+  <div class="rank-list pdl-30 pdr-30">
     <div class="content-wrapper" v-if="!loading">
       <!-- 官方榜：前4个歌曲榜单 + 歌手榜单 -->
       <div class="official-wrapper">

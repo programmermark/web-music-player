@@ -1,6 +1,6 @@
 <template>
   <div class="latest-songs">
-    <div class="header">
+    <div class="header pdl-30 pdr-30">
       <div class="tab-wrapper">
         <div
           class="tab-item"
