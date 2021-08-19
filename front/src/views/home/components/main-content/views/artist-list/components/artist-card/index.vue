@@ -2,7 +2,7 @@
   <div class="artist-card">
     <el-image
       class="image"
-      :src="artist.picUrl"
+      :src="imageUrl"
       alt="歌手头像"
       @click="gotoArtistDetail(artist.id)"
     >
@@ -22,7 +22,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from "vue";
+import { computed, defineComponent, PropType, toRefs } from "vue";
 import { useRouter } from "vue-router";
 import { IArtist } from "../../../artist-detail/interface";
 
@@ -34,8 +34,12 @@ export default defineComponent({
       required: true,
     },
   },
-  setup() {
+  setup(props) {
     const router = useRouter();
+
+    const { artist } = toRefs(props);
+
+    const imageUrl = computed(() => artist.value.cover + "?param=140y140");
 
     /** 跳转到歌手详情 */
     const gotoArtistDetail = (id: number) => {
@@ -43,6 +47,7 @@ export default defineComponent({
       // router.push();
     };
     return {
+      imageUrl,
       gotoArtistDetail,
     };
   },

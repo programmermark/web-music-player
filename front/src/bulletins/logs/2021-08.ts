@@ -2,6 +2,12 @@ import { ILog } from "@/store/modules/interface/bulletin";
 
 export const logs: ILog[] = [
   {
+    date: "2021-08-19",
+    title: "web-music-player更新公告(2021-08-19)",
+    briefContent: `<p>1. 优化了所有请求的图片资源的大小，避免持续下载图片造成卡顿</p><p>2. 修复了歌单中没有歌曲、没有收藏者时没有提示的问题</p>`,
+    content: `<p>1. 优化了所有请求的图片资源的大小，避免持续下载图片造成卡顿</p><p>2. 修复了歌单中没有歌曲、没有收藏者时没有提示的问题</p>`,
+  },
+  {
     date: "2021-08-17",
     title: "web-music-player更新公告(2021-08-16)",
     briefContent: `<p>1. 新增页面最新音乐-新碟上架；</p><p>2. 移除了部分重复定义的接口；</p><p>3. 最新音乐-新碟上架，添加自定义分页；</p>`,

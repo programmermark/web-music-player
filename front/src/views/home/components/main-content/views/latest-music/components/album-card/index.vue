@@ -3,7 +3,7 @@
     <div class="image-wrapper">
       <el-image
         class="image"
-        :src="album.picUrl"
+        :src="imageUrl"
         alt="专辑封面"
         @mouseenter="handleMouseEnter"
         @mouseleave="handleMouseLeave"
@@ -49,7 +49,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, ref } from "vue";
+import { computed, defineComponent, PropType, ref, toRefs } from "vue";
 import MpOpeIcon from "@/components/MPOptIcon.vue";
 import { formatMonth } from "@/common/js/util";
 import { IAlbum } from "../../../artist-detail/interface";
@@ -67,10 +67,14 @@ export default defineComponent({
       required: true,
     },
   },
-  setup() {
+  setup(props) {
     const router = useRouter();
 
+    const { album } = toRefs(props);
+
     const showIcon = ref(false);
+
+    const imageUrl = computed(() => album.value.picUrl + `?param=140y140`);
 
     const handleMouseEnter = () => {
       showIcon.value = true;
@@ -97,6 +101,7 @@ export default defineComponent({
 
     return {
       showIcon,
+      imageUrl,
       formatMonth,
       handleMouseEnter,
       handleMouseLeave,

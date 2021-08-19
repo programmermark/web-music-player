@@ -6,7 +6,11 @@
       @mouseenter="handleMouseEnter"
       @mouseleave="handleMouseLeave"
     >
-      <el-image class="image" :src="rankList.coverImgUrl" alt="歌单封面">
+      <el-image
+        class="image"
+        :src="`${rankList.coverImgUrl}?param=140y140`"
+        alt="歌单封面"
+      >
         <template #placeholder>
           <img class="image" src="@/assets/image/no-img.png" alt="歌单封面" />
         </template>

@@ -1,7 +1,11 @@
 <template>
   <div class="playlist-info">
     <!-- 歌单封面 -->
-    <img class="cover-info" :src="playlistInfo.coverImgUrl" alt="歌单封面" />
+    <img
+      class="cover-info"
+      :src="`${playlistInfo.coverImgUrl}?param=200y200`"
+      alt="歌单封面"
+    />
     <!-- 歌单详情 -->
     <div class="info-detail">
       <div class="name-info">
@@ -11,7 +15,7 @@
       <div class="creator-info">
         <img
           class="avatar"
-          :src="playlistInfo.creator.avatarUrl"
+          :src="`${playlistInfo.creator.avatarUrl}?param=100y100`"
           alt="歌单创建者头像"
         />
         <span
