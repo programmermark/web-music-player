@@ -14,68 +14,74 @@
     <div class="tab-content">
       <!-- 歌曲列表 -->
       <div class="all-song-list" v-show="currentTab.value === tabs[0].value">
-        <div class="list-title">
-          <div class="title song-name">音乐标题</div>
-          <div class="title singer">歌手</div>
-          <div class="title album">专辑</div>
-          <div class="title duration">时长</div>
-        </div>
-        <div class="list">
-          <div
-            class="list-item"
-            v-for="(song, index) in songList"
-            :key="song.id"
-            @dblclick="playSong(song.id, playlistId)"
-          >
-            <div class="no">{{ formatNo(index + 1) }}</div>
-            <div class="song-name text-ellipsis">{{ song.name }}</div>
-            <div class="singer text-ellipsis">
-              {{ formatArtist(song.ar) }}
-            </div>
-            <div class="album text-ellipsis">{{ song.al.name }}</div>
-            <div class="duration">
-              {{ transformSecondToMinute(Math.floor((song.dt || 0) / 1000)) }}
+        <template v-if="songList && songList.length > 0">
+          <div class="list-title">
+            <div class="title song-name">音乐标题</div>
+            <div class="title singer">歌手</div>
+            <div class="title album">专辑</div>
+            <div class="title duration">时长</div>
+          </div>
+          <div class="list">
+            <div
+              class="list-item"
+              v-for="(song, index) in songList"
+              :key="song.id"
+              @dblclick="playSong(song.id, playlistId)"
+            >
+              <div class="no">{{ formatNo(index + 1) }}</div>
+              <div class="song-name text-ellipsis">{{ song.name }}</div>
+              <div class="singer text-ellipsis">
+                {{ formatArtist(song.ar) }}
+              </div>
+              <div class="album text-ellipsis">{{ song.al.name }}</div>
+              <div class="duration">
+                {{ transformSecondToMinute(Math.floor((song.dt || 0) / 1000)) }}
+              </div>
             </div>
           </div>
-        </div>
+        </template>
+        <div class="empty-song-list" v-else>歌单中暂无任何歌曲</div>
       </div>
       <!-- 收藏者 -->
       <div
         class="subscriber-list-wrapper"
         v-show="currentTab.value === tabs[1].value"
       >
-        <div
-          class="subscriber"
-          v-for="subscriber in subscribers"
-          :key="subscriber.id"
-        >
-          <el-image class="image" :src="subscriber.avatarUrl" alt="用户头像">
-            <template #placeholder>
-              <img
-                class="image"
-                src="@/assets/image/no-img.png"
-                alt="用户头像"
-              />
-            </template>
-          </el-image>
-          <span class="name">{{ subscriber.nickname }}</span>
-          <mp-icon
-            v-if="subscriber.gender === 1"
-            icon="male"
-            :size="16"
-            :scale="0.6"
-            color="#339cd0"
-            bgColor="#caf3ff"
-          />
-          <mp-icon
-            v-else-if="subscriber.gender === 2"
-            icon="female"
-            :size="16"
-            :scale="0.6"
-            color="#e33579"
-            bgColor="#ffcde8"
-          />
-        </div>
+        <template v-if="subscribers && subscribers.length > 0">
+          <div
+            class="subscriber"
+            v-for="subscriber in subscribers"
+            :key="subscriber.id"
+          >
+            <el-image class="image" :src="subscriber.avatarUrl" alt="用户头像">
+              <template #placeholder>
+                <img
+                  class="image"
+                  src="@/assets/image/no-img.png"
+                  alt="用户头像"
+                />
+              </template>
+            </el-image>
+            <span class="name">{{ subscriber.nickname }}</span>
+            <mp-icon
+              v-if="subscriber.gender === 1"
+              icon="male"
+              :size="16"
+              :scale="0.6"
+              color="#339cd0"
+              bgColor="#caf3ff"
+            />
+            <mp-icon
+              v-else-if="subscriber.gender === 2"
+              icon="female"
+              :size="16"
+              :scale="0.6"
+              color="#e33579"
+              bgColor="#ffcde8"
+            />
+          </div>
+        </template>
+        <div v-else class="empty-subscriber">暂无收藏者</div>
       </div>
     </div>
   </div>
@@ -218,24 +224,31 @@ export default defineComponent({
           &:hover {
             background-color: #f0f0f0;
           }
+          .no {
+            width: 84px;
+            color: #bbbbbb;
+            padding-left: 16px;
+            box-sizing: border-box;
+          }
+          .song-name {
+            color: #666;
+            margin-left: 0;
+          }
+          .singer,
+          .album {
+            color: #666;
+          }
+          .duration {
+            color: #bbbbbb;
+          }
         }
-        .no {
-          width: 84px;
-          color: #bbbbbb;
-          padding-left: 16px;
-          box-sizing: border-box;
-        }
-        .song-name {
-          color: #666;
-          margin-left: 0;
-        }
-        .singer,
-        .album {
-          color: #666;
-        }
-        .duration {
-          color: #bbbbbb;
-        }
+      }
+
+      .empty-song-list {
+        text-align: center;
+        margin-top: 68px;
+        color: #333;
+        font-size: 15px;
       }
     }
   }
@@ -262,6 +275,14 @@ export default defineComponent({
         font-size: 14px;
         margin-right: 4px;
       }
+    }
+
+    .empty-subscriber {
+      width: 100%;
+      text-align: center;
+      margin-top: 68px;
+      color: #999;
+      font-size: 15px;
     }
   }
 }

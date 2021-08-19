@@ -64,33 +64,46 @@ export default defineComponent({
           avatarUrl: playlist.creator.avatarUrl,
         },
       };
-      const songIdStr = playlist.trackIds
-        .map((item) => String(item.id))
-        .reduce((initValue, currentValue) => initValue + "," + currentValue);
-      const songDetailUrl = `${apis.songDetail}?ids=${songIdStr}`;
-      /** 根据id数组获取歌曲详情 */
-      const songs = await http<ISongDetail[]>({ url: songDetailUrl }, "songs");
-      state.songList = songs.map((song) => ({
-        id: song.id,
-        name: song.name,
-        al: {
-          id: song.al.id,
-          name: song.al.name,
-          picUrl: song.al.picUrl,
-        },
-        alia: song.alia,
-        ar: song.ar.map((ar) => ({
-          id: ar.id,
-          name: ar.name,
-        })),
-        dt: song.dt,
-      }));
-      state.subscribers = playlist.subscribers.map((subscriber) => ({
-        id: subscriber.id,
-        nickname: subscriber.nickname,
-        avatarUrl: subscriber.avatarUrl,
-        gender: subscriber.gender,
-      }));
+      if (playlist.trackIds && playlist.trackIds.length > 0) {
+        const songIdStr = playlist.trackIds
+          .map((item) => String(item.id))
+          .reduce((initValue, currentValue) => initValue + "," + currentValue);
+        const songDetailUrl = `${apis.songDetail}?ids=${songIdStr}`;
+        /** 根据id数组获取歌曲详情 */
+        const songs = await http<ISongDetail[]>(
+          { url: songDetailUrl },
+          "songs"
+        );
+        state.songList = songs.map((song) => ({
+          id: song.id,
+          name: song.name,
+          al: {
+            id: song.al.id,
+            name: song.al.name,
+            picUrl: song.al.picUrl,
+          },
+          alia: song.alia,
+          ar: song.ar.map((ar) => ({
+            id: ar.id,
+            name: ar.name,
+          })),
+          dt: song.dt,
+        }));
+      } else {
+        /** 歌单一首歌曲都没有 */
+        state.songList = [];
+      }
+      if (playlist.subscribers && playlist.subscribers.length > 0) {
+        state.subscribers = playlist.subscribers.map((subscriber) => ({
+          id: subscriber.id,
+          nickname: subscriber.nickname,
+          avatarUrl: subscriber.avatarUrl,
+          gender: subscriber.gender,
+        }));
+      } else {
+        /** 歌单没有任何收藏者 */
+        state.subscribers = [];
+      }
     };
 
     watch(

@@ -7,7 +7,7 @@
       @mouseleave="handleMouseLeave"
       @click="viewAll"
     >
-      <img :src="imgUrl" alt="歌单封面" />
+      <img :src="`${imgUrl}?param=170y170`" alt="歌单封面" />
       <div class="text">{{ updateTime }}</div>
       <mp-opt-icon
         v-show="showIcon && type === 'song'"

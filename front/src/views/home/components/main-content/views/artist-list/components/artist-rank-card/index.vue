@@ -2,7 +2,7 @@
   <div class="artist-card">
     <el-image
       class="image"
-      :src="imgUrl"
+      :src="`${imgUrl}?param=140y140`"
       alt="排行榜头像"
       @click="gotoArtistRankList"
     >

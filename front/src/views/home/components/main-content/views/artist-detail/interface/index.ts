@@ -1,3 +1,14 @@
+/** 歌手返回值接口 */
+export interface IArtistResponse {
+  id: number;
+  picUrl?: string /** 歌手封面 */;
+  name: string /** 歌手名 */;
+  musicSize?: number /** 单曲数 */;
+  mvSize?: number /** 专辑数 */;
+  videoCount?: number /** MV数 */;
+  alias?: string[] /** 歌手别名（英文名｜中文名） */;
+}
+
 export interface IArtist {
   id: number;
   cover?: string /** 歌手封面 */;

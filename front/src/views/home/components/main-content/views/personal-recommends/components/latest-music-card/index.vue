@@ -3,7 +3,11 @@
     <div class="wrapper">
       <!-- 歌曲封面（单击播放） -->
       <div class="cover" @click="playSong">
-        <el-image class="image" :src="coverImg" alt="歌曲封面图片">
+        <el-image
+          class="image"
+          :src="`${coverImg}?param=100y100`"
+          alt="歌曲封面图片"
+        >
           <template #placeholder>
             <img
               class="image"

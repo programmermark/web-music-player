@@ -1,7 +1,10 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { apis } from "@/api";
 import { http } from "@/common/js/http";
-import { IArtist } from "@/views/home/components/main-content/views/artist-detail/interface";
+import {
+  IArtist,
+  IArtistResponse,
+} from "@/views/home/components/main-content/views/artist-detail/interface";
 import { ActionContext, Module } from "vuex";
 import { IRootStateTypes } from "./interface";
 import {
@@ -39,16 +42,16 @@ const ModuleArtistList: Module<IArtistListState, IRootStateTypes> = {
       const { currentLanguageCat, currentTypeCat, currentWordCat } = filters;
       /** 获取所有歌单榜单 */
       const url = `${apis.artistList}?area=${currentLanguageCat}&type=${currentTypeCat}&initial=${currentWordCat}&limit=${limit}&offset=${offset}`;
-      const list = await http<IArtist[]>(
+      const list = await http<IArtistResponse[]>(
         {
           url,
         },
         "artists"
       );
-      const artistList = list.map((artist) => ({
+      const artistList: IArtist[] = list.map((artist) => ({
         id: artist.id,
         name: artist.name,
-        cover: artist.cover,
+        cover: artist.picUrl,
       }));
       if (offset === 0) {
         context.commit("setArtistList", artistList);

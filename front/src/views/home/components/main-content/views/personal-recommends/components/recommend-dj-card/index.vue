@@ -3,7 +3,7 @@
     <div class="wrapper">
       <!-- 封面 -->
       <div class="cover">
-        <el-image class="image" :src="imgUrl" alt="电台封面">
+        <el-image class="image" :src="`${imgUrl}?param=180y180`" alt="电台封面">
           <template #placeholder>
             <img class="image" src="@/assets/image/no-img.png" alt="电台封面" />
           </template>

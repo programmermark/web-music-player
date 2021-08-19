@@ -6,7 +6,7 @@
     @click="handleCardClick"
   >
     <div class="card">
-      <el-image class="image" :src="imgUrl" alt="歌单封面">
+      <el-image class="image" :src="`${imgUrl}?param=200y200`" alt="歌单封面">
         <template #placeholder>
           <img class="image" src="@/assets/image/no-img.png" alt="歌单封面" />
         </template>

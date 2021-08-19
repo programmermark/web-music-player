@@ -53,7 +53,7 @@
           <div class="image-wrapper">
             <el-image
               class="image"
-              :src="song.album.picUrl"
+              :src="`${song.album.picUrl}?param=100y100`"
               alt="歌曲专辑封面"
               lazy
             >
@@ -65,6 +65,16 @@
                 />
               </template>
             </el-image>
+            <mp-opt-icon
+              class="play-button"
+              title="点击播放歌曲"
+              :size="24"
+              icon="play-caret-solid"
+              color="#d33a33"
+              bgColor="#dddddd"
+              display="always"
+              @click="playSong"
+            />
           </div>
           <div class="song-name text-ellipsis">
             {{ song.name
@@ -328,12 +338,18 @@ export default defineComponent({
         }
         .image-wrapper {
           padding: 0 10px;
+          position: relative;
           .image {
             width: 60px;
             height: 60px;
             box-sizing: border-box;
             border: 1px solid #eaeaea;
             border-radius: 4px;
+          }
+          .play-button {
+            position: absolute;
+            left: calc(50% - 12px);
+            top: calc(50% - 12px);
           }
         }
         .song-name {
