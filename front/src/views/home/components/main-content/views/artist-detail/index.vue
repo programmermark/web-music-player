@@ -1,5 +1,5 @@
 <template>
-  <div class="artist-detail">
+  <div class="artist-detail pdl-30 pdr-30">
     <!-- 歌手头像 + 名字 -->
     <div class="brief-info"></div>
     <!-- 专辑 + MV + 详情 + 相似歌手 -->

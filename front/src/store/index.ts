@@ -12,6 +12,7 @@ import ModuleArtistList from "./modules/artistlist";
 import ModuleRecommend from "./modules/recommend";
 import ModuleBulletin from "./modules/bulletin";
 import ModuleLatestMusic from "./modules/latest-music";
+import ModuleArtistRankList from "./modules/artist-rank-list";
 
 const dataSet = createPersistedState({
   /** 被持久化的状态格式为：模块名.状态名 */
@@ -52,6 +53,11 @@ const dataSet = createPersistedState({
     "latestMusic.europeAndAmericaAlbums",
     "latestMusic.koreaAlbums",
     "latestMusic.japanAlbums",
+    /** 歌手排行榜 */
+    "artistRankList.loading",
+    "artistRankList.tabs",
+    "artistRankList.currentTab",
+    "artistRankList.artistList",
   ],
 });
 
@@ -69,6 +75,7 @@ export default createStore<IRootStateTypes>({
     recommend: ModuleRecommend,
     bulletin: ModuleBulletin,
     latestMusic: ModuleLatestMusic,
+    artistRankList: ModuleArtistRankList,
   },
   plugins: [dataSet],
 });

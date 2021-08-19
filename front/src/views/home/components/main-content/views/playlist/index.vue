@@ -1,5 +1,5 @@
 <template>
-  <div class="playlist-wrapper">
+  <div class="playlist-wrapper pdl-30 pdr-30">
     <!-- 精品歌单 -->
     <!-- 歌单分类 -->
     <div class="cat-wrapper">

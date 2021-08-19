@@ -61,6 +61,13 @@ const routes: Array<RouteRecordRaw> = [
           "home/components/main-content/views/album-detail/index"
         ),
       },
+      {
+        path: "artistRankList",
+        name: "ArtistRankList",
+        component: lazyLoad(
+          "home/components/main-content/views/artist-rank-list/index"
+        ),
+      },
     ],
   },
 ];

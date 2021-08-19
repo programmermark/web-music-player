@@ -1,5 +1,5 @@
 <template>
-  <div class="playlist-detail">
+  <div class="playlist-detail pdl-30 pdr-30">
     <!-- 歌单信息 -->
     <playlist-info v-if="playlistInfo" :playlist-info="playlistInfo" />
     <!-- 歌单列表 -->
