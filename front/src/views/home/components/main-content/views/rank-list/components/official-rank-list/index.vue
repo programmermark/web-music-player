@@ -164,7 +164,7 @@ export default defineComponent({
         const id = (rankList.value as ISongRankOfficial).id;
         router.push(`/playlistDetail/${id}`);
       } else {
-        console.log("前往歌手列表页面");
+        router.push("/artistRankList");
       }
     };
 

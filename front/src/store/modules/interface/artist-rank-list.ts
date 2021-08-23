@@ -3,6 +3,7 @@ import { IOption } from "@/common/interface/common";
 export interface IArtistCard {
   id: number /** 歌手id */;
   name: string /** 歌手名 */;
+  trans: string /** 歌手名(译名) */;
   score: number /** 热度 */;
   picUrl: string /** 头像 */;
   lastRank: number /** 上一次的排名（排名从0开始计算） */;

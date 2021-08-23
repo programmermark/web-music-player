@@ -39,7 +39,7 @@ export default defineComponent({
       if (type) {
         switchTab(Number(type));
       } else {
-        switchTab(0);
+        switchTab(1);
       }
     });
 
@@ -58,8 +58,10 @@ export default defineComponent({
   display: flex;
   align-items: center;
   position: absolute;
-  margin-top: 25px;
+  z-index: 1000;
+  padding-top: 25px;
   padding-bottom: 10px;
+  background-color: #fff;
   border-bottom: 1px solid #e5e5e5;
 
   .tab-item {
