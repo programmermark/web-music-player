@@ -53,6 +53,7 @@ const ModuleArtistRankList: Module<IArtistRankListState, IRootStateTypes> = {
       const formatList: IArtistCard[] = list.map((artist) => ({
         id: artist.id,
         name: artist.name,
+        trans: artist.trans,
         score: artist.score,
         picUrl: artist.picUrl,
         lastRank: artist.lastRank,

@@ -49,9 +49,9 @@ export default defineComponent({
         return 1;
       } else if (type.value === "欧美") {
         return 2;
-      } else if (type.value === "日本") {
-        return 3;
       } else if (type.value === "韩国") {
+        return 3;
+      } else if (type.value === "日本") {
         return 4;
       }
       return 0;
