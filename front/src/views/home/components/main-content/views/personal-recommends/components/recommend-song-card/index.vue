@@ -3,7 +3,7 @@
     class="recommend-song-card"
     @mouseenter="handleMouseEnter"
     @mouseleave="handleMouseLeave"
-    @click="handleCardClick"
+    @click="handleCardClick(id)"
   >
     <div class="card">
       <el-image class="image" :src="`${imgUrl}?param=200y200`" alt="歌单封面">
@@ -36,6 +36,7 @@ import MPOptIcon from "@/components/MPOptIcon.vue";
 import { defineComponent, ref, toRefs } from "vue";
 import { useStore } from "@/store";
 import { translatePlayCount } from "@/common/js/util";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   components: { "mp-icon": MPIcon, "mp-opt-icon": MPOptIcon },
@@ -68,8 +69,10 @@ export default defineComponent({
     },
   },
   setup(prop) {
-    const { id } = toRefs(prop);
     const store = useStore();
+    const router = useRouter();
+
+    const { id } = toRefs(prop);
 
     const showIcon = ref(false);
 
@@ -79,9 +82,13 @@ export default defineComponent({
     const handleMouseLeave = () => {
       showIcon.value = false;
     };
-    const handleCardClick = () => {
-      console.log("点击card，打开播放列表详情");
+
+    /** 查看歌单详情 */
+    const handleCardClick = (id: number) => {
+      router.push(`/playlistDetail/${id}`);
     };
+
+    /** 播放歌曲 */
     const playSong = (e: Event) => {
       e.stopPropagation();
       store.dispatch("player/setSongList", { id: id.value });

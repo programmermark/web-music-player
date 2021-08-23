@@ -102,8 +102,9 @@ export default defineComponent({
 #home {
   position: relative;
   min-width: 1200px;
-  max-width: 1200px;
-  height: 600px;
+  width: calc(100vw - 120px);
+  min-height: 600px;
+  height: calc(100vh - 60px);
   margin: 30px;
   box-sizing: border-box;
   border: 1px solid rgba($color: #c9c9c9, $alpha: 0.6);
