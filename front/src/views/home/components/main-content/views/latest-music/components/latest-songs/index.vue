@@ -34,7 +34,7 @@
           class="song-item"
           v-for="(song, index) in currentSongs"
           :key="song.id"
-          @dblclick="playSong(item.id)"
+          @dblclick="playSong(song.id)"
           title="双击播放歌曲"
         >
           <span class="no" v-show="currentSongId !== song.id">{{
