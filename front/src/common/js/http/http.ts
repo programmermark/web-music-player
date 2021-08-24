@@ -23,7 +23,7 @@ function http<T>(params: HttpParams, keyName?: string) {
       .then((res) => {
         const result: any = res.data;
         if (result.code == 200) {
-          result.message && message.success(result.message);
+          // result.message && message.success(result.message);
           if (keyName) {
             resolve(result[keyName]);
           }
