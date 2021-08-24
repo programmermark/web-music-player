@@ -44,7 +44,7 @@ export default defineComponent({
     /** 跳转到歌手详情 */
     const gotoArtistDetail = (id: number) => {
       console.log("跳转到歌手详情，歌手id", id);
-      // router.push();
+      router.push(`/artist/${id}`);
     };
     return {
       imageUrl,
