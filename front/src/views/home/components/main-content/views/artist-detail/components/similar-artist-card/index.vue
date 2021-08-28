@@ -6,7 +6,7 @@
   >
     <el-image
       class="image"
-      :src="`${artist.picUrl}?param=400y400`"
+      :src="`${artist.img1v1Url}?param=400y400`"
       alt="歌手头像"
     >
       <template #placeholder>
