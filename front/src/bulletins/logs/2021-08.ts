@@ -2,6 +2,12 @@ import { ILog } from "@/store/modules/interface/bulletin";
 
 export const logs: ILog[] = [
   {
+    date: "2021-08-28",
+    title: "web-music-player更新公告(2021-08-28)",
+    briefContent: `<p>1. 修复了一些交互bug</p><p>2. 根据volar修复了所有类型错误</p>`,
+    content: `<p>1. 修复了一些交互bug</p><p>2. 根据volar修复了所有类型错误</p>`,
+  },
+  {
     date: "2021-08-23",
     title: "web-music-player更新公告(2021-08-23)",
     briefContent: `<p>1. 新增页面歌手排行榜</p><p>2. 修复最新音乐页面，点击无法播放的问题</p>`,
