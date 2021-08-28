@@ -47,7 +47,6 @@ export default defineComponent({
 <style lang="scss" scoped>
 .similar-artist-card {
   width: calc(20% - 16px);
-  min-width: calc();
   margin-right: 20px;
   margin-bottom: 30px;
 
