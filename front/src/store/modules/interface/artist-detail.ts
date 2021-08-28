@@ -34,6 +34,7 @@ export interface ISimilarArtist {
   id: number /** 歌手id */;
   name: number /** 歌手名 */;
   picUrl: string /** 歌手头像 */;
+  img1v1Url: string /** 歌手头像(比例1:1) */;
 }
 
 /** 歌手MV的分页参数 */

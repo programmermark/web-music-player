@@ -133,6 +133,7 @@ const ModuleArtistDetail: Module<IArtistDetailState, IRootStateTypes> = {
         id: artist.id,
         name: artist.name,
         picUrl: artist.picUrl,
+        img1v1Url: artist.img1v1Url,
       }));
       context.commit("setSimilarArtists", formatList);
     },
