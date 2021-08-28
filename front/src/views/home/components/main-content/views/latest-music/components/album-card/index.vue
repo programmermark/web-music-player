@@ -27,13 +27,13 @@
         color="#d33a33"
         bgColor="#dddddd"
         display="always"
-        @click="playAlbum"
+        @click="playAlbum(album.id)"
       />
     </div>
     <div class="name text-ellipsis-2" @click="gotoAlbumDetail(album.id)">
       {{ album.name }}
     </div>
-    <div class="artist text-ellipsis">
+    <div class="artist text-ellipsis" v-if="album.artists">
       <div
         class="artist-item"
         v-for="(artist, index) in album.artists"

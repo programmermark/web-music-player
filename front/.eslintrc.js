@@ -10,6 +10,11 @@ module.exports = {
     "@vue/prettier",
     "@vue/prettier/@typescript-eslint",
   ],
+  rules: {
+    // Enable vue/script-setup-uses-vars rule
+    "vue/script-setup-uses-vars": "error",
+    "vue/valid-template-root": "off",
+  },
   parserOptions: {
     ecmaVersion: 2020,
   },

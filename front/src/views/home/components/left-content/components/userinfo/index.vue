@@ -10,9 +10,16 @@
       scale="60%"
       display="always"
     />
-    <img v-else class="avatar" :src="userInfo.avatarUrl" alt="用户头像" />
+    <img
+      v-else-if="userInfo"
+      class="avatar"
+      :src="userInfo.avatarUrl"
+      alt="用户头像"
+    />
 
-    <div class="username">{{ hasLogged ? userInfo.nickname : "未登录" }}</div>
+    <div v-if="userInfo" class="username">
+      {{ hasLogged ? userInfo.nickname : "未登录" }}
+    </div>
     <el-popover
       v-if="hasLogged"
       placement="right-start"

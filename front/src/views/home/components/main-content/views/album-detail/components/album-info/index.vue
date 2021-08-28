@@ -21,7 +21,7 @@
           <span class="text">播放全部</span>
         </div>
       </div>
-      <div class="artist-list">
+      <div class="artist-list" v-if="albumInfo.artists">
         歌手：
         <div
           class="artist-item"

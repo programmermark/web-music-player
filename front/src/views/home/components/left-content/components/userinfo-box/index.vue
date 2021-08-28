@@ -2,7 +2,7 @@
   <div class="userinfo-box">
     <!-- 动态、关注、粉丝 -->
     <div class="base-info-wrapper">
-      <div class="base-info">
+      <div class="base-info" v-if="userInfo">
         <div class="item">
           <div class="count">{{ userInfo.eventCount }}</div>
           <div>动态</div>

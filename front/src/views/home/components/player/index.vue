@@ -138,13 +138,15 @@
       <div class="song-list-wrapper">
         <div
           class="song-list"
-          :class="[playingSong.id === song.id && 'song-list-active']"
+          :class="[
+            playingSong && playingSong.id === song.id && 'song-list-active',
+          ]"
           v-for="song in storeSongList"
           :key="song.id"
           @dblclick="playSongById(song.id)"
         >
           <mp-icon
-            v-if="playingSong.id === song.id"
+            v-if="playingSong && playingSong.id === song.id"
             class="icon-in-play"
             icon="in-play"
             :size="16"
@@ -153,14 +155,14 @@
           />
           <div
             class="song-name text-ellipsis"
-            :class="[playingSong.id === song.id && 'active']"
+            :class="[playingSong && playingSong.id === song.id && 'active']"
             :title="song.name"
           >
             {{ song.name }}
           </div>
           <div
             class="artist text-ellipsis"
-            :class="[playingSong.id === song.id && 'active']"
+            :class="[playingSong && playingSong.id === song.id && 'active']"
             :title="formatArtistListToString(song.artists)"
           >
             {{ formatArtistListToString(song.artists) }}
@@ -174,7 +176,7 @@
             bgColor="none"
           />
           <div class="duration">
-            {{ transformSecondToMinute(song.duration) }}
+            {{ transformSecondToMinute(song.duration || 0) }}
           </div>
         </div>
       </div>
@@ -618,7 +620,7 @@ export default defineComponent({
 
   .song-list-wrapper {
     border-top: 1px solid #f0f0f0;
-    height: 395px;
+    height: calc(100vh - 267px);
 
     .song-list {
       display: flex;

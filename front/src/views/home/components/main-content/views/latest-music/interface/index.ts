@@ -1,9 +1,9 @@
-export interface ITab {
+export interface ITab<T = string> {
   label: string /** tab显示值 */;
-  value: string | number /** tab的value值 */;
+  value: T /** tab的value值 */;
 }
 
-export interface ITabsState {
-  currentTab: string | number /** 当前歌曲类型 */;
+export interface ITabsState<T = string> {
+  currentTab: T /** 当前歌曲类型 */;
   tabs: ITab[] /** 类型tabs */;
 }

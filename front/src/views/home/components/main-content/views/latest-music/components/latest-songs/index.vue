@@ -73,7 +73,7 @@
               color="#d33a33"
               bgColor="#dddddd"
               display="always"
-              @click="playSong"
+              @click="playSong(song.id)"
             />
           </div>
           <div class="song-name text-ellipsis">
@@ -195,7 +195,7 @@ export default defineComponent({
     };
 
     /** 切换歌曲tab */
-    const toggleTab = (value: string | number) => {
+    const toggleTab = (value: number) => {
       tabsState.currentTab = value;
     };
 
