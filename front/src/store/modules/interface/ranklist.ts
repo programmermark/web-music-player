@@ -50,6 +50,7 @@ export interface ISongRankListResponse extends ISongRank {
 
 /** 歌手排行榜返回值 */
 export interface IArtistRankListResponse {
+  id: number /** 榜单id */;
   name: string /** 榜单名称 */;
   coverUrl: string /** 榜单封面 */;
   updateTime: number /** 更新时间，默认为每天更新 */;

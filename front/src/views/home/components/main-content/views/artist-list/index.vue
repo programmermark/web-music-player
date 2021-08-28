@@ -5,6 +5,7 @@
     <!-- 歌手列表 -->
     <div class="artist-wrapper" v-infinite-scroll="onPageChange">
       <artist-rank-card
+        v-if="artistRankImg && currentLanguageCatLabel"
         v-show="showRankCard"
         :imgUrl="artistRankImg"
         :type="currentLanguageCatLabel"
@@ -26,6 +27,7 @@ import ArtistRankCard from "./components/artist-rank-card/index.vue";
 import { IFiltersState } from "./components/interface/filters";
 import { ISetArtistListPayload } from "@/store/modules/interface/artistlist";
 import { useStore } from "@/store";
+import { ILanguageCatOption } from "./components/interface";
 
 export default defineComponent({
   name: "ArtistList",
@@ -62,7 +64,7 @@ export default defineComponent({
 
     /** 当前语种类别显示名称 */
     const currentLanguageCatLabel = computed(() => {
-      const list = [
+      const list: ILanguageCatOption[] = [
         { label: "华语", value: "7" },
         { label: "欧美", value: "96" },
         { label: "日本", value: "8" },

@@ -7,7 +7,7 @@
       v-if="albumInfo"
       :albumId="albumInfo.id"
       :songList="songList"
-      :description="albumInfo.description"
+      :description="albumInfo.description || ''"
     />
   </div>
 </template>
@@ -20,6 +20,7 @@ import { http } from "@/common/js/http";
 import { IAlbumDetail, IAlbumDetailState } from "./interface/index";
 import AlbumInfo from "./components/album-info/index.vue";
 import SongList from "./components/song-list/index.vue";
+import { IAlbum } from "../artist-detail/interface";
 
 export default defineComponent({
   name: "AlbumDetail",
@@ -46,7 +47,7 @@ export default defineComponent({
       );
       const { album, songs } = albumDetail;
       /** 把歌单详情分为歌单信息哥歌曲列表两部分 */
-      state.albumInfo = {
+      const albumInfo: IAlbum = {
         id: album.id,
         name: album.name,
         picUrl: album.picUrl,
@@ -63,6 +64,8 @@ export default defineComponent({
           alias: artist.alias,
         })),
       };
+      state.albumInfo = albumInfo;
+
       state.songList = songs.map((song) => ({
         id: song.id,
         name: song.name,
@@ -78,7 +81,6 @@ export default defineComponent({
         })),
         duration: song.dt,
       }));
-      console.log("state.songList", state.songList);
     };
 
     watch(

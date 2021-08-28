@@ -47,7 +47,7 @@ export default defineComponent({
     /**
      * 切换tab
      */
-    const toggleTab = (value: string | number) => {
+    const toggleTab = (value: string) => {
       if (value !== tabsState.currentTab) {
         tabsState.currentTab = value;
       }
