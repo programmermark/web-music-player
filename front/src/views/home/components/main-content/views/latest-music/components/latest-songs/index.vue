@@ -59,7 +59,7 @@
             >
               <template #placeholder>
                 <img
-                  class="image"
+                  class="no-image"
                   src="@/assets/image/no-img.png"
                   alt="歌曲专辑封面"
                 />
@@ -343,8 +343,17 @@ export default defineComponent({
             width: 60px;
             height: 60px;
             box-sizing: border-box;
-            border: 1px solid #eaeaea;
-            border-radius: 4px;
+
+            .no-image {
+              width: 100%;
+              height: 100%;
+              border: 1px solid #ededed;
+            }
+
+            :deep(.el-image__inner) {
+              border: 1px solid #ededed;
+              border-radius: 4px;
+            }
           }
           .play-button {
             position: absolute;

@@ -4,8 +4,8 @@ export const logs: ILog[] = [
   {
     date: "2021-08-30",
     title: "web-music-player更新公告(2021-08-30)",
-    briefContent: `<p>1. 新增了歌手详情页面</p>`,
-    content: `<p>1. 新增了歌手详情页面</p>`,
+    briefContent: `<p>1. 新增了歌手详情页面</p><p>2. 更新了全局所有图片未加载完毕时代替图的样式</p>`,
+    content: `<p>1. 新增了歌手详情页面</p><p>2. 更新了全局所有图片未加载完毕时代替图的样式</p>`,
   },
   {
     date: "2021-08-28",

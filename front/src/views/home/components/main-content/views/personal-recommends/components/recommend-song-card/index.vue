@@ -8,7 +8,11 @@
     <div class="card">
       <el-image class="image" :src="`${imgUrl}?param=200y200`" alt="歌单封面">
         <template #placeholder>
-          <img class="image" src="@/assets/image/no-img.png" alt="歌单封面" />
+          <img
+            class="no-image"
+            src="@/assets/image/no-img.png"
+            alt="歌单封面"
+          />
         </template>
       </el-image>
       <div class="play-count" v-if="playCount">
@@ -120,9 +124,18 @@ export default defineComponent({
     cursor: pointer;
     .image {
       width: 100%;
-      border-radius: 4px;
-      border: 1px solid #e8e8e8;
       box-sizing: border-box;
+
+      .no-image {
+        width: 100%;
+        height: 100%;
+        border: 1px solid #ededed;
+      }
+
+      :deep(.el-image__inner) {
+        border: 1px solid #ededed;
+        border-radius: 4px;
+      }
     }
     .play-count {
       display: flex;

@@ -12,7 +12,11 @@
         alt="歌单封面"
       >
         <template #placeholder>
-          <img class="image" src="@/assets/image/no-img.png" alt="歌单封面" />
+          <img
+            class="no-image"
+            src="@/assets/image/no-img.png"
+            alt="歌单封面"
+          />
         </template>
       </el-image>
       <div class="play-count">
@@ -117,7 +121,17 @@ export default defineComponent({
     position: relative;
     .image {
       width: 100%;
-      border-radius: 8px;
+
+      .no-image {
+        width: 100%;
+        height: 100%;
+        border: 1px solid #ededed;
+      }
+
+      :deep(.el-image__inner) {
+        border: 1px solid #ededed;
+        border-radius: 4px;
+      }
     }
     .play-count {
       display: flex;

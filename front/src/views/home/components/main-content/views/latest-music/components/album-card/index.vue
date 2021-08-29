@@ -11,7 +11,7 @@
       >
         <template #placeholder>
           <img
-            class="image"
+            class="no-image"
             src="@/assets/image/no-img.png"
             alt="专辑封面"
             @click="gotoAlbumDetail(album.id)"
@@ -128,10 +128,19 @@ export default defineComponent({
     .image {
       width: 140px;
       height: 140px;
-      border-radius: 8px;
-      border: 1px solid #efefef;
       box-sizing: border-box;
       cursor: pointer;
+
+      .no-image {
+        width: 100%;
+        height: 100%;
+        border: 1px solid #ededed;
+      }
+
+      :deep(.el-image__inner) {
+        border: 1px solid #ededed;
+        border-radius: 4px;
+      }
     }
     .play-button {
       position: absolute;

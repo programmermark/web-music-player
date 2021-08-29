@@ -60,12 +60,16 @@ export default defineComponent({
     width: 200px;
     height: 200px;
     margin-right: 30px;
-    border-radius: 8px;
 
     .no-image {
       width: 100%;
       height: 100%;
-      border-radius: 8px;
+      border: 1px solid #ededed;
+    }
+
+    :deep(.el-image__inner) {
+      border: 1px solid #ededed;
+      border-radius: 4px;
     }
   }
 

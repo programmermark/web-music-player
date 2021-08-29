@@ -8,7 +8,7 @@
     >
       <template #placeholder>
         <img
-          class="image"
+          class="no-image"
           src="@/assets/image/no-img.png"
           alt="歌手头像"
           @click="gotoArtistDetail(artist.id)"
@@ -71,9 +71,19 @@ export default defineComponent({
     height: 100%;
     box-sizing: border-box;
     border: 1px solid #f2f2f2;
-    border-radius: 8px;
     margin-bottom: 6px;
     cursor: pointer;
+
+    .no-image {
+      width: 100%;
+      height: 100%;
+      border: 1px solid #ededed;
+    }
+
+    :deep(.el-image__inner) {
+      border: 1px solid #ededed;
+      border-radius: 4px;
+    }
   }
   .name {
     font-size: 14px;

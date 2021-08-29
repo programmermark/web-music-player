@@ -5,7 +5,11 @@
       <div class="cover">
         <el-image class="image" :src="`${imgUrl}?param=180y180`" alt="电台封面">
           <template #placeholder>
-            <img class="image" src="@/assets/image/no-img.png" alt="电台封面" />
+            <img
+              class="no-image"
+              src="@/assets/image/no-img.png"
+              alt="电台封面"
+            />
           </template>
         </el-image>
       </div>
@@ -88,9 +92,19 @@ export default defineComponent({
       border-radius: 4px;
 
       & > .image {
-        border-radius: 4px;
         width: 100%;
         height: 100%;
+
+        .no-image {
+          width: 100%;
+          height: 100%;
+          border: 1px solid #ededed;
+        }
+
+        :deep(.el-image__inner) {
+          border: 1px solid #ededed;
+          border-radius: 4px;
+        }
       }
     }
 
