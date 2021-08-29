@@ -74,7 +74,7 @@ cd wangyiyun-server & npm start
 - [x] 歌手
 - [x] 最新音乐
 - [x] 歌手排行榜
-- [ ] 歌手详情
+- [x] 歌手详情
 - [ ] MV 详情（不开发评论功能）
 
 ### 功能
