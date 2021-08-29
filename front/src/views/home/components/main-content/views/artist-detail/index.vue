@@ -15,6 +15,17 @@
       </div>
     </div>
     <div class="tab-content">
+      <div class="mv-wrapper" v-show="currentTab.value === tabs[1].value">
+        <ArtistMVCard
+          v-for="mv in artistMVs"
+          :key="mv.id"
+          :id="mv.id"
+          :name="mv.name"
+          :cover="mv.imgurl16v9"
+          :playCount="mv.playCount"
+          :duration="mv.duration"
+        />
+      </div>
       <artist-desc
         v-show="currentTab.value === tabs[2].value"
         :descList="artistDesc"
@@ -38,12 +49,14 @@ import { ITabOption } from "../playlist-detail/interface/songList";
 import BriefInfo from "./components/brief-info/index.vue";
 import ArtistDesc from "./components/artist-desc/index.vue";
 import SimilarArtistCard from "./components/similar-artist-card/index.vue";
+import ArtistMVCard from "./components/artist-mv-card/index.vue";
 
 export default defineComponent({
   components: {
     "brief-info": BriefInfo,
     "artist-desc": ArtistDesc,
     "similar-artist-card": SimilarArtistCard,
+    ArtistMVCard,
   },
   name: "ArtistDetail",
   setup() {
@@ -151,6 +164,9 @@ export default defineComponent({
   }
 
   .tab-content {
+    .mv-wrapper {
+      margin-top: 24px;
+    }
     .similar-wrapper {
       display: flex;
       flex-wrap: wrap;

@@ -13,7 +13,7 @@
     "core-js": "^3.6.5",
     "element-plus": "^1.0.2-beta.48",
     "lodash": "^4.17.21",
-    "vue": "^3.0.0",
+    "vue": "3.2",
     "vue-router": "^4.0.0-0",
     "vuex": "^4.0.0-0",
     "vuex-persistedstate": "^4.0.0"
