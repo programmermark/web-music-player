@@ -15,6 +15,10 @@
       </div>
     </div>
     <div class="tab-content">
+      <HotSong
+        v-show="currentTab.value === tabs[0].value"
+        :songList="hotSongs"
+      />
       <div class="mv-wrapper" v-show="currentTab.value === tabs[1].value">
         <ArtistMVCard
           v-for="mv in artistMVs"
@@ -47,6 +51,7 @@ import { computed, defineComponent, onMounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import { ITabOption } from "../playlist-detail/interface/songList";
 import BriefInfo from "./components/brief-info/index.vue";
+import HotSong from "./components/hot-song/index.vue";
 import ArtistDesc from "./components/artist-desc/index.vue";
 import SimilarArtistCard from "./components/similar-artist-card/index.vue";
 import ArtistMVCard from "./components/artist-mv-card/index.vue";
@@ -54,6 +59,7 @@ import ArtistMVCard from "./components/artist-mv-card/index.vue";
 export default defineComponent({
   components: {
     "brief-info": BriefInfo,
+    HotSong,
     "artist-desc": ArtistDesc,
     "similar-artist-card": SimilarArtistCard,
     ArtistMVCard,
@@ -93,10 +99,23 @@ export default defineComponent({
     /** 歌手热门歌曲 */
     const hotSongs = computed(() => store.state.artistDetail.hotSongs);
 
+    /** 获取歌手MV */
+    const getArtistMvs = () => {
+      store.dispatch("artistDetail/setArtistMVs", {
+        id: route.params.id,
+        limit: artistDetail.value?.mvSize || 10,
+        offset: 0,
+      });
+    };
+
+    /** 切换tab */
     const changeTab = (value: string) => {
       const result = tabs.find((tab) => tab.value === value);
       if (result) {
         currentTab.value = result;
+        if (result.label === "MV" && artistMVs.value.length === 0) {
+          getArtistMvs();
+        }
       }
     };
 
@@ -105,11 +124,6 @@ export default defineComponent({
       store.dispatch("artistDetail/setArtistDetail", id);
       store.dispatch("artistDetail/setArtistDesc", id);
       store.dispatch("artistDetail/setSimilarArtists", id);
-      store.dispatch("artistDetail/setArtistMVs", {
-        id,
-        limit: artistMVsPage.value.limit,
-        offset: artistMVsPage.value.offset,
-      });
       store.dispatch("artistDetail/setHotSongs", id);
     };
 
@@ -131,6 +145,7 @@ export default defineComponent({
     return {
       tabs,
       currentTab,
+      artistMVsPage,
       artistDetail,
       artistDesc,
       similarArtists,
@@ -144,6 +159,8 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .artist-detail {
+  display: flex;
+  flex-direction: column;
   .tabs {
     display: flex;
     align-items: center;
@@ -164,6 +181,7 @@ export default defineComponent({
   }
 
   .tab-content {
+    height: 100%;
     .mv-wrapper {
       margin-top: 24px;
     }
