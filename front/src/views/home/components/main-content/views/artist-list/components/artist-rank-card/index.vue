@@ -75,16 +75,17 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .artist-card {
+  width: calc(16.6% - 13.3px);
   display: inline-block;
   margin-bottom: 40px;
-  margin-right: calc(20% - 168px);
+  margin-right: 16px;
 
   &:nth-child(6n) {
     margin-right: 0;
   }
   .image {
-    width: 140px;
-    height: 140px;
+    width: 100%;
+    height: 100%;
     box-sizing: border-box;
     border: 1px solid #f2f2f2;
     border-radius: 8px;

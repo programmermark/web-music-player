@@ -1,5 +1,5 @@
 <template>
-  <div class="lastest-music">
+  <div class="lastest-music max-width-1100 width-100">
     <!-- tab -->
     <div class="tab-wrapper">
       <div class="tab">

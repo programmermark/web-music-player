@@ -74,4 +74,16 @@ export default defineComponent({
 :nth-child(5n) {
   margin-right: 0px;
 }
+
+@media screen and (min-width: 1300px) {
+  .similar-artist-card {
+    width: calc(16.6% - 16.6px);
+    &:nth-child(5n) {
+      margin-right: 20px;
+    }
+    &:nth-child(6n) {
+      margin-right: 0;
+    }
+  }
+}
 </style>
