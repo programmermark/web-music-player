@@ -1,5 +1,5 @@
 <template>
-  <div class="artist-list pdl-30 pdr-30">
+  <div class="artist-list max-width-1100 width-100 pdl-30 pdr-30">
     <!-- 筛选器 -->
     <filters @change-cat="onCatChange" />
     <!-- 歌手列表 -->

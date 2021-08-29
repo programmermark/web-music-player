@@ -29,6 +29,8 @@ export default defineComponent({
     flex: 1;
     padding: 0;
     :deep(.el-scrollbar__view) {
+      display: flex;
+      justify-content: center;
       height: 100%;
     }
   }
