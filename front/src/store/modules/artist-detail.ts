@@ -160,7 +160,7 @@ const ModuleArtistDetail: Module<IArtistDetailState, IRootStateTypes> = {
         duration: mv.duration,
       }));
       context.commit("setArtistMVsPages", { limit, offset, hasMore });
-      if (offset === 0) {
+      if (offset) {
         context.commit("setArtistMVs", formatList);
       } else {
         context.commit("setArtistMVsConcat", formatList);
