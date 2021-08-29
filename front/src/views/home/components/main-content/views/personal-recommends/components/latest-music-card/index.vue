@@ -10,7 +10,7 @@
         >
           <template #placeholder>
             <img
-              class="image"
+              class="no-image"
               src="@/assets/image/no-img.png"
               alt="歌曲封面图片"
             />
@@ -188,7 +188,17 @@ export default defineComponent({
       & > .image {
         width: 100%;
         height: 100%;
-        border-radius: 4px;
+
+        .no-image {
+          width: 100%;
+          height: 100%;
+          border: 1px solid #ededed;
+        }
+
+        :deep(.el-image__inner) {
+          border: 1px solid #ededed;
+          border-radius: 4px;
+        }
       }
       .play-button {
         position: absolute;

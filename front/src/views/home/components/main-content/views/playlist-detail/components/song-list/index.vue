@@ -56,7 +56,7 @@
             <el-image class="image" :src="subscriber.avatarUrl" alt="用户头像">
               <template #placeholder>
                 <img
-                  class="image"
+                  class="no-image"
                   src="@/assets/image/no-img.png"
                   alt="用户头像"
                 />
@@ -269,6 +269,17 @@ export default defineComponent({
         height: 90px;
         border-radius: 50%;
         margin-right: 8px;
+
+        .no-image {
+          width: 100%;
+          height: 100%;
+          border: 1px solid #ededed;
+        }
+
+        :deep(.el-image__inner) {
+          border: 1px solid #ededed;
+          border-radius: 4px;
+        }
       }
       .name {
         color: #333;

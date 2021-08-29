@@ -18,7 +18,7 @@
         >
           <template #placeholder>
             <img
-              class="portrait"
+              class="no-image"
               src="@/assets/image/no-img.png"
               alt="歌手头像"
             />
@@ -149,7 +149,17 @@ export default defineComponent({
       .portrait {
         width: auto;
         height: 100%;
-        border-radius: 4px;
+
+        .no-image {
+          width: 100%;
+          height: 100%;
+          border: 1px solid #ededed;
+        }
+
+        :deep(.el-image__inner) {
+          border: 1px solid #ededed;
+          border-radius: 4px;
+        }
       }
     }
   }

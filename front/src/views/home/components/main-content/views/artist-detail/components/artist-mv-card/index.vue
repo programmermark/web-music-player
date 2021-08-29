@@ -3,7 +3,11 @@
     <div class="cover-wrapper" title="点击查看MV详情" @click="gotoMVDetail(id)">
       <el-image class="image" :src="`${cover}?param=480y270`" alt="MV封面">
         <template #placeholder>
-          <img class="no-image" src="@/assets/image/no-img.png" alt="MV封面" />
+          <img
+            class="no-image"
+            src="@/assets/image/no-img-16x9.png"
+            alt="MV封面"
+          />
         </template>
       </el-image>
       <div class="play-count">
@@ -55,9 +59,19 @@ const gotoMVDetail = (id: number) => {
     .image {
       width: 100%;
       height: 100%;
-      border-radius: 4px;
       box-sizing: border-box;
-      border: 1px solid #ededed;
+
+      .no-image {
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box;
+        border: 1px solid #ededed;
+      }
+
+      :deep(.el-image__inner) {
+        border: 1px solid #ededed;
+        border-radius: 4px;
+      }
     }
 
     .play-count {
