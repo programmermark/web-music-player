@@ -52,6 +52,7 @@ export interface IArtistMV {
   playCount: number /** MV播放量 */;
   imgurl: string /** MV封面 */;
   imgurl16v9: string /** MV封面 */;
+  duration: number /** MV时长（毫秒） */;
 }
 
 /** 歌手热门歌曲 */

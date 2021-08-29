@@ -157,6 +157,7 @@ const ModuleArtistDetail: Module<IArtistDetailState, IRootStateTypes> = {
         playCount: mv.playCount,
         imgurl: mv.imgurl,
         imgurl16v9: mv.imgurl16v9,
+        duration: mv.duration,
       }));
       context.commit("setArtistMVsPages", { limit, offset, hasMore });
       if (offset === 0) {
