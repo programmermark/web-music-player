@@ -13,7 +13,10 @@
           @click="playSongById(banner.targetId)"
           title="点击播放歌曲"
         >
-          <img :src="banner.imageUrl" :alt="banner.typeTitle" />
+          <img
+            :src="`${banner.imageUrl}?param=540y200`"
+            :alt="banner.typeTitle"
+          />
           <span :style="{ backgroundColor: banner.titleColor }">{{
             banner.typeTitle
           }}</span>
