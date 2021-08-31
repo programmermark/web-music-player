@@ -13,7 +13,7 @@
         <div class="left-part">
           <div v-if="playingSong" class="wrapper">
             <div class="cover-img">
-              <img :src="playingSong.coverImg" alt="歌曲封面图片" />
+              <img :src="`${playingSong.coverImg}?param=80y80`" alt="歌曲封面图片" />
             </div>
             <div class="song-info-wrapper">
               <div class="song-info">

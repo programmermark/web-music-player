@@ -3,7 +3,7 @@
     <!-- MV封面 + MV播放量 -->
     <div
       class="image"
-      :style="{ backgroundImage: `url(${imgUrl})` }"
+      :style="{ backgroundImage: `url(${imgUrl}?param=320y180)` }"
       alt="MV封面"
       @mouseover="subTitleIsShow = true"
       @mouseleave="subTitleIsShow = false"

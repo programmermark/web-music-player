@@ -13,7 +13,7 @@
     <img
       v-else-if="userInfo"
       class="avatar"
-      :src="userInfo.avatarUrl"
+      :src="`${userInfo.avatarUrl}?param=80y80`"
       alt="用户头像"
     />
 
