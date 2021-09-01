@@ -25,7 +25,6 @@ export default defineComponent({
   display: flex;
   .main-content {
     height: calc(100% - 60px);
-    overflow: auto;
     flex: 1;
     padding: 0;
     :deep(.el-scrollbar__view) {
