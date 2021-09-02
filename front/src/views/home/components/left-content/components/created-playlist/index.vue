@@ -45,7 +45,7 @@
             :scale="1"
             bgColor="none"
           />
-          <span class="text">{{ playlist.name }}</span>
+          <span class="text" :title="playlist.name">{{ playlist.name }}</span>
         </div>
       </div>
     </div>

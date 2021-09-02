@@ -1,5 +1,5 @@
 <template>
-  <div class="max-width-1100 width-100 pdl-30 pdr-30">
+  <div class="max-width-1100 width-100 pdl-30 pdr-30 box-sizing-border-box">
     <!-- 轮播 -->
     <el-carousel
       class="carousel-wrapper"

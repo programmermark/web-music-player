@@ -1,5 +1,5 @@
 <template>
-  <div class="artist-detail width-100 pdl-30 pdr-30">
+  <div class="artist-detail width-100 pdl-30 pdr-30 box-sizing-border-box">
     <!-- 歌手头像 + 名字 -->
     <brief-info v-if="artistDetail" :artist="artistDetail" />
     <!-- 专辑 + MV + 详情 + 相似歌手 -->

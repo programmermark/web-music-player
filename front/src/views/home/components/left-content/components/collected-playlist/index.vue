@@ -18,7 +18,7 @@
             :scale="1"
             bgColor="none"
           />
-          <span class="text">{{ playlist.name }}</span>
+          <span class="text" :title="playlist.name">{{ playlist.name }}</span>
         </div>
       </div>
     </div>
@@ -64,6 +64,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .created-playlist {
+  margin-bottom: 30px;
   .collapse {
     padding: 16px 0 10px 4px;
     color: #888;

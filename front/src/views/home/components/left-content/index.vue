@@ -4,7 +4,9 @@
     <user-info />
     <el-scrollbar class="scrollbar-reset">
       <!-- 发现音乐、私人FM、视频、朋友 -->
+
       <!-- 我的音乐 -->
+      <NavList />
       <!-- 创建的歌单 -->
       <created-playlist :playlists="userCreatedPlaylists" />
       <!-- 收藏的歌单 -->
@@ -15,11 +17,12 @@
 
 <script lang="ts">
 import { computed, defineComponent, onMounted, watch } from "vue";
+import { useStore } from "@/store";
+import { useRouter } from "vue-router";
 import UserInfo from "./components/userinfo/index.vue";
 import CreatedPlayList from "./components/created-playlist/index.vue";
 import CollectedPlayList from "./components/collected-playlist/index.vue";
-import { useStore } from "@/store";
-import { useRouter } from "vue-router";
+import NavList from "./components/nav-list/index.vue";
 
 /** 左侧主要内容 */
 export default defineComponent({
@@ -28,6 +31,7 @@ export default defineComponent({
     "user-info": UserInfo,
     "created-playlist": CreatedPlayList,
     "collected-playlist": CollectedPlayList,
+    NavList,
   },
   setup() {
     const store = useStore();
@@ -102,6 +106,3 @@ export default defineComponent({
   }
 }
 </style>
-
-function onMount(arg0: () => void) { throw new Error("Function not
-implemented."); }

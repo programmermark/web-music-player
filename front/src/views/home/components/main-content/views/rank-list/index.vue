@@ -1,5 +1,14 @@
 <template>
-  <div class="rank-list max-width-1100 width-100 pdl-30 pdr-30">
+  <div
+    class="
+      rank-list
+      max-width-1100
+      width-100
+      pdl-30
+      pdr-30
+      box-sizing-border-box
+    "
+  >
     <div class="content-wrapper" v-if="!loading">
       <!-- 官方榜：前4个歌曲榜单 + 歌手榜单 -->
       <div class="official-wrapper">
