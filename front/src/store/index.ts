@@ -20,8 +20,13 @@ const dataSet = createPersistedState({
   paths: [
     "login.hasLogged",
     "login.userInfo",
+    /** 播放器 */
+    "player.isPause",
+    "player.volume",
+    "player.playBackType",
     "player.currentSong",
     "player.songList",
+    /** 歌单 */
     "playlist.currentPlaylist",
     "playlist.allPlayList",
     "catList.currentCat",

@@ -13,7 +13,10 @@
         <div class="left-part">
           <div v-if="playingSong" class="wrapper">
             <div class="cover-img">
-              <img :src="`${playingSong.coverImg}?param=80y80`" alt="歌曲封面图片" />
+              <img
+                :src="`${playingSong.coverImg}?param=80y80`"
+                alt="歌曲封面图片"
+              />
             </div>
             <div class="song-info-wrapper">
               <div class="song-info">
@@ -44,11 +47,7 @@
           <div class="prev-song-wrapper" @click="playPrev">
             <mp-icon icon="prev-song" color="#d33a30" :size="16" />
           </div>
-          <div
-            v-if="songState.isPause"
-            class="play-song-wrapper"
-            @click="playSong"
-          >
+          <div v-if="isPause" class="play-song-wrapper" @click="playSong">
             <mp-icon icon="play-button" color="#d33a30" :size="40" :scale="1" />
           </div>
           <div v-else class="play-song-wrapper" @click="playPause">
@@ -68,16 +67,16 @@
           <div class="wrapper">
             <div
               class="play-list-wrapper mr-20"
-              @click="changeListState(playerState.listState)"
+              @click="changeCurrentPlayBackType(currentPlayBackType)"
             >
               <el-tooltip
                 placement="top"
-                :content="playerState.listStateDesc"
+                :content="currentPlayBackType.listStateDesc"
                 :visible-arrow="false"
                 effect="light"
               >
                 <mp-icon
-                  :icon="playerState.listStateIcon"
+                  :icon="currentPlayBackType.listStateIcon"
                   color="#4b4b4b"
                   :size="16"
                   :scale="1"
@@ -98,7 +97,10 @@
             <div class="show-word-wrapper mr-20">
               <mp-icon icon="word" color="#4b4b4b" :size="16" :scale="1" />
             </div>
-            <volume-adjuster @change-volume="onChangeVolume">
+            <volume-adjuster
+              :volume="currentVolume * 100"
+              @change-volume="onChangeVolume"
+            >
               <template v-slot:content>
                 <div class="adjust-volume-wrapper mr-20">
                   <mp-icon icon="horn" color="#4b4b4b" :size="16" :scale="1" />
@@ -197,21 +199,21 @@ import {
 } from "vue";
 import { IPlaySong } from "@/store/modules/interface/player";
 import { useStore } from "@/store";
-import { ISongState } from "./interface/index";
+import { IListState, ISongState } from "./interface/index";
 import { useAudio, usePlayerState } from "./hooks/index";
 import { formatArtistListToString } from "@/common/js/util";
 import { transformSecondToMinute } from "@/common/js/util/index";
 
 import MPIcon from "@/components/MPIcon.vue";
 import VolumeAdjuster from "./components/volume-adjuster/index.vue";
+import { playerNextReOrder } from "@/common/js/util/algorithm";
 
 export default defineComponent({
   components: { "mp-icon": MPIcon, "volume-adjuster": VolumeAdjuster },
   name: "MusicPlayer",
   setup() {
     const store = useStore();
-    const { playerState, changeListState, toggleExpandSong, adjustVolume } =
-      usePlayerState();
+    const { playerState, toggleExpandSong } = usePlayerState();
 
     /** 播放器元素 */
     const audioPlayerRef = ref<HTMLAudioElement>();
@@ -221,11 +223,19 @@ export default defineComponent({
 
     /** 当前歌曲播放状态 */
     const songState = reactive<ISongState>({
-      isPause: true /** 歌曲是否已暂停 */,
       playRate: 0 /** 播放进度 */,
       songDuration: 0 /** 歌曲时长 */,
       playedSongDuration: 0 /** 已播放歌曲时长 */,
     });
+
+    /** 播放器是否暂停 */
+    const isPause = computed(() => store.state.player.isPause);
+
+    /** 播放器音量 */
+    const currentVolume = computed(() => store.state.player.volume);
+
+    /** 当前播放顺序 */
+    const currentPlayBackType = computed(() => store.state.player.playBackType);
 
     /** 歌曲列表 */
     const storeSongList = computed<IPlaySong[]>(
@@ -270,7 +280,7 @@ export default defineComponent({
       () => storeCurrentSong.value,
       (nv, ov) => {
         /** store中的当前歌曲存在，并且和上一次的歌曲不同则替换当前播放的歌曲id */
-        if (nv !== undefined && nv.id !== ov?.id) {
+        if (nv !== undefined) {
           currentPlayId.value = nv.id;
           nextTick(() => {
             if (audioPlayerRef.value) {
@@ -282,27 +292,42 @@ export default defineComponent({
       { immediate: true }
     );
 
+    /** 更新是否暂停的状态 */
+    const changeIsPause = (isPause: boolean) => {
+      store.commit("player/setIsPause", isPause);
+    };
+
+    /** 切换播放顺序 */
+    const changeCurrentPlayBackType = (playBackType: IListState) => {
+      store.commit("player/setPlayBackType", playBackType);
+    };
+
     /** 播放下一首音乐 */
     const playNext = () => {
-      const findIndex = storeSongList.value.findIndex(
-        (song) => song.id === currentPlayId.value
+      /** 按照播放顺序，返回当前播放的歌曲 */
+      const reOrderSong = playerNextReOrder(
+        storeSongList.value,
+        storeCurrentSong.value,
+        currentPlayBackType.value.listState
       );
-      /**
-       * 当前无播放歌曲或者当前播放歌曲在列表中找不到，又或者播放到了列表的最后一首，
-       * 则播放列表的第一首歌曲
-       */
-      if (
-        currentPlayId.value === -1 ||
-        findIndex === -1 ||
-        findIndex === storeSongList.value.length - 1
-      ) {
-        currentPlayId.value = storeSongList.value[0].id;
-        store.commit("player/setCurrentSong", storeSongList.value[0]);
-        return;
+
+      if (!reOrderSong) {
+        playPause();
+      } else {
+        currentPlayId.value = reOrderSong.id;
       }
-      const nextSong = storeSongList.value[findIndex + 1];
-      currentPlayId.value = nextSong.id;
-      store.commit("player/setCurrentSong", nextSong);
+      store.commit("player/setCurrentSong", reOrderSong);
+    };
+
+    /** 歌曲播放完毕后，自动播放下一曲 */
+    const autoEndedPlayNext = () => {
+      if (currentPlayBackType.value.listState === "single-cycle") {
+        if (audioPlayerRef.value) {
+          audioPlayerRef.value.play();
+        }
+      } else {
+        playNext();
+      }
     };
 
     /** 播放上一首音乐 */
@@ -345,7 +370,7 @@ export default defineComponent({
     /** 播放音乐 */
     const playSong = () => {
       if (audioPlayerRef.value !== undefined) {
-        songState.isPause = false;
+        changeIsPause(false);
         audioPlayerRef.value.play();
       }
     };
@@ -353,14 +378,14 @@ export default defineComponent({
     /** 暂停播放 */
     const playPause = () => {
       if (audioPlayerRef.value !== undefined) {
-        songState.isPause = true;
+        changeIsPause(true);
         audioPlayerRef.value.pause();
       }
     };
 
     /** 清空播放列表 */
     const clearPlayList = () => {
-      songState.isPause = true;
+      changeIsPause(true);
       store.commit("player/setCurrentSong", undefined);
       store.commit("player/setSongList", []);
     };
@@ -368,18 +393,20 @@ export default defineComponent({
     /** 调整音量 */
     const onChangeVolume = (volume: number) => {
       if (audioPlayerRef.value) {
-        adjustVolume(volume);
+        store.commit("player/setVolume", volume);
         audioPlayerRef.value.volume = volume;
       }
     };
 
     onMounted(() => {
       if (audioPlayerRef.value !== undefined) {
-        audioPlayerRef.value.volume = playerState.volume;
+        audioPlayerRef.value.volume = currentVolume.value;
+        changeIsPause(true);
         const { initAudio } = useAudio(
           audioPlayerRef as Ref<HTMLAudioElement>,
           songState,
-          playNext
+          playNext,
+          autoEndedPlayNext
         );
         initAudio();
       }
@@ -401,8 +428,11 @@ export default defineComponent({
       currentSongUrl,
       songState,
       playerState,
+      isPause,
+      currentVolume,
+      currentPlayBackType,
       storeSongList,
-      changeListState,
+      changeCurrentPlayBackType,
       toggleExpandSong,
       playNext,
       playPrev,

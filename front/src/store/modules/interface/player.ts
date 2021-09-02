@@ -1,4 +1,5 @@
 import { IArtist } from "@/views/home/components/main-content/views/artist-detail/interface";
+import { IListState } from "@/views/home/components/player/interface";
 
 export interface IPlaySong {
   id: number /** 歌曲id */;
@@ -13,6 +14,10 @@ export interface IPlaySong {
 }
 
 export interface IPlayerState {
+  isPause: boolean /** 歌曲是否已暂停 */;
+  playBackType: IListState /** 当前播放顺序 */;
+  playBackTypeList: IListState[] /** 所有播放顺序 */;
+  volume: number /** 当前音量 */;
   currentSong?: IPlaySong /** 当前播放的歌曲 */;
   songList: IPlaySong[] /** 歌曲列表 */;
 }
