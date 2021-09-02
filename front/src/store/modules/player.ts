@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { apis } from "@/api";
 import { http } from "@/common/js/http";
+import { IListState } from "@/views/home/components/player/interface";
 import { ActionContext, Module } from "vuex";
 import { IRootStateTypes } from "./interface";
 import {
@@ -15,20 +16,83 @@ import {
 const ModulePlayer: Module<IPlayerState, IRootStateTypes> = {
   namespaced: true,
   state: (): IPlayerState => ({
+    isPause: true /** 歌曲是否已暂停 */,
+    playBackType: {
+      listState: "in-order",
+      listStateDesc: "顺序播放",
+      listStateIcon: "in-order",
+    },
+    playBackTypeList: [
+      {
+        listState: "in-order",
+        listStateDesc: "顺序播放",
+        listStateIcon: "in-order",
+      },
+      {
+        listState: "list-loop",
+        listStateDesc: "列表循环",
+        listStateIcon: "list-loop",
+      },
+      {
+        listState: "single-cycle",
+        listStateDesc: "单曲循环",
+        listStateIcon: "single-cycle",
+      },
+      {
+        listState: "shuffle",
+        listStateDesc: "随机播放",
+        listStateIcon: "shuffle",
+      },
+    ],
+    volume: 0.6,
     currentSong: undefined,
     songList: [],
   }),
   mutations: {
-    setCurrentSong(state: IPlayerState, song: IPlaySong) {
+    setIsPause(state: IPlayerState, isPause: boolean) {
+      state.isPause = isPause;
+    },
+    setPlayBackType(state: IPlayerState, playBackType: IListState) {
+      const result = state.playBackTypeList.findIndex(
+        (listState) => listState.listState === playBackType.listState
+      );
+      if (result !== -1) {
+        const currentIndex =
+          result === state.playBackTypeList.length - 1 ? 0 : result + 1;
+        state.playBackType = state.playBackTypeList[currentIndex];
+      } else {
+        state.playBackType = state.playBackTypeList[0];
+      }
+    },
+    /**
+     * 调整音量
+     * @param volume 音量，0-1之间的数字
+     */
+    setVolume(state: IPlayerState, volume: number) {
+      let volumeNum = 0;
+      if (volume < 0) {
+        volumeNum = 0;
+      } else if (volume > 1) {
+        volumeNum = 1;
+      } else {
+        volumeNum = volume;
+      }
+      state.volume = volumeNum;
+    },
+    setCurrentSong(state: IPlayerState, song: IPlaySong | undefined) {
+      state.isPause = false;
       state.currentSong = song;
     },
     setCurrentSongById(state: IPlayerState, songId: number) {
+      state.isPause = false;
       state.currentSong = state.songList.find((song) => song.id === songId);
     },
     setCurrentSongByName(state: IPlayerState, songName: string) {
+      state.isPause = false;
       state.currentSong = state.songList.find((song) => song.name === songName);
     },
     setCurrentSongByIndex(state: IPlayerState, index: number) {
+      state.isPause = false;
       state.currentSong = state.songList[index];
     },
     setSongList(state: IPlayerState, list: IPlaySong[]) {

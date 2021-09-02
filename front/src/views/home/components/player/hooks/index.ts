@@ -1,19 +1,20 @@
-import { reactive, Ref } from "vue";
+import { computed, ComputedRef, reactive, Ref } from "vue";
 import { ElMessage } from "element-plus";
-import {
-  IListState,
-  IPlayerState,
-  ISongState,
-  IUsePlayerState,
-  PlayBackType,
-} from "../interface";
+import { IPlayerState, ISongState, IUsePlayerState } from "../interface";
 import { IUseAudioReturn } from "./interface";
+import { useStore } from "@/store";
 
 export const useAudio = (
   audioRef: Ref<HTMLAudioElement>,
   songState: ISongState,
-  playNext: () => void
+  playNext: () => void,
+  autoEndedPlayNext: () => void
 ): IUseAudioReturn => {
+  const store = useStore();
+
+  /** 播放器是否暂停 */
+  const isPause = computed(() => store.state.player.isPause);
+
   /** 初始化音乐播放器 */
   const initAudio = () => {
     const ele = audioRef.value;
@@ -30,7 +31,11 @@ export const useAudio = (
     };
     // 开始播放音乐
     ele.onplay = () => {
-      songState.isPause = false;
+      if (isPause.value) {
+        ele.pause();
+      } else {
+        store.commit("player/setIsPause", false);
+      }
     };
     // 获取当前播放时间
     ele.ontimeupdate = () => {
@@ -44,11 +49,12 @@ export const useAudio = (
       // } else {
       //   that.next();
       // }
-      playNext();
+      /** 单曲循环的时候，自动播放下一首应该重新播放当前歌曲 */
+      autoEndedPlayNext();
     };
     // 音乐播放出错
     ele.onerror = () => {
-      if (!songState.isPause) {
+      if (!isPause.value) {
         ElMessage({
           showClose: true,
           message: "当前音乐不可播放，已自动播放下一曲",
@@ -123,55 +129,9 @@ export const useAudio = (
 /** 播放器状态hooks */
 export const usePlayerState = (): IUsePlayerState => {
   const playerState = reactive<IPlayerState>({
-    listState: "in-order",
-    listStateDesc: "顺序播放",
-    listStateIcon: "in-order",
-    volume: 0.6,
     showLyrics: false,
     expandSong: false,
   });
-
-  /** 列表播放状态数组 */
-  const listStateArray: IListState[] = [
-    {
-      listState: "in-order",
-      listStateDesc: "顺序播放",
-      listStateIcon: "in-order",
-    },
-    {
-      listState: "list-loop",
-      listStateDesc: "列表循环",
-      listStateIcon: "list-loop",
-    },
-    {
-      listState: "single-cycle",
-      listStateDesc: "单曲循环",
-      listStateIcon: "single-cycle",
-    },
-    {
-      listState: "shuffle",
-      listStateDesc: "随机播放",
-      listStateIcon: "shuffle",
-    },
-  ];
-
-  /**
-   * 切换播放器列表状态到列表中的下一个状态
-   * @param state 播放器播放列表状态
-   */
-  const changeListState = (state: PlayBackType) => {
-    const result = listStateArray.findIndex(
-      (listState) => listState.listState === state
-    );
-    if (result !== -1) {
-      const currentIndex =
-        result === listStateArray.length - 1 ? 0 : result + 1;
-      const currentListState = listStateArray[currentIndex];
-      playerState.listState = currentListState.listState;
-      playerState.listStateDesc = currentListState.listStateDesc;
-      playerState.listStateIcon = currentListState.listStateIcon;
-    }
-  };
 
   /** 展开｜关闭 播放列表 */
   const toggleExpandSong = (state: boolean | undefined = undefined) => {
@@ -182,24 +142,8 @@ export const usePlayerState = (): IUsePlayerState => {
     }
   };
 
-  /**
-   * 调整音量
-   * @param volume 音量，0-1之间的数字
-   */
-  const adjustVolume = (volume: number) => {
-    let volumeNum = 0;
-    if (volume < 0) {
-      volumeNum = 0;
-    } else if (volume > 1) {
-      volumeNum = 1;
-    }
-    playerState.volume = volumeNum;
-  };
-
   return {
     playerState,
-    changeListState,
     toggleExpandSong,
-    adjustVolume,
   };
 };
