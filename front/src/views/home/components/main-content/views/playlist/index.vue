@@ -1,5 +1,14 @@
 <template>
-  <div class="playlist-wrapper max-width-1100 width-100 pdl-30 pdr-30">
+  <div
+    class="
+      playlist-wrapper
+      max-width-1100
+      width-100
+      pdl-30
+      pdr-30
+      box-sizing-border-box
+    "
+  >
     <!-- 精品歌单 -->
     <!-- 歌单分类 -->
     <div class="cat-wrapper">
