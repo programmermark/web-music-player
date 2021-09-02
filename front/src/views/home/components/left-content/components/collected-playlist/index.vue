@@ -43,7 +43,7 @@ export default defineComponent({
   },
   setup() {
     const router = useRouter();
-    const hasCollapsed = ref(true);
+    const hasCollapsed = ref(false);
 
     const toggleCollapse = () => {
       hasCollapsed.value = !hasCollapsed.value;
