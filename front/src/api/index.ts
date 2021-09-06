@@ -8,6 +8,7 @@ import ArtistDetailApis from "./right-content/artist-detail/index";
 import LatestSongsApis from "./right-content/latest-music/index";
 import AlbumDetailApis from "./right-content/album-detail/index";
 import ArtistRankListApis from "./right-content/artist-rank-list/index";
+import MVDetailApis from "./common/mv-detail/index";
 
 const apis = {
   ...PersonalRecommendApis,
@@ -20,6 +21,7 @@ const apis = {
   ...LatestSongsApis,
   ...AlbumDetailApis,
   ...ArtistRankListApis,
+  ...MVDetailApis,
 };
 
 export { apis };

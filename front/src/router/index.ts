@@ -75,6 +75,13 @@ const routes: Array<RouteRecordRaw> = [
           "home/components/main-content/views/artist-detail/index"
         ),
       },
+      {
+        path: "mv/:id",
+        name: "MVDetail",
+        component: lazyLoad(
+          "home/components/main-content/views/mv-detail/index"
+        ),
+      },
     ],
   },
 ];

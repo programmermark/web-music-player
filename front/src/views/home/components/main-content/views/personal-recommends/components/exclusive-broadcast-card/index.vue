@@ -1,5 +1,5 @@
 <template>
-  <div class="card">
+  <div class="card" @click="gotoMVDetail(id)">
     <img class="image" :src="`${imgUrl}?param=320y180`" alt="歌单封面" />
     <div class="icon">
       <mp-icon icon="play-caret" color="#fff" bgColor="none" />
@@ -11,6 +11,7 @@
 <script lang="ts">
 import MPIcon from "@/components/MPIcon.vue";
 import { defineComponent } from "vue";
+import { useRouter } from "vue-router";
 
 /** 独家放送卡片 */
 export default defineComponent({
@@ -31,6 +32,17 @@ export default defineComponent({
       type: String,
       required: true,
     },
+  },
+  setup() {
+    const router = useRouter();
+
+    const gotoMVDetail = (id: number) => {
+      router.push(`/mv/${id}`);
+    };
+
+    return {
+      gotoMVDetail,
+    };
   },
 });
 </script>
