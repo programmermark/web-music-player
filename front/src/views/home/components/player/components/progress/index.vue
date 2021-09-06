@@ -46,6 +46,7 @@ export default defineComponent({
       default: 60,
     },
   },
+  emits: ["change-progress"],
   setup(props, { emit }) {
     const { width, outColor, color, percentage } = toRefs(props);
 

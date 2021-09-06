@@ -24,11 +24,19 @@
                   playingSong.name
                 }}</span>
                 <div class="parting-line">-</div>
-                <span
-                  class="artist word-ellipsis"
+                <div
+                  class="artist-list-wrapper word-ellipsis"
                   :title="playingSongArtistStr"
-                  >{{ playingSongArtistStr }}</span
                 >
+                  <span
+                    class="artist word-ellipsis"
+                    v-for="(artist, index) in artists"
+                    :key="artist.id"
+                    @click="gotoArtistDetail(artist.id)"
+                    >{{ artist.name
+                    }}<span v-if="index < artists.length - 1">/</span></span
+                  >
+                </div>
               </div>
               <div class="play-pace">
                 <span class="time">
@@ -207,6 +215,7 @@ import { transformSecondToMinute } from "@/common/js/util/index";
 import MPIcon from "@/components/MPIcon.vue";
 import VolumeAdjuster from "./components/volume-adjuster/index.vue";
 import { playerNextReOrder } from "@/common/js/util/algorithm";
+import router from "@/router";
 
 export default defineComponent({
   components: { "mp-icon": MPIcon, "volume-adjuster": VolumeAdjuster },
@@ -268,6 +277,14 @@ export default defineComponent({
       return artistStr;
     });
 
+    /** 正在播放的歌曲的歌手列表 */
+    const artists = computed(() => {
+      if (playingSong.value) {
+        return playingSong.value.artists;
+      }
+      return [];
+    });
+
     /** 当前播放的歌曲的url */
     const currentSongUrl = computed(() => {
       if (playingSong.value) {
@@ -300,6 +317,11 @@ export default defineComponent({
     /** 切换播放顺序 */
     const changeCurrentPlayBackType = (playBackType: IListState) => {
       store.commit("player/setPlayBackType", playBackType);
+    };
+
+    /** 前往歌手详情页面 */
+    const gotoArtistDetail = (id: number) => {
+      router.push(`/artist/${id}`);
     };
 
     /** 播放下一首音乐 */
@@ -422,9 +444,9 @@ export default defineComponent({
 
     return {
       audioPlayerRef,
-      currentPlayId,
       playingSong,
       playingSongArtistStr,
+      artists,
       currentSongUrl,
       songState,
       playerState,
@@ -434,6 +456,7 @@ export default defineComponent({
       storeSongList,
       changeCurrentPlayBackType,
       toggleExpandSong,
+      gotoArtistDetail,
       playNext,
       playPrev,
       playSong,
@@ -512,19 +535,26 @@ export default defineComponent({
               margin-bottom: 8px;
               .song-name {
                 max-width: 200px;
+                line-height: 20px;
                 color: #4d4d4d;
                 font-size: 14px;
                 font-weight: bold;
               }
               .parting-line {
+                line-height: 20px;
                 color: #666666;
                 font-size: 13px;
                 padding: 0 4px;
               }
-              .artist {
-                max-width: 150px;
-                color: #666666;
-                font-size: 13px;
+              .artist-list-wrapper {
+                max-width: 110px;
+                line-height: 20px;
+                .artist {
+                  max-width: 150px;
+                  color: #666666;
+                  font-size: 13px;
+                  cursor: pointer;
+                }
               }
             }
             .play-pace {
