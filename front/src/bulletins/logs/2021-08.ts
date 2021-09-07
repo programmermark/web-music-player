@@ -2,6 +2,12 @@ import { ILog } from "@/store/modules/interface/bulletin";
 
 export const logs: ILog[] = [
   {
+    date: "2021-09-08",
+    title: "web-music-player更新公告(2021-09-08)",
+    briefContent: `<p>1. 新增了MV详情页面（初版）</p>`,
+    content: `<p>1. 新增了MV详情页面（初版）</p>`,
+  },
+  {
     date: "2021-09-03",
     title: "web-music-player更新公告(2021-09-03)",
     briefContent: `<p>1. 新增了播放顺序功能（随机播放、单曲播放等等）</p>`,

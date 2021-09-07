@@ -31,6 +31,7 @@
 <script lang="ts" setup>
 import MPIcon from "@/components/MPIcon.vue";
 import { translatePlayCount, transformSecondToMinute } from "@/common/js/util";
+import { useRouter } from "vue-router";
 
 defineProps<{
   id: number /** MV id */;
@@ -40,9 +41,11 @@ defineProps<{
   duration: number /** MV持续时长 */;
 }>();
 
+const router = useRouter();
+
 /** 查看MV详情 */
 const gotoMVDetail = (id: number) => {
-  console.log("查看MV详情，MV id:", id);
+  router.push(`/mv/${id}`);
 };
 </script>
 

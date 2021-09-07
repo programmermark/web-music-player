@@ -138,6 +138,7 @@ export default defineComponent({
 
     onMounted(() => {
       if (route.params) {
+        store.commit("artistDetail/setArtistMVs", []);
         getArtistDetail(Number(route.params.id));
       }
     });

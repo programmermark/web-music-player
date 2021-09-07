@@ -42,6 +42,7 @@ import MPIcon from "@/components/MPIcon.vue";
 import { defineComponent, PropType, ref } from "vue";
 import { translatePlayCount } from "@/common/js/util";
 import { IArtist } from "../../../artist-detail/interface";
+import router from "@/router";
 
 /** 推荐MV卡片组件 */
 export default defineComponent({
@@ -83,7 +84,7 @@ export default defineComponent({
 
     /** 跳转至MV详情页面 */
     const gotoMvDetail = (id: number) => {
-      console.log("跳转至MV详情页面，MV的id：" + id);
+      router.push(`/mv/${id}`);
     };
 
     /** 跳转至歌手详情页面 */
