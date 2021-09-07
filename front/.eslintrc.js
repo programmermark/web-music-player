@@ -10,6 +10,12 @@ module.exports = {
     "@vue/prettier",
     "@vue/prettier/@typescript-eslint",
   ],
+  globals: {
+    defineProps: "readonly",
+    defineEmits: "readonly",
+    defineExpose: "readonly",
+    withDefaults: "readonly",
+  },
   rules: {
     // Enable vue/script-setup-uses-vars rule
     "vue/script-setup-uses-vars": "error",

@@ -1,5 +1,5 @@
 <template>
-  <div class="hot-song">
+  <div class="hot-song" v-if="hotSongList.length > 0">
     <!-- top50 图片 -->
     <div class="image">
       <img src="./image/top-50.png" alt="top50歌曲" />
@@ -63,6 +63,7 @@
       </div>
     </div>
   </div>
+  <div class="no-data" v-else>没有相关专辑</div>
 </template>
 
 <script lang="ts" setup>
@@ -206,5 +207,12 @@ const playCurrentSong = (id: number) => {
       }
     }
   }
+}
+
+.no-data {
+  margin-top: 48px;
+  font-size: 14px;
+  color: #666;
+  text-align: center;
 }
 </style>
