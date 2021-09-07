@@ -118,7 +118,7 @@ export default defineComponent({
       { label: "W", value: "w" },
       { label: "X", value: "x" },
       { label: "Y", value: "y" },
-      { label: "X", value: "z" },
+      { label: "Z", value: "z" },
       { label: "#", value: "0" },
     ];
 

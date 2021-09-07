@@ -35,6 +35,7 @@ export default defineComponent({
       default: 60,
     },
   },
+  emits: ["change-volume"],
   setup(prop, { emit }) {
     const onChangeProgress = (progress: number) => {
       emit("change-volume", progress / 100);
