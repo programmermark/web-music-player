@@ -24,7 +24,7 @@
       </el-carousel-item>
     </el-carousel>
     <!-- 推荐歌单 -->
-    <link-title url="" title="推荐歌单" />
+    <link-title url="/playlist" title="推荐歌单" />
     <div class="wrapper">
       <recommend-song-special-card url="" />
       <recommend-song-card
@@ -38,7 +38,7 @@
       />
     </div>
     <!-- 独家放送 -->
-    <link-title url="" title="独家放送" />
+    <link-title url="/exclusive-broadcast" title="独家放送" />
     <div class="wrapper">
       <exclusive-broadcast-card
         v-for="broadcast in exclusiveBroadcastList"
@@ -49,7 +49,7 @@
       />
     </div>
     <!-- 最新音乐 -->
-    <link-title url="" title="最新音乐" />
+    <link-title url="/latestMusic" title="最新音乐" />
     <div class="wrapper pd-40 card-move">
       <latest-music-card
         v-for="(latestMusic, index) in latestMusicList"

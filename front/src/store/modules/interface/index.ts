@@ -3,6 +3,7 @@ import { IArtistRankListState } from "./artist-rank-list";
 import { IArtistListState } from "./artistlist";
 import { IBulletinState } from "./bulletin";
 import { ICatListState } from "./catlist";
+import { IExclusiveBroadcastState } from "./exclusive-broadcast";
 import { ILatestMusicState } from "./latest-music";
 import { ILoginState } from "./login";
 import { IPlayerState } from "./player";
@@ -22,6 +23,7 @@ export interface IRootStateTypes {
   latestMusic: ILatestMusicState;
   artistRankList: IArtistRankListState;
   artistDetail: IArtistDetailState;
+  exclusiveBroadcast: IExclusiveBroadcastState;
 }
 export interface IAllStateTypes extends IRootStateTypes {
   ModulePlayer: IPlayerState;
@@ -35,4 +37,5 @@ export interface IAllStateTypes extends IRootStateTypes {
   ModuleLatestMusic: ILatestMusicState;
   ModuleArtistRankList: IArtistRankListState;
   ModuleArtistDetail: IArtistDetailState;
+  ModuleExclusiveBroadcast: IExclusiveBroadcastState;
 }
