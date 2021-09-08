@@ -30,8 +30,7 @@
         :key="artist.id"
         @click="(e) => gotoSingerDetail(e, artist.id)"
       >
-        {{ artist.name
-        }}<mp-icon v-show="artists.length !== index + 1" icon="slash" />
+        {{ artist.name }}<mp-icon v-show="artists.length !== index + 1" icon="slash" />
       </div>
     </div>
   </div>
@@ -90,7 +89,7 @@ export default defineComponent({
     /** 跳转至歌手详情页面 */
     const gotoSingerDetail = (e: Event, id: number) => {
       e.stopPropagation();
-      console.log("跳转至歌手详情页面，歌手id：" + id);
+      router.push(`/artist/${id}`);
     };
 
     return {

@@ -1,5 +1,5 @@
 <template>
-  <div class="icon-wrapper" :style="iconBgStyle">
+  <div class="icon-wrapper" :style="iconBgStyle" @click="handleClick">
     <i :class="['icon', iconClass, 'mp-opt-icon']" :style="iconStyle"></i>
   </div>
 </template>
@@ -67,8 +67,9 @@ export default defineComponent({
       validator: (val: string) => ["always", "hover"].includes(val),
     },
   },
+  emits: ["click"],
   name: "MusicPlayOptIcon",
-  setup(props) {
+  setup(props, { emit }) {
     const {
       icon,
       iconPrefix,
@@ -97,10 +98,14 @@ export default defineComponent({
       return `color: ${color.value}; font-size: ${size.value}px; transform: scale(${scale.value}, ${scale.value}); opacity: ${opacity}`;
     });
 
+    /** 图标点击事件 */
+    const handleClick = () => emit("click");
+
     return {
       iconClass,
       iconStyle,
       iconBgStyle,
+      handleClick,
     };
   },
 });
