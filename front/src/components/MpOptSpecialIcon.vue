@@ -1,5 +1,5 @@
 <template>
-  <div class="icon-wrapper" :style="iconBgStyle">
+  <div class="icon-wrapper" :style="iconBgStyle" @click="handleClick">
     <i :class="['mp-opt-icon', iconClass]" :style="iconStyle"></i>
     <span
       class="inner-number"
@@ -79,18 +79,12 @@ export default defineComponent({
       },
     },
   },
+  emits: ["click"],
   name: "MusicPlayOptSpecialIcon",
-  setup(props) {
-    const {
-      icon,
-      iconPrefix,
-      iconSource,
-      color,
-      size,
-      scale,
-      cursor,
-      display,
-    } = toRefs(props);
+  setup(props, { emit }) {
+    const { icon, iconPrefix, iconSource, color, size, scale, cursor, display } = toRefs(
+      props
+    );
 
     /** 图标的class */
     const iconClass = computed(() => {
@@ -108,10 +102,14 @@ export default defineComponent({
       return `color: ${color.value}; font-size: ${size.value}px; transform: scale(${scale.value}, ${scale.value}); opacity: ${opacity}`;
     });
 
+    /** 图标点击事件 */
+    const handleClick = () => emit("click");
+
     return {
       iconClass,
       iconStyle,
       iconBgStyle,
+      handleClick,
     };
   },
 });

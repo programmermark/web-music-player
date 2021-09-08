@@ -1,5 +1,5 @@
 <template>
-  <i :class="[icon, iconClass, 'mp-icon']" :style="iconStyle"></i>
+  <i :class="[icon, iconClass, 'mp-icon']" :style="iconStyle" @click="handleClick"></i>
 </template>
 
 <script lang="ts">
@@ -59,18 +59,12 @@ export default defineComponent({
       default: 0.5,
     },
   },
+  emits: ["click"],
   name: "MusicPlayIcon",
-  setup(props) {
-    const {
-      icon,
-      iconPrefix,
-      iconSource,
-      color,
-      bgColor,
-      size,
-      cursor,
-      scale,
-    } = toRefs(props);
+  setup(props, { emit }) {
+    const { icon, iconPrefix, iconSource, color, bgColor, size, cursor, scale } = toRefs(
+      props
+    );
 
     /** 图标的class */
     const iconClass = computed(() => {
@@ -79,16 +73,20 @@ export default defineComponent({
 
     /** 图标的style */
     const iconStyle = computed(() => {
-      return `color: ${color.value}; background-color: ${
-        bgColor.value
-      }; width: ${size.value}px; height: ${size.value}px; font-size: ${
-        size.value * scale.value
-      }px; cursor: ${cursor.value};`;
+      return `color: ${color.value}; background-color: ${bgColor.value}; width: ${
+        size.value
+      }px; height: ${size.value}px; font-size: ${size.value * scale.value}px; cursor: ${
+        cursor.value
+      };`;
     });
+
+    /** 图标点击事件 */
+    const handleClick = () => emit("click");
 
     return {
       iconClass,
       iconStyle,
+      handleClick,
     };
   },
 });

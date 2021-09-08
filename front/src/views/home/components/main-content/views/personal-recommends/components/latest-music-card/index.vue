@@ -3,17 +3,9 @@
     <div class="wrapper">
       <!-- 歌曲封面（单击播放） -->
       <div class="cover" @click="playSong">
-        <el-image
-          class="image"
-          :src="`${coverImg}?param=100y100`"
-          alt="歌曲封面图片"
-        >
+        <el-image class="image" :src="`${coverImg}?param=100y100`" alt="歌曲封面图片">
           <template #placeholder>
-            <img
-              class="no-image"
-              src="@/assets/image/no-img.png"
-              alt="歌曲封面图片"
-            />
+            <img class="no-image" src="@/assets/image/no-img.png" alt="歌曲封面图片" />
           </template>
         </el-image>
         <mp-opt-icon
@@ -36,7 +28,14 @@
           {{ songName }}
           <span v-show="aliasName">（{{ aliasName }}）</span>
         </div>
-        <div class="author-name">{{ artistName }}</div>
+        <div class="author-name-wrapper">
+          <div class="author-name" v-for="(artist, index) in artists" :key="artist.id">
+            <span class="text" @click="gotoArtistDetail(artist.id)">{{
+              artist.name
+            }}</span>
+            <span v-if="index + 1 < artists.length" class="parting-line">/</span>
+          </div>
+        </div>
       </div>
       <!-- MV图标（有mvId才显示） -->
       <div class="mv-wrapper" v-show="mvId > 0">
@@ -45,7 +44,7 @@
           :size="32"
           color="#d33333"
           bgColor="none"
-          @click="playMV"
+          @click="gotoMVDetail(mvId)"
         />
       </div>
     </div>
@@ -58,6 +57,7 @@ import MPOptIcon from "@/components/MPOptIcon.vue";
 import { computed, defineComponent, PropType, toRefs } from "vue";
 import { useStore } from "@/store";
 import { IArtist } from "../../../artist-detail/interface";
+import router from "@/router";
 
 export default defineComponent({
   components: { "mp-opt-icon": MPOptIcon, "mp-icon": MPIcon },
@@ -100,17 +100,8 @@ export default defineComponent({
   },
 
   setup(props) {
-    const { id, mvId, artists, orderNumber, songName, aliasName } =
-      toRefs(props);
+    const { id, mvId, orderNumber } = toRefs(props);
     const store = useStore();
-
-    /** 格式化歌手名称 */
-    const artistName = computed(() => {
-      const nameStr = artists.value
-        .map((item) => item.name)
-        .reduce((initValue, currentValue) => initValue + "/" + currentValue);
-      return nameStr;
-    });
 
     /** 格式化排序数字 */
     const order = computed(() => {
@@ -120,22 +111,18 @@ export default defineComponent({
       return orderNumber.value;
     });
 
-    /** 格式化后的歌曲名称 */
-    const formatName = computed(() => {
-      let name = songName.value;
-      if (aliasName.value) {
-        name = `${songName.value}（${aliasName.value}）`;
-      }
-      return name;
-    });
-
     const playSong = () => {
-      console.log("播放歌曲, 歌曲id:", id.value);
       store.dispatch("player/setCurrentSong", id.value);
     };
 
-    const playMV = () => {
-      console.log("播放歌曲MV, 歌曲MV的id:", mvId.value);
+    /** 跳转到歌手详情 */
+    const gotoArtistDetail = (id: number) => {
+      router.push(`/artist/${id}`);
+    };
+
+    /** 跳转到MV详情 */
+    const gotoMVDetail = (id: number) => {
+      router.push(`/mv/${id}`);
     };
 
     const handleDbClick = () => {
@@ -143,12 +130,11 @@ export default defineComponent({
     };
 
     return {
-      formatName,
-      artistName,
       order,
+      gotoArtistDetail,
+      gotoMVDetail,
       handleDbClick,
       playSong,
-      playMV,
     };
   },
 });
@@ -243,9 +229,20 @@ export default defineComponent({
           color: #979797;
         }
       }
-      .author-name {
-        font-size: 13px;
-        color: #666666;
+
+      .author-name-wrapper {
+        display: flex;
+        align-items: center;
+        .author-name {
+          font-size: 13px;
+          color: #666666;
+          .text {
+            cursor: pointer;
+          }
+          .parting-line {
+            padding: 0 2px;
+          }
+        }
       }
     }
 
