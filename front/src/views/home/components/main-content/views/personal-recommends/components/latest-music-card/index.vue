@@ -28,7 +28,7 @@
           {{ songName }}
           <span v-show="aliasName">（{{ aliasName }}）</span>
         </div>
-        <div class="author-name-wrapper">
+        <div class="author-name-wrapper text-ellipsis">
           <div class="author-name" v-for="(artist, index) in artists" :key="artist.id">
             <span class="text" @click="gotoArtistDetail(artist.id)">{{
               artist.name
@@ -231,9 +231,8 @@ export default defineComponent({
       }
 
       .author-name-wrapper {
-        display: flex;
-        align-items: center;
         .author-name {
+          display: inline-block;
           font-size: 13px;
           color: #666666;
           .text {
