@@ -1,6 +1,6 @@
 <template>
   <div class="card" @click="gotoMVDetail(id)">
-    <img class="image" :src="`${imgUrl}?param=320y180`" alt="歌单封面" />
+    <img class="image" :src="`${imgUrl}?param=320y180`" alt="MV封面" />
     <div class="icon">
       <mp-icon icon="play-caret" color="#fff" bgColor="none" />
     </div>

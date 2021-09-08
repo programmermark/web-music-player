@@ -14,6 +14,7 @@ import ModuleBulletin from "./modules/bulletin";
 import ModuleLatestMusic from "./modules/latest-music";
 import ModuleArtistRankList from "./modules/artist-rank-list";
 import ModuleArtistDetail from "./modules/artist-detail";
+import ModuleExclusiveBroadcast from "./modules/exclusive-broadcast";
 
 const dataSet = createPersistedState({
   /** 被持久化的状态格式为：模块名.状态名 */
@@ -73,6 +74,11 @@ const dataSet = createPersistedState({
     "artistDetail.artistMVsPage",
     "artistDetail.hotSongs",
     "artistDetail.albums",
+    /** 独家放送MV */
+    "exclusiveBroadcast.hasMore",
+    "exclusiveBroadcast.limit",
+    "exclusiveBroadcast.offset",
+    "exclusiveBroadcast.list",
   ],
 });
 
@@ -92,6 +98,7 @@ export default createStore<IRootStateTypes>({
     latestMusic: ModuleLatestMusic,
     artistRankList: ModuleArtistRankList,
     artistDetail: ModuleArtistDetail,
+    exclusiveBroadcast: ModuleExclusiveBroadcast,
   },
   plugins: [dataSet],
 });
