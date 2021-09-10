@@ -267,18 +267,16 @@ export default defineComponent({
       & > .image {
         width: 90px;
         height: 90px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 1px solid #ededed;
         border-radius: 50%;
         margin-right: 8px;
 
         .no-image {
           width: 100%;
           height: 100%;
-          border: 1px solid #ededed;
-        }
-
-        :deep(.el-image__inner) {
-          border: 1px solid #ededed;
-          border-radius: 4px;
         }
       }
       .name {

@@ -3,9 +3,17 @@
     <div class="wrapper">
       <!-- 歌曲封面（单击播放） -->
       <div class="cover" @click="playSong">
-        <el-image class="image" :src="`${coverImg}?param=100y100`" alt="歌曲封面图片">
+        <el-image
+          class="image"
+          :src="`${coverImg}?param=100y100`"
+          alt="歌曲封面图片"
+        >
           <template #placeholder>
-            <img class="no-image" src="@/assets/image/no-img.png" alt="歌曲封面图片" />
+            <img
+              class="no-image"
+              src="@/assets/image/no-img.png"
+              alt="歌曲封面图片"
+            />
           </template>
         </el-image>
         <mp-opt-icon
@@ -29,11 +37,17 @@
           <span v-show="aliasName">（{{ aliasName }}）</span>
         </div>
         <div class="author-name-wrapper text-ellipsis">
-          <div class="author-name" v-for="(artist, index) in artists" :key="artist.id">
+          <div
+            class="author-name"
+            v-for="(artist, index) in artists"
+            :key="artist.id"
+          >
             <span class="text" @click="gotoArtistDetail(artist.id)">{{
               artist.name
             }}</span>
-            <span v-if="index + 1 < artists.length" class="parting-line">/</span>
+            <span v-if="index + 1 < artists.length" class="parting-line"
+              >/</span
+            >
           </div>
         </div>
       </div>
@@ -174,15 +188,20 @@ export default defineComponent({
       & > .image {
         width: 100%;
         height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-sizing: border-box;
+        border: 1px solid #ededed;
+        border-radius: 4px;
 
         .no-image {
           width: 100%;
           height: 100%;
-          border: 1px solid #ededed;
+          border-radius: 4px;
         }
 
         :deep(.el-image__inner) {
-          border: 1px solid #ededed;
           border-radius: 4px;
         }
       }

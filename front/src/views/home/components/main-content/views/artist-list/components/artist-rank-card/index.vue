@@ -86,19 +86,21 @@ export default defineComponent({
   .image {
     width: 100%;
     height: 100%;
-    box-sizing: border-box;
-    border: 1px solid #f2f2f2;
     margin-bottom: 6px;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    border: 1px solid #ededed;
+    border-radius: 4px;
 
     .no-image {
       width: 100%;
       height: 100%;
-      border: 1px solid #ededed;
     }
 
     :deep(.el-image__inner) {
-      border: 1px solid #ededed;
       border-radius: 4px;
     }
   }
