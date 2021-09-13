@@ -17,7 +17,7 @@ export default defineConfig({
   },
   plugins: [vue()],
   server: {
-    port: 3000,
+    port: 8080,
     proxy: {
       "/api": {
         // 以/api开头的接口都代理到target指定的域名下
