@@ -6,7 +6,8 @@ import { IDateFormat } from "./interface";
  * @param {string} viewPath  view的相对路径，相对于src目录
  */
 export function lazyLoad(viewPath: string) {
-  return () => import(/* @vite-ignore */ `/src/views/${viewPath}.vue`);
+  const prefix = import.meta.env.BASE_URL;
+  return () => import(/* @vite-ignore */ `../views/${viewPath}.vue`);
 }
 
 /** 返回指定类型的对象的键名数组 */
