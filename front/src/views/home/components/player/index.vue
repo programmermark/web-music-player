@@ -13,16 +13,11 @@
         <div class="left-part">
           <div v-if="playingSong" class="wrapper">
             <div class="cover-img">
-              <img
-                :src="`${playingSong.coverImg}?param=80y80`"
-                alt="歌曲封面图片"
-              />
+              <img :src="`${playingSong.coverImg}?param=80y80`" alt="歌曲封面图片" />
             </div>
             <div class="song-info-wrapper">
               <div class="song-info">
-                <span class="song-name word-ellipsis">{{
-                  playingSong.name
-                }}</span>
+                <span class="song-name word-ellipsis">{{ playingSong.name }}</span>
                 <div class="parting-line">-</div>
                 <div
                   class="artist-list-wrapper word-ellipsis"
@@ -59,12 +54,7 @@
             <mp-icon icon="play-button" color="#d33a30" :size="40" :scale="1" />
           </div>
           <div v-else class="play-song-wrapper" @click="playPause">
-            <mp-icon
-              icon="pause-button"
-              color="#d33a30"
-              :size="40"
-              :scale="1"
-            />
+            <mp-icon icon="pause-button" color="#d33a30" :size="40" :scale="1" />
           </div>
           <div class="next-song-wrapper" @click="playNext">
             <mp-icon icon="next-song" color="#d33a30" :size="16" />
@@ -91,10 +81,7 @@
                 />
               </el-tooltip>
             </div>
-            <div
-              class="play-list-wrapper mr-20"
-              @click.stop="toggleExpandSong()"
-            >
+            <div class="play-list-wrapper mr-20" @click.stop="toggleExpandSong()">
               <mp-icon
                 icon="play-list"
                 :color="playerState.expandSong ? '#d33a30' : '#4b4b4b'"
@@ -119,10 +106,7 @@
         </div>
       </div>
       <!-- 歌曲进度条 -->
-      <div
-        class="progress-bar"
-        :style="{ width: `${songState.playRate * 100}%` }"
-      ></div>
+      <div class="progress-bar" :style="{ width: `${songState.playRate * 100}%` }"></div>
     </div>
   </div>
   <!-- 右侧播放列表 -->
@@ -144,13 +128,11 @@
       </div>
     </div>
     <!-- 播放列表 -->
-    <el-scrollbar>
+    <el-scrollbar height="calc(100% - 95px)">
       <div class="song-list-wrapper">
         <div
           class="song-list"
-          :class="[
-            playingSong && playingSong.id === song.id && 'song-list-active',
-          ]"
+          :class="[playingSong && playingSong.id === song.id && 'song-list-active']"
           v-for="song in storeSongList"
           :key="song.id"
           @dblclick="playSongById(song.id)"
@@ -247,9 +229,7 @@ export default defineComponent({
     const currentPlayBackType = computed(() => store.state.player.playBackType);
 
     /** 歌曲列表 */
-    const storeSongList = computed<IPlaySong[]>(
-      () => store.state.player.songList
-    );
+    const storeSongList = computed<IPlaySong[]>(() => store.state.player.songList);
 
     /** 当前播放的歌曲 */
     const storeCurrentSong = computed<IPlaySong>(() => {
@@ -259,9 +239,7 @@ export default defineComponent({
     /** 当前播放的歌曲（没有歌曲播放的时候为undefined）*/
     const playingSong = computed(() => {
       if (currentPlayId.value !== -1) {
-        return storeSongList.value.find(
-          (item) => item.id === currentPlayId.value
-        );
+        return storeSongList.value.find((item) => item.id === currentPlayId.value);
       }
       return undefined;
     });
