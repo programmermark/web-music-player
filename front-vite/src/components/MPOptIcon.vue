@@ -103,7 +103,8 @@ export default defineComponent({
       return {
         color: color.value,
         fontSize: `${size.value}px`,
-        transform: `scale(${scale.value}, ${scale.value}); opacity: ${opacity}`,
+        transform: `scale(${scale.value}, ${scale.value})`,
+        opacity: opacity,
       };
     });
 
