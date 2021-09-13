@@ -10,7 +10,8 @@ import {
  * @param {string} viewPath  view的相对路径，相对于src目录
  */
 export function lazyLoad(viewPath: string) {
-  return () => import(/* @vite-ignore */ `../views/${viewPath}.vue`);
+  const modules = import.meta.glob("../views/**/*.vue");
+  return modules[`../views/${viewPath}.vue`];
 }
 
 const routes: Array<RouteRecordRaw> = [
