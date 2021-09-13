@@ -39,9 +39,7 @@ export default defineComponent({
     const hasNotified = computed(() => store.state.bulletin.hasNotified);
 
     /** store中的最新公告 */
-    const currentBulletin = computed(
-      () => store.state.bulletin.currentBulletin
-    );
+    const currentBulletin = computed(() => store.state.bulletin.currentBulletin);
 
     /**
      * 更新公告sotre
