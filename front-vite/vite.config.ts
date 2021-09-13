@@ -9,7 +9,7 @@ function resolve(dir: string) {
 export default defineConfig({
   resolve: {
     alias: {
-      "@/": resolve("src"),
+      "@/": resolve("src/"),
       common: resolve("src/common"),
       components: resolve("src/components"),
       store: resolve("src/store"),
