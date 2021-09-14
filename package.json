@@ -6,6 +6,7 @@
   "scripts": {
     "install": "cd front && npm install && cd ../front-vite && npm install && cd ../wangyiyun-server && npm install cd .. && exit 0",
     "start": "cd wangyiyun-server && npm start & cd front && npm run serve",
+    "start-vite": "cd wangyiyun-server && npm start & cd front-vite && npm run dev",
     "build": "cd front && npm run build",
     "build-vite": "cd front-vite && npm run build"
   },
