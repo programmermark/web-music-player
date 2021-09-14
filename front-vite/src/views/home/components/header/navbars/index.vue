@@ -24,7 +24,7 @@ export default defineComponent({
 
     const state = reactive({
       navs: [
-        { text: "个性推荐1", url: "/", active: true },
+        { text: "个性推荐", url: "/", active: true },
         { text: "歌单", url: "/playlist", active: false },
         { text: "主播电台", url: "", active: false },
         { text: "排行榜", url: "/rankList", active: false },
