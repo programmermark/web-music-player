@@ -38,3 +38,19 @@ export interface IMVDetailState {
   mvUrl?: IMVUrl;
   showMVDesc: boolean /** 是否显示MV详细描述 */;
 }
+
+/** 相似MV状态接口 */
+export interface ISimilarMVState {
+  list: ISimilarMV[];
+}
+
+/** 相似MV接口 */
+export interface ISimilarMV {
+  id: number /** MV id */;
+  name: string /** MV名称 */;
+  playCount: number /** 播放量 */;
+  duration: number /** MV时长（毫秒） */;
+  cover: string /** MV封面图片地址 */;
+  artistId: number /** MV作者id */;
+  artistName: string /** MV作者名 */;
+}

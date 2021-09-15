@@ -63,7 +63,10 @@
         </div>
       </div>
       <!-- 相关推荐 -->
-      <div class="recommend-mvs"></div>
+      <div class="recommend-mvs">
+        <div class="text-sm">相关推荐</div>
+        <RecommendCard v-for="mv in similarMvState.list" :key="mv.id" :mv="mv" />
+      </div>
     </div>
   </el-scrollbar>
 </template>
@@ -76,7 +79,14 @@ import { http } from "@/common/js/http";
 import { translatePlayCount } from "@/common/js/util";
 import MPIcon from "@/components/MPIcon.vue";
 import MPVideoPlayer from "@/components/MPVideoPlayer.vue";
-import { IMVDetail, IMVDetailState, IMVUrl } from "./interface";
+import RecommendCard from "./components/recommend-card/index.vue";
+import {
+  IMVDetail,
+  IMVDetailState,
+  IMVUrl,
+  ISimilarMV,
+  ISimilarMVState,
+} from "./interface";
 
 const router = useRouter();
 const route = useRoute();
@@ -85,6 +95,11 @@ const mvDetailState = reactive<IMVDetailState>({
   mvDetail: undefined,
   mvUrl: undefined,
   showMVDesc: false,
+});
+
+/** 相似MV列表 */
+const similarMvState = reactive<ISimilarMVState>({
+  list: [],
 });
 
 /** MV详情艺术家 */
@@ -124,6 +139,26 @@ const getMVDetail = async (id: number) => {
   mvDetailState.mvDetail = mvDetail;
 };
 
+/**
+ * 获取相似MV
+ */
+const getSimilarMV = async (id: number) => {
+  const mvs = await http<ISimilarMV[]>(
+    { url: `${apis.similarMvList}?mvid=${id}` },
+    "mvs"
+  );
+  const formatMvList: ISimilarMV[] = mvs.map((mv) => ({
+    id: mv.id,
+    name: mv.name,
+    playCount: mv.playCount,
+    duration: mv.duration,
+    cover: mv.cover,
+    artistId: mv.artistId,
+    artistName: mv.artistName,
+  }));
+  similarMvState.list = formatMvList;
+};
+
 /** 路由回退到上一页 */
 const gotBack = () => router.go(-1);
 
@@ -140,6 +175,7 @@ onMounted(() => {
   if (id) {
     getMVRealAddress(Number(route.params.id));
     getMVDetail(Number(route.params.id));
+    getSimilarMV(Number(route.params.id));
   }
 });
 </script>
