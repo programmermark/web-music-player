@@ -5,11 +5,20 @@
       <div class="detail-wrapper">
         <!-- 视频详情 -->
         <div class="router-wrapper" @click="gotBack">
-          <MPIcon icon="arrow-left" color="#666" bg-color="none" :size="16" :scale="1" />
+          <MPIcon
+            icon="arrow-left"
+            color="#666"
+            bg-color="none"
+            :size="16"
+            :scale="1"
+          />
           <span class="text">视频详情</span>
         </div>
         <!-- MV 播放器 -->
-        <MPVideoPlayer v-if="mvDetailState.mvUrl" :src="mvDetailState.mvUrl.url" />
+        <MPVideoPlayer
+          v-if="mvDetailState.mvUrl"
+          :src="mvDetailState.mvUrl.url"
+        />
         <!-- MV详细信息 -->
         <div class="detail-info" v-if="mvDetailState.mvDetail">
           <div class="artist">
@@ -18,14 +27,18 @@
               class="avatar"
               :src="`${mvDetailFirstArtist.img1v1Url}?param=100y100`"
               alt="头像"
-              @click="mvDetailFirstArtist && gotoArtistDetail(mvDetailFirstArtist.id)"
+              @click="
+                mvDetailFirstArtist && gotoArtistDetail(mvDetailFirstArtist.id)
+              "
             />
             <img
               v-if="mvDetailFirstArtist && !mvDetailFirstArtist.img1v1Url"
               class="avatar"
               src="@/assets/image/no-img.png"
               alt="头像"
-              @click="mvDetailFirstArtist && gotoArtistDetail(mvDetailFirstArtist.id)"
+              @click="
+                mvDetailFirstArtist && gotoArtistDetail(mvDetailFirstArtist.id)
+              "
             />
             <div class="artist-wrapper" v-if="mvDetailArtist">
               <div
@@ -36,7 +49,9 @@
                 <span class="name" @click="gotoArtistDetail(artist.id)">{{
                   artist.name
                 }}</span>
-                <span v-if="index + 1 < mvDetailArtist.length" class="part-line">/</span>
+                <span v-if="index + 1 < mvDetailArtist.length" class="part-line"
+                  >/</span
+                >
               </div>
             </div>
           </div>
@@ -44,7 +59,9 @@
             <div class="title">{{ mvDetailState.mvDetail.name }}</div>
             <i
               :class="[
-                !mvDetailState.showMVDesc ? 'el-icon-caret-bottom' : 'el-icon-caret-top',
+                !mvDetailState.showMVDesc
+                  ? 'el-icon-caret-bottom'
+                  : 'el-icon-caret-top',
               ]"
               class="icon-reset"
               @click="toggleShowMVDesc"
@@ -52,7 +69,9 @@
           </div>
 
           <div class="other-info">
-            <div class="item">发布：{{ mvDetailState.mvDetail.publishTime }}</div>
+            <div class="item">
+              发布：{{ mvDetailState.mvDetail.publishTime }}
+            </div>
             <div class="item">
               播放：{{ translatePlayCount(mvDetailState.mvDetail.playCount) }}次
             </div>
@@ -64,8 +83,12 @@
       </div>
       <!-- 相关推荐 -->
       <div class="recommend-mvs">
-        <div class="text-sm">相关推荐</div>
-        <RecommendCard v-for="mv in similarMvState.list" :key="mv.id" :mv="mv" />
+        <div class="text-base font-bold mb-4">相关推荐</div>
+        <RecommendCard
+          v-for="mv in similarMvState.list"
+          :key="mv.id"
+          :mv="mv"
+        />
       </div>
     </div>
   </el-scrollbar>
@@ -87,6 +110,7 @@ import {
   ISimilarMV,
   ISimilarMVState,
 } from "./interface";
+import { watch } from "vue";
 
 const router = useRouter();
 const route = useRoute();
@@ -124,7 +148,10 @@ const getMVRealAddress = async (id: number) => {
  * 获取MV详情
  */
 const getMVDetail = async (id: number) => {
-  const data = await http<IMVDetail>({ url: `${apis.mvDetail}?mvid=${id}` }, "data");
+  const data = await http<IMVDetail>(
+    { url: `${apis.mvDetail}?mvid=${id}` },
+    "data"
+  );
   const mvDetail: IMVDetail = {
     id: data.id,
     name: data.name,
@@ -170,6 +197,17 @@ const toggleShowMVDesc = () => {
   mvDetailState.showMVDesc = !mvDetailState.showMVDesc;
 };
 
+watch(
+  () => route.params.id,
+  (id) => {
+    if (id && route.name === "MVDetail") {
+      getMVRealAddress(Number(route.params.id));
+      getMVDetail(Number(route.params.id));
+      getSimilarMV(Number(route.params.id));
+    }
+  }
+);
+
 onMounted(() => {
   const id = route.params.id;
   if (id) {
@@ -206,7 +244,7 @@ onMounted(() => {
       .text {
         margin-left: 10px;
         color: #333;
-        size: 18px;
+        font-size: 16px;
         font-weight: bold;
       }
     }

@@ -128,10 +128,10 @@ export default defineComponent({
     };
 
     watch(
-      () => route.params,
-      (params) => {
-        if (params.id) {
-          getArtistDetail(Number(params.id));
+      () => route.params.id,
+      (id) => {
+        if (id && route.name === "Artist") {
+          getArtistDetail(Number(id));
         }
       }
     );
