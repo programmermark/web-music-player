@@ -2,6 +2,12 @@ import { ILog } from "@/store/modules/interface/bulletin";
 
 export const logs: ILog[] = [
   {
+    date: "2021-09-17",
+    title: "web-music-player更新公告(2021-09-17)",
+    briefContent: `<p>1. 新增了MV详情页面</p><p>2. 修复了路由切换是异常的错误提示</p><p>3. 引入tailwind css开发了个别功能</p>`,
+    content: `<p>1. 新增了MV详情页面</p><p>2. 修复了路由切换是异常的错误提示</p><p>3. 引入tailwind css开发了个别功能</p>`,
+  },
+  {
     date: "2021-09-09",
     title: "web-music-player更新公告(2021-09-09)",
     briefContent: `<p>1. 新增了独家放送页面</p>`,
