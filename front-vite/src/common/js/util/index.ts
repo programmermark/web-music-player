@@ -1,4 +1,5 @@
 import { IArtist } from "@/views/home/components/main-content/views/artist-detail/interface";
+import { ILyric } from "@/views/home/components/song-detail/interface/song-lyric";
 import { IDateFormat } from "./interface";
 
 /** 返回指定类型的对象的键名数组 */
@@ -130,4 +131,23 @@ export const formatMonth = (month: number): string => {
     return `0${month}`;
   }
   return `${month}`;
+};
+
+/**
+ * 格式化歌词字符串为"时间-歌词"格式的数组
+ * @param lyric 歌词字符串
+ * @returns
+ */
+export const formatLyric = (lyric: string) => {
+  const lyricParts = lyric.split("\n").filter((item) => item);
+  return lyricParts.map((item) => {
+    const splitItems = item.split("]");
+    console.log("splitItems", splitItems);
+
+    const lyricItem: ILyric = {
+      time: splitItems[0].slice(1),
+      text: splitItems[1],
+    };
+    return lyricItem;
+  });
 };

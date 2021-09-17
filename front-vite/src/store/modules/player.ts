@@ -111,7 +111,13 @@ const ModulePlayer: Module<IPlayerState, IRootStateTypes> = {
       const songList: IPlaySong[] = songs.map((song) => ({
         id: song.id,
         name: song.name,
+        subName: song.alia[0],
         coverImg: song.al.picUrl,
+        album: {
+          id: song.al.id,
+          name: song.al.name,
+          picUrl: song.al.picUrl,
+        },
         artists: song.ar.map(
           (item) => ({ id: item.id, name: item.name } as IArtist)
         ),
@@ -134,7 +140,13 @@ const ModulePlayer: Module<IPlayerState, IRootStateTypes> = {
       const songList: IPlaySong[] = songs.map((song) => ({
         id: song.id,
         name: song.name,
+        subName: song.alia[0],
         coverImg: song.al.picUrl,
+        album: {
+          id: song.al.id,
+          name: song.al.name,
+          picUrl: song.al.picUrl,
+        },
         artists: song.ar.map(
           (item) => ({ id: item.id, name: item.name } as IArtist)
         ),
@@ -169,7 +181,13 @@ const ModulePlayer: Module<IPlayerState, IRootStateTypes> = {
       const songList: IPlaySong[] = songs.map((song) => ({
         id: song.id,
         name: song.name,
+        subName: song.alia[0],
         coverImg: song.al.picUrl,
+        album: {
+          id: song.al.id,
+          name: song.al.name,
+          picUrl: song.al.picUrl,
+        },
         artists: song.ar.map(
           (item) => ({ id: item.id, name: item.name } as IArtist)
         ),
