@@ -31,7 +31,7 @@ import { ILyricResponse } from "./interface";
 import MusicPlayer from "@/views/home/components/player/index.vue";
 import RotateCover from "./components/rotate-cover/index.vue";
 import SongLyric from "./components/song-lyric/index.vue";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 
 const store = useStore();
@@ -44,14 +44,22 @@ const currentSong = computed(() => store.state.player.currentSong);
 
 /** 获取歌曲歌词 */
 const getSongLyric = async (id: number) => {
-  const lrc = await http<ILyricResponse>(
-    { url: `${apis.lyric}?id=${id}` },
-    "lrc"
-  );
+  const lrc = await http<ILyricResponse>({ url: `${apis.lyric}?id=${id}` }, "lrc");
   if (lrc) {
     songLyric.value = lrc.lyric;
+  } else {
+    songLyric.value = "";
   }
 };
+
+watch(
+  () => store.state.player.currentSong,
+  (song) => {
+    if (song && song.id) {
+      getSongLyric(Number(song.id));
+    }
+  }
+);
 
 onMounted(() => {
   const id = route.params.id;

@@ -46,6 +46,7 @@ const ModulePlayer: Module<IPlayerState, IRootStateTypes> = {
       },
     ],
     volume: 0.6,
+    currentTime: 0,
     currentSong: undefined,
     songList: [],
   }),
@@ -79,6 +80,10 @@ const ModulePlayer: Module<IPlayerState, IRootStateTypes> = {
         volumeNum = volume;
       }
       state.volume = volumeNum;
+    },
+    /** 设置当前时间 */
+    setCurrentTime(state: IPlayerState, time: number) {
+      state.currentTime = time;
     },
     setCurrentSong(state: IPlayerState, song: IPlaySong | undefined) {
       state.isPause = false;

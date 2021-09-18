@@ -23,6 +23,7 @@ export interface IPlayerState {
   playBackTypeList: IListState[] /** 所有播放顺序 */;
   volume: number /** 当前音量 */;
   currentSong?: IPlaySong /** 当前播放的歌曲 */;
+  currentTime: number /** 当前歌曲播放到的时间点 */;
   songList: IPlaySong[] /** 歌曲列表 */;
 }
 
