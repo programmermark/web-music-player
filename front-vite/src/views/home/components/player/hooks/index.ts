@@ -3,6 +3,7 @@ import { ElMessage } from "element-plus";
 import { IPlayerState, ISongState, IUsePlayerState } from "../interface";
 import { IUseAudioReturn } from "./interface";
 import { useStore } from "@/store";
+import _ from "lodash";
 
 export const useAudio = (
   audioRef: Ref<HTMLAudioElement>,
@@ -39,6 +40,10 @@ export const useAudio = (
     };
     // 获取当前播放时间
     ele.ontimeupdate = () => {
+      _.debounce(() => {
+        store.commit("player/setCurrentTime", ele.currentTime.toFixed(3));
+      }, 1000)();
+
       songState.playedSongDuration = ele.currentTime;
       songState.playRate = ele.currentTime / ele.duration;
     };
