@@ -1,4 +1,4 @@
-import { IArtist } from "./latestMusicCard";
+import { IArtist } from "../../artist-detail/interface";
 
 export interface IRecommendMv {
   id: number;

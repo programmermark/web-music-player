@@ -1,4 +1,4 @@
-import { IArtist } from "./artistlist";
+import { IArtist } from "@/views/home/components/main-content/views/artist-detail/interface";
 
 /** 推荐轮播图列表接口定义 */
 export interface IBanner {

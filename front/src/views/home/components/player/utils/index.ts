@@ -1,5 +1,3 @@
-import { IArtist } from "@/store/modules/interface/player";
-
 /**
  * 把秒数转换为分钟数
  * @param secondCount 秒数(0-3600)

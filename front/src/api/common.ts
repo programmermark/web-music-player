@@ -9,6 +9,6 @@ const imgServerUrl =
 const baseUrl =
   process.env.NODE_ENV === "production"
     ? "https://music-player-server.immortalboy.cn"
-    : "";
+    : "/api";
 
 export { baseUrl, serverUrl, imgServerUrl };

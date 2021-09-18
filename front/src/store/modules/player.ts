@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { apis } from "@/api";
 import { http } from "@/common/js/http";
+import { IArtist } from "@/views/home/components/main-content/views/artist-detail/interface";
 import { IListState } from "@/views/home/components/player/interface";
 import { ActionContext, Module } from "vuex";
 import { IRootStateTypes } from "./interface";
@@ -45,6 +46,7 @@ const ModulePlayer: Module<IPlayerState, IRootStateTypes> = {
       },
     ],
     volume: 0.6,
+    currentTime: 0,
     currentSong: undefined,
     songList: [],
   }),
@@ -79,6 +81,10 @@ const ModulePlayer: Module<IPlayerState, IRootStateTypes> = {
       }
       state.volume = volumeNum;
     },
+    /** 设置当前时间 */
+    setCurrentTime(state: IPlayerState, time: number) {
+      state.currentTime = time;
+    },
     setCurrentSong(state: IPlayerState, song: IPlaySong | undefined) {
       state.isPause = false;
       state.currentSong = song;
@@ -110,8 +116,16 @@ const ModulePlayer: Module<IPlayerState, IRootStateTypes> = {
       const songList: IPlaySong[] = songs.map((song) => ({
         id: song.id,
         name: song.name,
+        subName: song.alia[0],
         coverImg: song.al.picUrl,
-        artists: song.ar.map((item) => ({ id: item.id, name: item.name })),
+        album: {
+          id: song.al.id,
+          name: song.al.name,
+          picUrl: song.al.picUrl,
+        },
+        artists: song.ar.map(
+          (item) => ({ id: item.id, name: item.name } as IArtist)
+        ),
         songUrl: `https://music.163.com/song/media/outer/url?id=${song.id}.mp3`,
       }));
       context.commit("setSongList", songList);
@@ -131,8 +145,16 @@ const ModulePlayer: Module<IPlayerState, IRootStateTypes> = {
       const songList: IPlaySong[] = songs.map((song) => ({
         id: song.id,
         name: song.name,
+        subName: song.alia[0],
         coverImg: song.al.picUrl,
-        artists: song.ar.map((item) => ({ id: item.id, name: item.name })),
+        album: {
+          id: song.al.id,
+          name: song.al.name,
+          picUrl: song.al.picUrl,
+        },
+        artists: song.ar.map(
+          (item) => ({ id: item.id, name: item.name } as IArtist)
+        ),
         songUrl: `https://music.163.com/song/media/outer/url?id=${song.id}.mp3`,
         duration: Math.floor((song.dt || 0) / 1000),
       }));
@@ -164,8 +186,16 @@ const ModulePlayer: Module<IPlayerState, IRootStateTypes> = {
       const songList: IPlaySong[] = songs.map((song) => ({
         id: song.id,
         name: song.name,
+        subName: song.alia[0],
         coverImg: song.al.picUrl,
-        artists: song.ar.map((item) => ({ id: item.id, name: item.name })),
+        album: {
+          id: song.al.id,
+          name: song.al.name,
+          picUrl: song.al.picUrl,
+        },
+        artists: song.ar.map(
+          (item) => ({ id: item.id, name: item.name } as IArtist)
+        ),
         songUrl: `https://music.163.com/song/media/outer/url?id=${song.id}.mp3`,
         duration: Math.floor((song.dt || 0) / 1000),
       }));

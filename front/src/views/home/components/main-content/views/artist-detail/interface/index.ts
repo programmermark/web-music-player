@@ -11,8 +11,9 @@ export interface IArtistResponse {
 
 export interface IArtist {
   id: number;
-  cover?: string /** 歌手封面 */;
   name: string /** 歌手名 */;
+  picUrl?: string /** 歌手封面图片 */;
+  cover?: string /** 歌手封面 */;
   musicSize?: number /** 单曲数 */;
   mvSize?: number /** 专辑数 */;
   videoCount?: number /** MV数 */;
