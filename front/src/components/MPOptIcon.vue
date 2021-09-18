@@ -89,17 +89,27 @@ export default defineComponent({
 
     /** 背景颜色的style */
     const iconBgStyle = computed(() => {
-      return `background-color: ${bgColor.value}; width: ${size.value}px; height: ${size.value}px; cursor: ${cursor.value};`;
+      return {
+        backgroundColor: bgColor.value,
+        width: `${size.value}px`,
+        height: `${size.value}px`,
+        cursor: `${cursor.value}`,
+      };
     });
 
     /** 图标的style */
     const iconStyle = computed(() => {
       const opacity = display.value === "hover" ? 0 : 1;
-      return `color: ${color.value}; font-size: ${size.value}px; transform: scale(${scale.value}, ${scale.value}); opacity: ${opacity}`;
+      return {
+        color: color.value,
+        fontSize: `${size.value}px`,
+        transform: `scale(${scale.value}, ${scale.value})`,
+        opacity: opacity,
+      };
     });
 
     /** 图标点击事件 */
-    const handleClick = () => emit("click");
+    const handleClick = (e: Event) => emit("click", e);
 
     return {
       iconClass,

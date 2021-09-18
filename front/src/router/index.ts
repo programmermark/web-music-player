@@ -4,7 +4,15 @@ import {
   createWebHistory,
   RouteRecordRaw,
 } from "vue-router";
-import { lazyLoad } from "@/common/js/util/index";
+
+/**
+ * 实现路由懒加载的工具函数
+ * @param {string} viewPath  view的相对路径，相对于src目录
+ */
+export function lazyLoad(viewPath: string) {
+  const modules = import.meta.glob("../views/**/*.vue");
+  return modules[`../views/${viewPath}.vue`];
+}
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -89,14 +97,19 @@ const routes: Array<RouteRecordRaw> = [
     name: "MVDetail",
     component: lazyLoad("home/components/mv-detail/index"),
   },
+  {
+    path: "/song/:id",
+    name: "SongDetail",
+    component: lazyLoad("home/components/song-detail/index"),
+  },
 ];
 
 const router = createRouter({
   // 本地使用hash模式，使用history模式刷新会404
   history:
-    process.env.NODE_ENV === "production"
-      ? createWebHistory(process.env.BASE_URL)
-      : createWebHashHistory(process.env.BASE_URL),
+    import.meta.env.MODE === "production"
+      ? createWebHistory(import.meta.env.BASE_URL)
+      : createWebHashHistory(import.meta.env.BASE_URL),
   routes,
 });
 

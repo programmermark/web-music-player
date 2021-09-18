@@ -1,9 +1,9 @@
 import { IBanner } from "./banner";
 import { IRecommendSong } from "./recommendSongList";
 import { IExclusiveBroadcast } from "./exclusiveBroadcastCard";
-import { IArtist } from "./latestMusicCard";
 import { IRecommendMv } from "./recommendMvCard";
 import { IRecommendDj } from "./recommend-dj-card";
+import { IArtist } from "../../artist-detail/interface";
 
 /** 最新音乐接口定义 */
 export interface ILatestMusicFormat {

@@ -12,12 +12,19 @@
         <!-- 播放器左侧 -->
         <div class="left-part">
           <div v-if="playingSong" class="wrapper">
-            <div class="cover-img">
+            <div
+              class="cover-img cursor-pointer"
+              @click="gotoSongDetail(playingSong ? playingSong.id : undefined)"
+            >
               <img :src="`${playingSong.coverImg}?param=80y80`" alt="歌曲封面图片" />
             </div>
             <div class="song-info-wrapper">
-              <div class="song-info">
-                <span class="song-name word-ellipsis">{{ playingSong.name }}</span>
+              <div class="song-info cursor-pointer">
+                <span
+                  class="song-name word-ellipsis"
+                  @click="gotoSongDetail(playingSong ? playingSong.id : undefined)"
+                  >{{ playingSong.name }}</span
+                >
                 <div class="parting-line">-</div>
                 <div
                   class="artist-list-wrapper word-ellipsis"
@@ -398,6 +405,13 @@ export default defineComponent({
       }
     };
 
+    /** 前往歌曲详情 */
+    const gotoSongDetail = (id: number | undefined) => {
+      if (id) {
+        router.push(`/song/${id}`);
+      }
+    };
+
     onMounted(() => {
       if (audioPlayerRef.value !== undefined) {
         audioPlayerRef.value.volume = currentVolume.value;
@@ -432,6 +446,7 @@ export default defineComponent({
       currentVolume,
       currentPlayBackType,
       storeSongList,
+      storeCurrentSong,
       changeCurrentPlayBackType,
       toggleExpandSong,
       gotoArtistDetail,
@@ -444,6 +459,7 @@ export default defineComponent({
       playSongById,
       clearPlayList,
       onChangeVolume,
+      gotoSongDetail,
     };
   },
 });

@@ -1,5 +1,5 @@
 <template>
-  <div class="recommend-mv-card" @click="gotoMvDetail(id)">
+  <div class="recommend-mv-card">
     <!-- MV封面 + MV播放量 -->
     <div
       class="image"
@@ -7,6 +7,7 @@
       alt="MV封面"
       @mouseover="subTitleIsShow = true"
       @mouseleave="subTitleIsShow = false"
+      @click="gotoMvDetail(id)"
     ></div>
     <transition>
       <div v-show="!subTitleIsShow" class="play-count">
@@ -21,16 +22,17 @@
       </div>
     </transition>
     <!-- MV名称 -->
-    <div class="cover">{{ name }}</div>
+    <div class="cover" @click="gotoMvDetail(id)">{{ name }}</div>
     <!-- MV作者 -->
     <div class="singer-wrapper text-ellipsis">
       <div
         class="singer"
         v-for="(artist, index) in artists"
         :key="artist.id"
-        @click="(e) => gotoSingerDetail(e, artist.id)"
+        @click="gotoSingerDetail(artist.id)"
       >
-        {{ artist.name }}<mp-icon v-show="artists.length !== index + 1" icon="slash" />
+        {{ artist.name
+        }}<mp-icon v-show="artists.length !== index + 1" icon="slash" />
       </div>
     </div>
   </div>
@@ -87,8 +89,7 @@ export default defineComponent({
     };
 
     /** 跳转至歌手详情页面 */
-    const gotoSingerDetail = (e: Event, id: number) => {
-      e.stopPropagation();
+    const gotoSingerDetail = (id: number) => {
       router.push(`/artist/${id}`);
     };
 

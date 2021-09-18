@@ -10,6 +10,7 @@ import AlbumDetailApis from "./right-content/album-detail/index";
 import ArtistRankListApis from "./right-content/artist-rank-list/index";
 import ExclusiveBroadcastApis from "./right-content/exclusive-broadcast/index";
 import MVDetailApis from "./common/mv-detail/index";
+import SongDetailApis from "./common/song-detail/index";
 
 const apis = {
   ...PersonalRecommendApis,
@@ -24,6 +25,7 @@ const apis = {
   ...ArtistRankListApis,
   ...ExclusiveBroadcastApis,
   ...MVDetailApis,
+  ...SongDetailApis,
 };
 
 export { apis };

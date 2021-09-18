@@ -1,4 +1,7 @@
-import { IArtist } from "@/views/home/components/main-content/views/artist-detail/interface";
+import {
+  IAlbum,
+  IArtist,
+} from "@/views/home/components/main-content/views/artist-detail/interface";
 import { IListState } from "@/views/home/components/player/interface";
 
 export interface IPlaySong {
@@ -6,6 +9,7 @@ export interface IPlaySong {
   coverImg: string /** 歌曲封面图片 */;
   name: string /** 歌曲名 */;
   subName?: string /** 歌曲副标题 */;
+  album?: IAlbum /** 歌曲专辑 */;
   artists: IArtist[] /** 歌手 */;
   duration?: number /** 歌曲时长（秒：s） */;
   songUrl: string /** 歌曲的播放地址 */;
@@ -19,6 +23,7 @@ export interface IPlayerState {
   playBackTypeList: IListState[] /** 所有播放顺序 */;
   volume: number /** 当前音量 */;
   currentSong?: IPlaySong /** 当前播放的歌曲 */;
+  currentTime: number /** 当前歌曲播放到的时间点 */;
   songList: IPlaySong[] /** 歌曲列表 */;
 }
 

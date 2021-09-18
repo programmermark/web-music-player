@@ -1,4 +1,4 @@
-export interface IArtist {
+export interface IRankListArtist {
   id: number /** 歌手id */;
   name: string /** 歌手名 */;
   picUrl: string /** 歌手封面图片 */;
@@ -26,7 +26,7 @@ export interface ISongRankOfficial extends ISongRank {
 
 /** 歌手排行榜 */
 export interface IArtistRank extends IArtistRankListResponse {
-  artistList: IArtist[];
+  artistList: IRankListArtist[];
 }
 
 export interface IRankListState {
@@ -63,5 +63,5 @@ export interface IRankListResponse {
 }
 
 export interface ISingerRankListResponse {
-  artists: IArtist[] /** 歌手榜单 */;
+  artists: IRankListArtist[] /** 歌手榜单 */;
 }
