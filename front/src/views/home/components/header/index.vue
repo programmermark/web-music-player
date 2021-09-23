@@ -27,9 +27,10 @@ import { ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import LeftOpts from "./left-opts/index.vue";
 import NavBars from "./navbars/index.vue";
+import MPSearch from "@/components/MPSearch.vue";
 
 export default defineComponent({
-  components: { LeftOpts, NavBars },
+  components: { LeftOpts, NavBars, MPSearch },
   setup() {
     const route = useRoute();
 
@@ -49,6 +50,8 @@ export default defineComponent({
     /** 独立导航显示的名称 */
     const singleNavText = ref("");
 
+    const searchValue = ref("");
+
     /** 支持独立导航的导航列表 */
     const singleNavs = [{ text: "独家放送", url: "/exclusive-broadcast" }];
 
@@ -67,6 +70,7 @@ export default defineComponent({
     );
 
     return {
+      searchValue,
       showNavs,
       singleNavText,
     };
