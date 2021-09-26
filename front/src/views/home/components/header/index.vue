@@ -15,8 +15,13 @@
         </div>
       </div>
       <!-- 组合导航内容：显示多个页面标题，需要独立定制组件 -->
-      <!-- 搜索框 -->
-      <!-- 右侧操作 -->
+      <div class="flex-1 flex flex-row-reverse">
+        <div class="items-center h-full pr-4">
+          <!-- 搜索框 -->
+          <Search class="pr-6" />
+          <!-- 右侧操作 -->
+        </div>
+      </div>
     </el-col>
   </el-row>
 </template>
@@ -27,10 +32,10 @@ import { ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import LeftOpts from "./left-opts/index.vue";
 import NavBars from "./navbars/index.vue";
-import MPSearch from "@/components/MPSearch.vue";
+import Search from "./componnets/search/index.vue";
 
 export default defineComponent({
-  components: { LeftOpts, NavBars, MPSearch },
+  components: { LeftOpts, NavBars, Search },
   setup() {
     const route = useRoute();
 
@@ -89,6 +94,8 @@ export default defineComponent({
     border-top-left-radius: 8px;
   }
   .header-right {
+    display: flex;
+    align-items: center;
     background-color: #f9f9f9;
     border-top-right-radius: 8px;
 
