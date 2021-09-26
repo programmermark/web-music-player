@@ -22,6 +22,8 @@
       "
       :value="modelValue"
       @input="handleInputChange"
+      @focus="handleFocus"
+      @blur="handleBlur"
       type="text"
       placeholder="搜索"
     />
@@ -46,16 +48,19 @@ import MPOptIcon from "./MPOptIcon.vue";
 withDefaults(
   defineProps<{
     modelValue?: string /** 搜索框的输入值 */;
+    focus?: boolean /** 输入框是否获取焦点 */;
     clearable?: boolean /** 是否开启清空功能 */;
   }>(),
   {
     modelValue: "",
+    focus: false,
     clearable: true,
   }
 );
 
 const emits = defineEmits<{
   (e: "update:modelValue", value: string): void;
+  (e: "update:focus", focus: boolean): void;
 }>();
 
 const handleInputChange = (e: Event) => {
@@ -65,6 +70,14 @@ const handleInputChange = (e: Event) => {
 /** 清空输入框 */
 const handleClear = () => {
   emits("update:modelValue", "");
+};
+
+const handleFocus = () => {
+  emits("update:focus", true);
+};
+
+const handleBlur = () => {
+  emits("update:focus", false);
 };
 </script>
 

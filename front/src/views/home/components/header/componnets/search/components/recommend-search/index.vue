@@ -1,23 +1,36 @@
 <template>
   <div class="w-[356px]">
-    <div class="mt-4 flex items-center">
-      <div class="pl-5 flex-1">
-        <span class="text-gray-500 text-sm font-medium mr-2">搜索历史</span>
-        <MPOptIcon
-          icon="delete"
-          :size="16"
-          color="#999"
-          bg-color="none"
-          scale="1"
-          display="always"
-          @click="handleKeywordsDelete"
-        />
-      </div>
+    <!-- 热搜榜 -->
+    <div>
+      <div class="text-gray-500 text-sm font-medium px-5 py-4">热搜榜</div>
       <div
-        class="text-gray-500 text-sm font-medium self-end cursor-pointer pr-5"
-        @click="viewAllSearchKeywords"
+        class="flex py-[10px] px-5 cursor-pointer hover:bg-gray-100"
+        v-for="(item, index) in state.hotSearchList"
+        :key="item.searchWord"
+        @click="handleHotWordClick"
       >
-        查看全部
+        <div
+          class="flex items-center text-base text-gray-400 mr-5"
+          :class="{ 'text-red-500 font-medium': index < 3 }"
+        >
+          {{ index + 1 }}
+        </div>
+        <div>
+          <div class="flex items-center mb-1">
+            <span
+              class="text-sm text-gray-900 mr-1"
+              :class="{ ' font-medium': index < 3 }"
+              >{{ item.searchWord }}</span
+            >
+            <img
+              v-if="item.iconUrl"
+              class="h-3 self-end mb-1"
+              :src="item.iconUrl"
+            />
+            <span class="text-xs text-gray-400 ml-3">{{ item.score }}</span>
+          </div>
+          <div class="text-xs text-gray-500">{{ item.content }}</div>
+        </div>
       </div>
     </div>
   </div>
@@ -25,34 +38,46 @@
 
 <!-- 没有输入值时，搜索组件展示的内容 -->
 <script lang="ts" setup>
-import MPOptIcon from "@/components/MPOptIcon.vue";
-import { Callback, ElMessage, ElMessageBox } from "element-plus";
+import { onMounted } from "vue";
+import { apis } from "@/api";
+import { http } from "@/common/js/http";
+import { reactive } from "@vue/reactivity";
+import { IHotSearch, IState } from "../../interface/recommend-search";
 
-/** 确认删除所有关键词 */
-const handleKeywordsDelete = () => {
-  ElMessageBox.alert("确定删除历史记录？", "", {
-    confirmButtonText: "确定",
-    center: true,
-    callback: (action: "confirm" | "cancel" | "close") => {
-      if (action === "confirm") {
-        ElMessage({
-          type: "warning",
-          message: `调用清空搜索历史的接口`,
-        });
-      }
-    },
-  });
+/** 热搜榜 */
+const state = reactive<IState>({
+  hotSearchList: [],
+});
+
+/**
+ * 获取热搜榜
+ */
+const fetchHotSearchRankList = async () => {
+  const list = await http<IHotSearch[]>(
+    { url: apis.hotSearchRankList },
+    "data"
+  );
+  const formatList: IHotSearch[] = list.map((item) => ({
+    searchWord: item.searchWord,
+    score: item.score,
+    content: item.content,
+    iconUrl: item.iconUrl,
+  }));
+  state.hotSearchList = formatList;
 };
 
 /**
- * 展开全部搜索关键词
+ * 点击热搜榜
  */
-const viewAllSearchKeywords = () => {
-  ElMessage.warning({
-    message: "展开并查看全部搜索关键词",
-    type: "warning",
-  });
+const handleHotWordClick = (keyword: string) => {
+  /** 1. 填充关键词到搜索框 */
+  /** 2. 隐藏弹出层 */
+  /** 3. 跳转到对应页面 */
 };
+
+onMounted(() => {
+  fetchHotSearchRankList();
+});
 </script>
 
 <style lang="scss" scoped></style>
