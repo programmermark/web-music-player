@@ -163,3 +163,23 @@ export const formatLyric = (lyric: string) => {
     return lyricItem;
   });
 };
+
+/**
+ * 根据关键词高亮字符串
+ * @param keywords 关键词
+ * @param targetString 被高亮的字符串
+ * @param classString 高亮设置的class
+ */
+export const highLightKeywords = (
+  keywords: string,
+  targetString: string,
+  classString = ""
+) => {
+  if (keywords === "") {
+    return targetString;
+  }
+  return targetString.replaceAll(
+    keywords,
+    `<span class="${classString}">${keywords}</span>`
+  );
+};

@@ -7,7 +7,7 @@
         class="flex py-[10px] px-5 cursor-pointer hover:bg-gray-100"
         v-for="(item, index) in state.hotSearchList"
         :key="item.searchWord"
-        @click="handleHotWordClick"
+        @click="handleHotWordClick(item.searchWord)"
       >
         <div
           class="flex items-center text-base text-gray-400 mr-5"
@@ -22,11 +22,7 @@
               :class="{ ' font-medium': index < 3 }"
               >{{ item.searchWord }}</span
             >
-            <img
-              v-if="item.iconUrl"
-              class="h-3 self-end mb-1"
-              :src="item.iconUrl"
-            />
+            <img v-if="item.iconUrl" class="h-3 self-end mb-1" :src="item.iconUrl" />
             <span class="text-xs text-gray-400 ml-3">{{ item.score }}</span>
           </div>
           <div class="text-xs text-gray-500">{{ item.content }}</div>
@@ -53,10 +49,7 @@ const state = reactive<IState>({
  * 获取热搜榜
  */
 const fetchHotSearchRankList = async () => {
-  const list = await http<IHotSearch[]>(
-    { url: apis.hotSearchRankList },
-    "data"
-  );
+  const list = await http<IHotSearch[]>({ url: apis.hotSearchRankList }, "data");
   const formatList: IHotSearch[] = list.map((item) => ({
     searchWord: item.searchWord,
     score: item.score,
