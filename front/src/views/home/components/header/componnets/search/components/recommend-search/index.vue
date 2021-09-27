@@ -22,7 +22,11 @@
               :class="{ ' font-medium': index < 3 }"
               >{{ item.searchWord }}</span
             >
-            <img v-if="item.iconUrl" class="h-3 self-end mb-1" :src="item.iconUrl" />
+            <img
+              v-if="item.iconUrl"
+              class="h-3 self-end mb-1"
+              :src="item.iconUrl"
+            />
             <span class="text-xs text-gray-400 ml-3">{{ item.score }}</span>
           </div>
           <div class="text-xs text-gray-500">{{ item.content }}</div>
@@ -40,6 +44,10 @@ import { http } from "@/common/js/http";
 import { reactive } from "@vue/reactivity";
 import { IHotSearch, IState } from "../../interface/recommend-search";
 
+const emits = defineEmits<{
+  (e: "clickHotKeyword", keyword: string, focus: boolean): void;
+}>();
+
 /** 热搜榜 */
 const state = reactive<IState>({
   hotSearchList: [],
@@ -49,7 +57,10 @@ const state = reactive<IState>({
  * 获取热搜榜
  */
 const fetchHotSearchRankList = async () => {
-  const list = await http<IHotSearch[]>({ url: apis.hotSearchRankList }, "data");
+  const list = await http<IHotSearch[]>(
+    { url: apis.hotSearchRankList },
+    "data"
+  );
   const formatList: IHotSearch[] = list.map((item) => ({
     searchWord: item.searchWord,
     score: item.score,
@@ -66,6 +77,7 @@ const handleHotWordClick = (keyword: string) => {
   /** 1. 填充关键词到搜索框 */
   /** 2. 隐藏弹出层 */
   /** 3. 跳转到对应页面 */
+  emits("clickHotKeyword", keyword, false);
 };
 
 onMounted(() => {

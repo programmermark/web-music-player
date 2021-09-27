@@ -155,7 +155,7 @@ export default defineComponent({
 
     /** 跳转到歌手详情 */
     const gotoArtistDetail = (id: number) => {
-      console.log("前往歌手详情页面，歌手id:", id);
+      router.push(`/artist/${id}`);
     };
 
     /** 查看全部 */

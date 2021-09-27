@@ -90,6 +90,13 @@ const routes: Array<RouteRecordRaw> = [
           "home/components/main-content/views/exclusive-broadcast/index"
         ),
       },
+      {
+        path: "search-content/:keywords",
+        name: "SearchContent",
+        component: lazyLoad(
+          "home/components/main-content/views/search-content/index"
+        ),
+      },
     ],
   },
   {
