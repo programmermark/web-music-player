@@ -2,6 +2,12 @@ import { ILog } from "@/store/modules/interface/bulletin";
 
 export const logs: ILog[] = [
   {
+    date: "2021-09-28",
+    title: "web-music-player更新公告(2021-09-28)",
+    briefContent: `<p>1. 部分完成了全局的歌曲搜索功能</p>`,
+    content: `<p>1. 部分完成了全局的歌曲搜索功能</p>`,
+  },
+  {
     date: "2021-09-18",
     title: "web-music-player更新公告(2021-09-18)",
     briefContent: `<p>1. 移除了项目中使用vue-cli创建的前端项目，替换为vite创建的前端项目</p>`,

@@ -1,6 +1,9 @@
 <template>
   <div class="w-[356px]">
-    <div class="px-2 py-2 mb-1 text-gray-500 flex items-center">
+    <div
+      class="px-2 py-2 mb-1 text-gray-500 flex items-center cursor-pointer"
+      @click="gotoSearchContent(keywords)"
+    >
       搜“<span class="text-blue-500 cursor-pointer">{{ keywords }}</span
       >”相关的结果<MPOptIcon
         class="ml-1"
@@ -13,7 +16,10 @@
     </div>
     <!-- 单曲 -->
     <div class="py-2" v-if="state.songs && state.songs.length > 0">
-      <div class="px-2 text-gray-400 text-sm cursor-pointer mb-3">
+      <div
+        class="px-2 text-gray-400 text-sm cursor-pointer mb-3"
+        @click="gotoSearchContent(keywords)"
+      >
         <MPOptIcon
           class="mr-2"
           icon="music"
@@ -24,7 +30,15 @@
         />单曲
       </div>
       <div
-        class="pl-7 pr-2 py-2 text-sm cursor-pointer hover:bg-gray-100"
+        class="
+          pl-7
+          pr-2
+          py-2
+          text-sm
+          cursor-pointer
+          text-gray-700 text-ellipsis
+          hover:bg-gray-100
+        "
         v-for="song in state.songs"
         :key="song.id"
         @click="playSong(song.id)"
@@ -35,7 +49,10 @@
     </div>
     <!-- 歌手 -->
     <div class="py-2" v-if="state.artists && state.artists.length > 0">
-      <div class="px-2 text-gray-400 text-sm cursor-pointer mb-3">
+      <div
+        class="px-2 text-gray-400 text-sm cursor-pointer mb-3"
+        @click="gotoSearchContent(keywords)"
+      >
         <MPOptIcon
           class="mr-2"
           icon="user-avatar"
@@ -46,7 +63,15 @@
         />歌手
       </div>
       <div
-        class="pl-7 pr-2 py-2 text-sm cursor-pointer hover:bg-gray-100"
+        class="
+          pl-7
+          pr-2
+          py-2
+          text-sm
+          cursor-pointer
+          text-gray-700 text-ellipsis
+          hover:bg-gray-100
+        "
         v-for="artist in state.artists"
         :key="artist.id"
         @click="gotoArtistDetail(artist.id)"
@@ -56,7 +81,10 @@
     </div>
     <!-- 专辑 -->
     <div class="py-2" v-if="state.albums && state.albums.length > 0">
-      <div class="px-2 text-gray-400 text-sm cursor-pointer mb-3">
+      <div
+        class="px-2 text-gray-400 text-sm cursor-pointer mb-3"
+        @click="gotoSearchContent(keywords)"
+      >
         <MPOptIcon
           class="mr-2"
           icon="album"
@@ -67,7 +95,15 @@
         />专辑
       </div>
       <div
-        class="pl-7 pr-2 py-2 text-sm cursor-pointer hover:bg-gray-100"
+        class="
+          pl-7
+          pr-2
+          py-2
+          text-sm
+          cursor-pointer
+          text-gray-700 text-ellipsis
+          hover:bg-gray-100
+        "
         v-for="album in state.albums"
         :key="album.id"
         @click="gotoAlbumDetail(album.id)"
@@ -78,7 +114,10 @@
     </div>
     <!-- 歌单 -->
     <div class="py-2" v-if="state.playlists && state.playlists.length > 0">
-      <div class="px-2 text-gray-400 text-sm cursor-pointer mb-3">
+      <div
+        class="px-2 text-gray-400 text-sm cursor-pointer mb-3"
+        @click="gotoSearchContent(keywords)"
+      >
         <MPOptIcon
           class="mr-2"
           icon="playlist"
@@ -89,7 +128,15 @@
         />歌单
       </div>
       <div
-        class="pl-7 pr-2 py-2 text-sm cursor-pointer hover:bg-gray-100"
+        class="
+          pl-7
+          pr-2
+          py-2
+          text-sm
+          cursor-pointer
+          text-gray-700 text-ellipsis
+          hover:bg-gray-100
+        "
         v-for="playlist in state.playlists"
         :key="playlist.id"
         @click="gotoPlaylistDetail(playlist.id)"
@@ -189,6 +236,11 @@ const gotoAlbumDetail = (id: number) => {
 /** 跳转到歌单详情页面 */
 const gotoPlaylistDetail = (id: number) => {
   router.push(`/playlistDetail/${id}`);
+};
+
+/** 跳转到搜索结果页面 */
+const gotoSearchContent = (keywords: string) => {
+  router.push(`/search-content/${keywords}`);
 };
 
 watch(
