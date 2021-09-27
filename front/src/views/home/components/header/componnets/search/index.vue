@@ -3,21 +3,12 @@
     <MPSearch v-model="state.value" v-model:focus="state.focus" />
     <teleport to="#home" v-if="state.isMounted">
       <el-scrollbar
-        class="
-          bg-white
-          absolute
-          right-0
-          top-[50px]
-          z-50
-          h-[calc(100%-110px)]
-          shadow-md-left
-        "
+        class="bg-white absolute right-0 top-[50px] z-50 h-[calc(100%-110px)] shadow-md-left"
       >
-        <RecommendSearch v-show="!state.value && state.focus" />
-        <SearchResult
-          v-show="state.value && state.focus"
-          :keywords="state.value"
-        />
+        <div @click="handleContentClick">
+          <RecommendSearch v-show="!state.value && state.focus" />
+          <SearchResult v-show="state.value && state.focus" :keywords="state.value" />
+        </div>
       </el-scrollbar>
     </teleport>
   </div>
@@ -35,6 +26,10 @@ const state = reactive({
   value: "",
   focus: false,
 });
+
+const handleContentClick = (e: Event) => {
+  e.stopPropagation();
+};
 
 onMounted(() => {
   state.isMounted = true;
