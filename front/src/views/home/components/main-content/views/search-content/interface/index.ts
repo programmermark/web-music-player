@@ -43,6 +43,7 @@ export type SearchContent =
 export interface ISearchContentArtist {
   id: number;
   name: string /** 歌手名 */;
+  alias?: string[] /** 歌手别名 */;
   img1v1Url: string /** 歌手头像 */;
 }
 
@@ -61,7 +62,8 @@ export interface ISearchContentArtistState
 export interface ISearchContentAlbum {
   id: number;
   name: string /** 专辑名 */;
-  alia: string[] /** 专辑别名 */;
+  picUrl?: string /** 专辑封面 */;
+  alias: string[] /** 专辑别名 */;
   artist: ISearchContentArtist /** 歌手 */;
 }
 
@@ -103,10 +105,12 @@ export interface IMVCreator {
 }
 
 export interface ISearchContentMV {
-  id: number;
-  name: string /** MV名称 */;
+  id?: number;
+  vid: string;
+  type: 0 | 1;
+  title: string /** MV名称 */;
   coverUrl: string /** MV封面图片 */;
-  duration: number /** MV时长 */;
+  durationms: number /** MV时长 */;
   playTime: number /** MV点击数 */;
   creator: IMVCreator[];
 }

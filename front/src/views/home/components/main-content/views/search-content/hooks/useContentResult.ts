@@ -43,7 +43,7 @@ const fetchSearchContentSong = async (
     album: {
       id: song.album.id,
       name: highLightKeywords(keywords, song.album.name, "text-blue-500"),
-      alia: song.album.alia,
+      alias: song.album.alias,
       artist: {
         id: song.album.artist.id,
         name: song.album.artist.name,
@@ -81,7 +81,8 @@ const fetchSearchContentArtist = async (
   );
   const formatArtists: ISearchContentArtist[] = artists.map((artist) => ({
     id: artist.id,
-    name: artist.name,
+    name: highLightKeywords(keywords, artist.name, "text-blue-500"),
+    alias: artist.alias,
     img1v1Url: artist.img1v1Url,
   }));
   return {
@@ -107,11 +108,13 @@ const fetchSearchContentAlbum = async (
   );
   const formatAlbum: ISearchContentAlbum[] = albums.map((album) => ({
     id: album.id,
-    name: album.name,
-    alia: album.alia,
+    name: highLightKeywords(keywords, album.name, "text-blue-500"),
+    picUrl: album.picUrl,
+    alias: album.alias,
     artist: {
       id: album.artist.id,
-      name: album.artist.name,
+      name: highLightKeywords(keywords, album.artist.name, "text-blue-500"),
+      alias: album.artist.alias,
       img1v1Url: album.artist.img1v1Url,
     },
   }));
@@ -137,14 +140,15 @@ const fetchSearchContentMV = async (
     "result"
   );
   const formatMV: ISearchContentMV[] = videos.map((video) => ({
-    id: video.id,
-    name: video.name,
+    vid: video.vid,
+    type: video.type,
+    title: highLightKeywords(keywords, video.title, "text-blue-500"),
     coverUrl: video.coverUrl,
-    duration: video.duration,
+    durationms: video.durationms,
     playTime: video.playTime,
     creator: video.creator.map((item) => ({
       userId: item.userId,
-      userName: item.userName,
+      userName: highLightKeywords(keywords, item.userName, "text-blue-500"),
     })),
   }));
   return {
@@ -171,12 +175,16 @@ const fetchSearchContentPlaylist = async (
     );
   const formatMV: ISearchContentPlaylist[] = playlists.map((playlist) => ({
     id: playlist.id,
-    name: playlist.name,
+    name: highLightKeywords(keywords, playlist.name, "text-blue-500"),
     coverImgUrl: playlist.coverImgUrl,
     trackCount: playlist.trackCount,
     creator: {
       userId: playlist.creator.userId,
-      nickname: playlist.creator.nickname,
+      nickname: highLightKeywords(
+        keywords,
+        playlist.creator.nickname,
+        "text-blue-500"
+      ),
       avatarUrl: playlist.creator.avatarUrl,
     },
   }));
@@ -205,7 +213,7 @@ export const useContentResult = (
   const artistState = reactive<ISearchContentArtistState>({
     artistCount: 0 /** 搜索到的歌手总数量 */,
     artists: [] /** 歌手列表 */,
-    limit: 30,
+    limit: 20,
     offset: 0,
     loading: true,
   });
@@ -223,7 +231,7 @@ export const useContentResult = (
   const mvState = reactive<ISearchContentMVState>({
     videoCount: 0 /** 搜索到的MV总数量 */,
     videos: [] /** MV列表 */,
-    limit: 20,
+    limit: 21,
     offset: 0,
     loading: true,
   });
@@ -255,59 +263,81 @@ export const useContentResult = (
           limit,
           offset
         );
+        songState.limit = limit;
+        songState.offset = offset;
         songState.songCount = songCount;
         songState.songs = songs;
         songState.loading = false;
         break;
       case "10":
+        albumState.loading = true;
         const { albumCount, albums } = await fetchSearchContentAlbum(
           keywords,
           type,
           limit,
           offset
         );
+        albumState.limit = limit;
+        albumState.offset = offset;
         albumState.albumCount = albumCount;
         albumState.albums = albums;
+        albumState.loading = false;
         break;
       case "100":
+        artistState.loading = true;
         const { artistCount, artists } = await fetchSearchContentArtist(
           keywords,
           type,
           limit,
           offset
         );
+        artistState.limit = limit;
+        artistState.offset = offset;
         artistState.artistCount = artistCount;
         artistState.artists = artists;
+        artistState.loading = false;
         break;
       case "1014":
+        mvState.loading = true;
         const { videoCount, videos } = await fetchSearchContentMV(
           keywords,
           type,
           limit,
           offset
         );
+        mvState.limit = limit;
+        mvState.offset = offset;
         mvState.videoCount = videoCount;
         mvState.videos = videos;
+        mvState.loading = false;
         break;
       case "1000":
+        playlistState.loading = true;
         const { playlistCount, playlists } = await fetchSearchContentPlaylist(
           keywords,
           type,
           limit,
           offset
         );
+        playlistState.limit = limit;
+        playlistState.offset = offset;
         playlistState.playlistCount = playlistCount;
         playlistState.playlists = playlists;
+        playlistState.loading = false;
         break;
       default:
+        songState.loading = true;
         const result = await fetchSearchContentSong(
           keywords,
           type,
           limit,
           offset
         );
+        songState.limit = limit;
+        songState.offset = offset;
         songState.songCount = result.songCount;
         songState.songs = result.songs;
+        songState.loading = false;
         break;
     }
   };

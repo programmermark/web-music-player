@@ -1,7 +1,7 @@
 <template>
   <div class="h-full">
     <el-scrollbar v-if="!loading">
-      <div>
+      <div class="pl-[30px] pr-9">
         <!-- 表格内容 -->
         <div class="mb-6">
           <!-- 标题 -->
@@ -31,11 +31,7 @@
                   v-html="song.name"
                   @click="playSong(song.id)"
                 ></span>
-                <div
-                  class="mv-wrapper"
-                  v-show="song.mvid > 0"
-                  title="跳转到MV详情"
-                >
+                <div class="mv-wrapper" v-show="song.mvid > 0" title="跳转到MV详情">
                   <MPIcon
                     icon="mv"
                     :size="16"
@@ -60,9 +56,7 @@
                   v-html="artist.name"
                   @click="gotoArtistDetail(artist.id)"
                 ></span>
-                <span v-if="index + 1 < song.artists.length" class="px-1"
-                  >/</span
-                >
+                <span v-if="index + 1 < song.artists.length" class="px-1">/</span>
               </span>
             </div>
             <!-- 专辑 -->
@@ -81,11 +75,12 @@
           </div>
         </div>
         <!-- 分页 -->
-        <div class="flex justify-center pb-8">
+        <div class="flex justify-center pb-8" v-show="total > pageSize">
           <el-pagination
             :current-page="currentPage"
             :total="total"
             :page-size="pageSize"
+            :pager-count="9"
             background
             layout="prev, pager, next"
             @current-change="handlePageChange"
@@ -114,10 +109,12 @@ import { useStore } from "@/store";
 import { useRouter } from "vue-router";
 import { ISearchContentSong } from "../../interface";
 import MPIcon from "@/components/MPIcon.vue";
-import { ref } from "vue";
+import { computed } from "vue";
 
 const props = withDefaults(
   defineProps<{
+    /** 分页条数偏移量 */
+    offset: number;
     /** 分页每页条数 */
     pageSize: number;
     /** 分页总条数 */
@@ -129,6 +126,7 @@ const props = withDefaults(
   }>(),
   {
     total: 0,
+    offset: 0,
     pageSize: 100,
   }
 );
@@ -140,7 +138,8 @@ const emits = defineEmits<{
 const store = useStore();
 const router = useRouter();
 
-const currentPage = ref(1);
+/** 当前页码 */
+const currentPage = computed(() => props.offset / props.pageSize + 1);
 
 /**
  * 播放歌曲
@@ -170,8 +169,7 @@ const gotoMVDetail = (id: number) => {
 
 /** 切换分页 */
 const handlePageChange = (page: number) => {
-  currentPage.value = page;
-  emits("page-change", page * props.pageSize);
+  emits("page-change", (page - 1) * props.pageSize);
 };
 </script>
 

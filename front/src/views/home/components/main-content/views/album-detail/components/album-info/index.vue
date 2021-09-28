@@ -1,7 +1,11 @@
 <template>
   <div class="album-info">
     <!-- 歌单封面 -->
-    <img class="cover-info" :src="albumInfo.picUrl" alt="歌单封面" />
+    <el-image class="image" :src="`${albumInfo.picUrl}?param=400y400`" alt="歌手头像">
+      <template #placeholder>
+        <img class="no-image" src="@/assets/image/no-img.png" alt="歌单封面" />
+      </template>
+    </el-image>
     <!-- 歌单详情 -->
     <div class="info-detail">
       <div class="name-info">
@@ -29,18 +33,14 @@
           :key="artist.id"
         >
           <router-link class="link-reset" to="/">{{ artist.name }}</router-link>
-          <span
-            class="parting-line"
-            v-if="index + 1 !== albumInfo.artists.length"
+          <span class="parting-line" v-if="index + 1 !== albumInfo.artists.length"
             >/</span
           >
         </div>
       </div>
       <div class="create-time">
         时间：
-        <span class="time">{{
-          formatTime(albumInfo.publishTime, "yyyy-MM-dd")
-        }}</span>
+        <span class="time">{{ formatTime(albumInfo.publishTime, "yyyy-MM-dd") }}</span>
       </div>
     </div>
   </div>
@@ -97,11 +97,26 @@ export default defineComponent({
   justify-content: flex-start;
   padding: 16px 0px 40px 0px;
 
-  .cover-info {
+  .image {
     width: 200px;
     height: 200px;
-    border-radius: 8px;
     margin-right: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    border: 1px solid #ededed;
+    border-radius: 4px;
+
+    .no-image {
+      width: 100%;
+      height: 100%;
+      border-radius: 4px;
+    }
+
+    :deep(.el-image__inner) {
+      border-radius: 4px;
+    }
   }
 
   .info-detail {
