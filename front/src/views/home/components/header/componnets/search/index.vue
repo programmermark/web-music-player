@@ -3,25 +3,14 @@
     <MPSearch v-model="state.value" v-model:focus="state.focus" />
     <teleport to="#home" v-if="state.isMounted">
       <el-scrollbar
-        class="
-          bg-white
-          absolute
-          right-0
-          top-[50px]
-          z-50
-          h-[calc(100%-110px)]
-          shadow-md-left
-        "
+        class="bg-white absolute right-0 top-[50px] z-[2100] h-[calc(100%-110px)] shadow-md-left"
       >
         <div @click="handleContentClick">
           <RecommendSearch
             v-show="!state.value && state.focus"
             @clickHotKeyword="handleHotKeywordClick"
           />
-          <SearchResult
-            v-show="state.value && state.focus"
-            :keywords="state.value"
-          />
+          <SearchResult v-show="state.value && state.focus" :keywords="state.value" />
         </div>
       </el-scrollbar>
     </teleport>
