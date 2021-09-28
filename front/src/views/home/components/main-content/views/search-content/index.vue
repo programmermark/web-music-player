@@ -1,17 +1,17 @@
 <template>
-  <div class="w-full pl-[30px] pr-9 pt-5 box-border">
-    <div class="h-10 leading-10">
-      <span class="text-[23px] text-gray-800 font-semibold">{{
-        keywords
-      }}</span>
+  <!-- <div class="w-full pl-[30px] pr-9 pt-5 box-border"> -->
+  <div class="w-full pt-5 box-border">
+    <div class="h-10 leading-10 pl-[30px] pr-9">
+      <span class="text-[23px] text-gray-800 font-semibold">{{ keywords }}</span>
       <span class="text-sm text-gray-500 ml-2">{{ titleContent }}</span>
     </div>
     <el-tabs
-      class="tabs-reset"
+      class="h-[calc(100%-40px)]"
       v-model="contentTypeState.contentType"
       @tab-click="handleTabClick"
     >
       <el-tab-pane
+        class="tabs-reset"
         v-for="type in contentTypeState.types"
         :key="type.value"
         :label="type.label"
@@ -19,6 +19,7 @@
       >
         <SearchSong
           v-if="type.value === '1'"
+          :offset="songState.offset"
           :page-size="songState.limit"
           :total="songState.songCount"
           :songs="songState.songs"
@@ -26,10 +27,42 @@
           @page-change="handlePageChange"
         />
 
-        <SearchAlbum v-if="type.value === '10'" />
-        <SearchArtist v-if="type.value === '100'" />
-        <SearchPlaylist v-if="type.value === '1000'" />
-        <SearchMv v-if="type.value === '1014'" />
+        <SearchAlbum
+          v-if="type.value === '10'"
+          :offset="albumState.offset"
+          :page-size="albumState.limit"
+          :total="albumState.albumCount"
+          :albums="albumState.albums"
+          :loading="albumState.loading"
+          @page-change="handlePageChange"
+        />
+        <SearchArtist
+          v-if="type.value === '100'"
+          :offset="artistState.offset"
+          :page-size="artistState.limit"
+          :total="artistState.artistCount"
+          :artists="artistState.artists"
+          :loading="artistState.loading"
+          @page-change="handlePageChange"
+        />
+        <SearchPlaylist
+          v-if="type.value === '1000'"
+          :offset="playlistState.offset"
+          :page-size="playlistState.limit"
+          :total="playlistState.playlistCount"
+          :playlists="playlistState.playlists"
+          :loading="playlistState.loading"
+          @page-change="handlePageChange"
+        />
+        <SearchMv
+          v-if="type.value === '1014'"
+          :offset="mvState.offset"
+          :page-size="mvState.limit"
+          :total="mvState.videoCount"
+          :mvs="mvState.videos"
+          :loading="mvState.loading"
+          @page-change="handlePageChange"
+        />
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -71,8 +104,12 @@ const limit = computed(() => contentTypeState.limit);
 /** 偏移量（分页） */
 const offset = computed(() => contentTypeState.offset);
 
-const { songState, artistState, albumState, mvState, playlistState } =
-  useContentResult(keywords, contentType, limit, offset);
+const { songState, artistState, albumState, mvState, playlistState } = useContentResult(
+  keywords,
+  contentType,
+  limit,
+  offset
+);
 
 /** 小标题内容 */
 const titleContent = computed(() => {
@@ -104,15 +141,18 @@ const handleTabClick = () => {
       contentTypeState.offset = 0;
       break;
     case "10":
-      contentTypeState.limit = 30;
+      contentTypeState.limit = 20;
       contentTypeState.offset = 0;
       break;
     case "100":
-      contentTypeState.limit = 20;
+      contentTypeState.limit = 30;
       contentTypeState.offset = 0;
       break;
-    case "1004":
+    case "1000":
       contentTypeState.limit = 20;
+      contentTypeState.offset = 0;
+    case "1014":
+      contentTypeState.limit = 21;
       contentTypeState.offset = 0;
       break;
   }
@@ -128,12 +168,17 @@ const handlePageChange = (offset: number) => {
 
 <style lang="scss" scoped>
 .tabs-reset {
-  height: calc(100% - 40px);
-  :deep(.el-tabs__content) {
-    height: calc(100% - 55px);
-  }
+  height: 100%;
   :deep(.el-tab-pane) {
     height: 100%;
   }
+}
+
+:deep(.el-tabs__content) {
+  height: calc(100% - 55px);
+}
+:deep(.el-tabs__header) {
+  padding-left: 30px;
+  padding-right: 36px;
 }
 </style>
