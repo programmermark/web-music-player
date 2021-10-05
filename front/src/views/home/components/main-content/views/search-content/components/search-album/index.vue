@@ -3,7 +3,15 @@
     <el-scrollbar v-if="!loading">
       <div class="w-full">
         <div
-          class="grid grid-cols-12 pl-[30px] pr-9 ml-1 cursor-pointer text-sm hover:bg-gray-100"
+          class="
+            grid grid-cols-12
+            pl-[30px]
+            pr-9
+            ml-1
+            cursor-pointer
+            text-sm
+            hover:bg-gray-100
+          "
           :class="{ 'bg-gray-50': index % 2 !== 0 }"
           v-for="(album, index) in albums"
           :key="album.id"
@@ -11,11 +19,25 @@
         >
           <div class="col-span-7 flex items-center">
             <img
-              class="w-[60px] h-[60px] rounded my-[10px] mr-[10px] cursor-pointer border border-gray-100 box-border"
+              class="
+                w-[60px]
+                h-[60px]
+                rounded
+                my-[10px]
+                mr-[10px]
+                cursor-pointer
+                border border-gray-100
+                box-border
+              "
               :src="`${album.picUrl}?param=120y120`"
             />
-            <span class="cursor-pointer" v-html="album.name"></span>
-            <span class="text-gray-500" v-if="album.alias && album.alias.length > 0"
+            <span
+              class="cursor-pointer text-ellipsis"
+              v-html="album.name"
+            ></span>
+            <span
+              class="text-gray-500 text-ellipsis pr-4"
+              v-if="album.alias && album.alias.length > 0"
               >（{{ album.alias[0] }}）</span
             >
           </div>

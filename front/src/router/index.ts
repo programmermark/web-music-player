@@ -63,6 +63,13 @@ const routes: Array<RouteRecordRaw> = [
         ),
       },
       {
+        path: "system-notify",
+        name: "SystemNotify",
+        component: lazyLoad(
+          "home/components/main-content/views/system-notify/index"
+        ),
+      },
+      {
         path: "albumDetail/:id",
         name: "AlbumDetail",
         component: lazyLoad(
