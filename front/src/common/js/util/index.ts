@@ -10,7 +10,7 @@ export function keysOf<T>(obj: T) {
 /**
  * 转换传入的时间为指定的格式
  * @param timestamp 时间戳(支持字符串和数字)
- * @param pattern 时间格式，如: yyyy-MM-dd
+ * @param pattern 时间格式，如: yyyy-MM-dd hh:mm:ss
  * @returns
  */
 export function formatTime(
