@@ -24,6 +24,10 @@
 
 本项目仅用于学习和交流，请勿用作商业用途，请勿通过本项目下载盗版歌曲资源，否则后果自负！
 
+## 在线访问地址
+
+地址：[music-player.immortalboy.cn](https://music-player.immortalboy.cn/)
+
 ## 安装和使用
 
 ### 环境要求
@@ -60,11 +64,6 @@ cd wangyiyun-server & npm start
 # 为前端网站配置好相应的域名，为后端服务做好反向代理
 # 把打包好的静态文件迁移到对应的服务器软件目录中
 ```
-
-## 在线访问地址
-
-地址：[music-player.immortalboy.cn](https://music-player.immortalboy.cn/)
-
 ## 待办清单
 
 ### 近期将要开发的功能（按照顺序完成）
