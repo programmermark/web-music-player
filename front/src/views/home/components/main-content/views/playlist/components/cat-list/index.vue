@@ -23,11 +23,7 @@
           </div>
         </div>
         <div class="cat-list-wrapper">
-          <div
-            class="cat-item-wrapper"
-            v-for="cat in catList"
-            :key="cat.category"
-          >
+          <div class="cat-item-wrapper" v-for="cat in catList" :key="cat.category">
             <div class="cat-item">
               <mp-opt-icon
                 :icon="cat.icon"
@@ -78,11 +74,7 @@ import { computed, defineComponent, onMounted, reactive, toRefs } from "vue";
 import { http } from "@/common/js/http";
 import { useStore } from "@/store";
 import { apis } from "@/api";
-import {
-  ICatList,
-  ICatListState,
-  IStateCatList,
-} from "../../interface/catList";
+import { ICatList, ICatListState, IStateCatList } from "../../interface/catList";
 import { keysOf } from "@/common/js/util";
 import MPOptIcon from "@/components/MPOptIcon.vue";
 
@@ -99,12 +91,10 @@ export default defineComponent({
     });
     const catIconList = ["tellurion", "style", "cafe", "emoji", "theme"];
 
-    const currentCat = computed(
-      () => store.state.catList.currentCat || "全部歌单"
-    );
+    const currentCat = computed(() => store.state.catList.currentCat || "全部歌单");
 
     /** 获取歌单分类 */
-    const fetchPlaylistCarList = async () => {
+    const fetchPlaylistCatList = async () => {
       const { all, categories, sub } = await http<ICatList>(
         { url: apis.playlistCatList },
         ""
@@ -126,7 +116,9 @@ export default defineComponent({
         name: item.name,
       }));
       /** 往module里设置默认的当前选中歌单分类 */
-      store.commit("catList/setCurrentCat", all.name);
+      if (!store.state.catList.currentCat) {
+        store.commit("catList/setCurrentCat", all.name);
+      }
     };
 
     const handleAllCat = () => {
@@ -138,7 +130,7 @@ export default defineComponent({
     };
 
     onMounted(() => {
-      fetchPlaylistCarList();
+      fetchPlaylistCatList();
     });
 
     return {

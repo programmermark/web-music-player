@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { apis } from "@/api";
 import { http } from "@/common/js/http";
+import { IAlbumDetail } from "@/views/home/components/main-content/views/album-detail/interface";
 import { IArtist } from "@/views/home/components/main-content/views/artist-detail/interface";
 import { IListState } from "@/views/home/components/player/interface";
 import { ActionContext, Module } from "vuex";
@@ -205,6 +206,48 @@ const ModulePlayer: Module<IPlayerState, IRootStateTypes> = {
       }
     },
     /** 清空播放列表 */
+    async setSongListByAlbumId(
+      context: ActionContext<IPlayerState, IRootStateTypes>,
+      albumId: number
+    ) {
+      /** 根据专辑id获取专辑下的歌曲id，并设置第一首歌为当前播放的歌曲 */
+      const albumDetailUrl = `${apis.albumDetail}?id=${albumId}`;
+      const albumSongs = await http<ISongDetail[]>(
+        { url: albumDetailUrl },
+        "songs"
+      );
+      const albumSongIds = albumSongs.map((song) => song.id);
+      const currentId = albumSongIds[0];
+      const songIdStr = albumSongIds
+        .map((id) => String(id))
+        .reduce((initValue, currentValue) => initValue + "," + currentValue);
+      const songDetailUrl = `${apis.songDetail}?ids=${songIdStr}`;
+      /** 根据id数组获取歌曲详情 */
+      const songs = await http<ISongDetail[]>({ url: songDetailUrl }, "songs");
+      const songList: IPlaySong[] = songs.map((song) => ({
+        id: song.id,
+        name: song.name,
+        subName: song.alia[0],
+        coverImg: song.al.picUrl,
+        album: {
+          id: song.al.id,
+          name: song.al.name,
+          picUrl: song.al.picUrl,
+        },
+        artists: song.ar.map(
+          (item) => ({ id: item.id, name: item.name } as IArtist)
+        ),
+        songUrl: `https://music.163.com/song/media/outer/url?id=${song.id}.mp3`,
+        duration: Math.floor((song.dt || 0) / 1000),
+      }));
+      context.commit("setSongList", songList);
+      if (currentId) {
+        const currentSong = songList.find((song) => song.id === currentId);
+        context.commit("setCurrentSong", currentSong);
+      } else {
+        context.commit("setCurrentSong", songList[0]);
+      }
+    },
   },
   getters: {},
 };

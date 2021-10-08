@@ -1,21 +1,14 @@
 <template>
   <div class="album-card">
-    <div class="image-wrapper">
-      <el-image
-        class="image"
-        :src="imageUrl"
-        alt="专辑封面"
-        @mouseenter="handleMouseEnter"
-        @mouseleave="handleMouseLeave"
-        @click="gotoAlbumDetail(album.id)"
-      >
+    <div
+      class="image-wrapper"
+      @mouseenter="handleMouseEnter"
+      @mouseleave="handleMouseLeave"
+      @click="gotoAlbumDetail(album.id)"
+    >
+      <el-image class="image" :src="imageUrl" alt="专辑封面">
         <template #placeholder>
-          <img
-            class="no-image"
-            src="@/assets/image/no-img.png"
-            alt="专辑封面"
-            @click="gotoAlbumDetail(album.id)"
-          />
+          <img class="no-image" src="@/assets/image/no-img.png" alt="专辑封面" />
         </template>
       </el-image>
       <mp-opt-icon
@@ -27,22 +20,18 @@
         color="#d33a33"
         bgColor="#dddddd"
         display="always"
-        @click="playAlbum(album.id)"
+        @click="(e) => playAlbumSong(e, album.id)"
       />
     </div>
     <div class="name text-ellipsis-2" @click="gotoAlbumDetail(album.id)">
       {{ album.name }}
     </div>
     <div class="artist text-ellipsis" v-if="album.artists">
-      <div
-        class="artist-item"
-        v-for="(artist, index) in album.artists"
-        :key="artist.id"
-      >
-        <router-link class="link-reset" to="/">{{ artist.name }}</router-link>
-        <span class="parting-line" v-if="index + 1 !== album.artists.length"
-          >/</span
-        >
+      <div class="artist-item" v-for="(artist, index) in album.artists" :key="artist.id">
+        <span class="link-reset" @click="gotoArtistDetail(artist.id)">
+          {{ artist.name }}
+        </span>
+        <span class="parting-line" v-if="index + 1 !== album.artists.length">/</span>
       </div>
     </div>
   </div>
@@ -54,7 +43,9 @@ import MpOpeIcon from "@/components/MPOptIcon.vue";
 import { formatMonth } from "@/common/js/util";
 import { IAlbum } from "../../../artist-detail/interface";
 import { useRouter } from "vue-router";
+import { useStore } from "@/store";
 
+// 最新音乐 - 新碟上架 - 专辑卡片组件
 export default defineComponent({
   name: "AlbumCard",
   components: {
@@ -69,6 +60,7 @@ export default defineComponent({
   },
   setup(props) {
     const router = useRouter();
+    const store = useStore();
 
     const { album } = toRefs(props);
 
@@ -83,20 +75,20 @@ export default defineComponent({
       showIcon.value = false;
     };
 
-    /** 播放歌曲 */
-    const playAlbum = (id: number) => {
-      console.log("播放专辑歌曲，专辑id：", id);
+    /** 播放专辑歌曲 */
+    const playAlbumSong = (e: Event, id: number) => {
+      e.stopPropagation();
+      store.dispatch("player/setSongListByAlbumId", id);
     };
 
     /** 前往专辑详情 */
     const gotoAlbumDetail = (id: number) => {
-      console.log("专辑id", id);
       router.push(`/albumDetail/${id}`);
     };
 
     /** 前往歌手详情 */
     const gotoArtistDetail = (id: number) => {
-      console.log("歌手id", id);
+      router.push(`/artist/${id}`);
     };
 
     return {
@@ -105,7 +97,7 @@ export default defineComponent({
       formatMonth,
       handleMouseEnter,
       handleMouseLeave,
-      playAlbum,
+      playAlbumSong,
       gotoAlbumDetail,
       gotoArtistDetail,
     };

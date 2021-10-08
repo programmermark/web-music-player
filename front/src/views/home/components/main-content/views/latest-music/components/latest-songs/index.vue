@@ -30,13 +30,7 @@
     </div>
     <div class="content">
       <div class="song-list" v-infinite-scroll="onPageChange">
-        <div
-          class="song-item"
-          v-for="(song, index) in currentSongs"
-          :key="song.id"
-          @dblclick="playSong(song.id)"
-          title="双击播放歌曲"
-        >
+        <div class="song-item" v-for="(song, index) in currentSongs" :key="song.id">
           <span class="no" v-show="currentSongId !== song.id">{{
             formatNo(index + 1)
           }}</span>
@@ -50,7 +44,7 @@
             bgColor="none"
             display="always"
           />
-          <div class="image-wrapper">
+          <div class="image-wrapper" @click="playSong(song.id)">
             <el-image
               class="image"
               :src="`${song.album.picUrl}?param=100y100`"
@@ -76,18 +70,29 @@
               @click="playSong(song.id)"
             />
           </div>
-          <div class="song-name text-ellipsis">
-            {{ song.name
-            }}{{ song.alias && song.alias[0] ? `(${song.alias[0]})` : "" }}
+          <div
+            class="song-name text-ellipsis"
+            @dblclick="playSong(song.id)"
+            title="双击播放歌曲"
+          >
+            {{ song.name }}{{ song.alias && song.alias[0] ? `(${song.alias[0]})` : "" }}
           </div>
-          <div class="artist text-ellipsis">
-            {{ formatArtistListToString(song.artists) }}
+          <div
+            class="artist text-ellipsis"
+            :title="formatArtistListToString(song.artists)"
+          >
+            <span v-for="(artist, index) in song.artists" :key="artist.id">
+              <span class="cursor-pointer" @click="gotoArtistDetail(artist.id)">{{
+                artist.name
+              }}</span>
+              <span v-if="index + 1 < song.artists.length" class="px-1">/</span>
+            </span>
           </div>
-          <div class="album text-ellipsis">{{ song.album.name }}</div>
+          <div class="album text-ellipsis" @click="gotoAlbumDetail(song.album.id)">
+            {{ song.album.name }}
+          </div>
           <div class="duration">
-            {{
-              transformSecondToMinute(Math.floor((song.duration || 0) / 1000))
-            }}
+            {{ transformSecondToMinute(Math.floor((song.duration || 0) / 1000)) }}
           </div>
         </div>
       </div>
@@ -96,28 +101,20 @@
 </template>
 
 <script lang="ts">
-import {
-  computed,
-  defineComponent,
-  onMounted,
-  reactive,
-  toRefs,
-  watch,
-} from "vue";
+import { computed, defineComponent, onMounted, reactive, toRefs, watch } from "vue";
 import { useStore } from "@/store";
 import MPOptIcon from "@/components/MPOptIcon.vue";
 import { ICurrentSongsState, ITabsState } from "../../interface/latest-songs";
 import { formatNo } from "@/common/js/util";
-import {
-  formatArtistListToString,
-  transformSecondToMinute,
-} from "@/common/js/util";
+import { formatArtistListToString, transformSecondToMinute } from "@/common/js/util";
 import { ISong } from "@/store/modules/interface/latest-music";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   components: { "mp-opt-icon": MPOptIcon },
   name: "LatestSongs",
   setup() {
+    const router = useRouter();
     const store = useStore();
 
     const tabsState = reactive<ITabsState>({
@@ -175,15 +172,12 @@ export default defineComponent({
     /** 当前歌曲 */
     const currentSongs = computed(() =>
       allCurrentSongs.value.filter(
-        (item, index) =>
-          index < currentSongsState.limit + currentSongsState.offset
+        (item, index) => index < currentSongsState.limit + currentSongsState.offset
       )
     );
 
     /** 当前歌曲id */
-    const currentSongIds = computed(() =>
-      currentSongs.value.map((item) => item.id)
-    );
+    const currentSongIds = computed(() => currentSongs.value.map((item) => item.id));
 
     /**
      * 向下滚动时加载数据
@@ -201,7 +195,6 @@ export default defineComponent({
 
     /** 播放全部 */
     const playAllSong = () => {
-      console.log("播放全部歌曲");
       store.dispatch("player/setSongListByIds", {
         ids: currentSongIds.value,
       });
@@ -221,6 +214,16 @@ export default defineComponent({
       store.dispatch("latestMusic/setSongsByType", tabValue);
     };
 
+    /** 前往专辑详情 */
+    const gotoAlbumDetail = (id: number) => {
+      router.push(`/albumDetail/${id}`);
+    };
+
+    /** 前往歌手详情 */
+    const gotoArtistDetail = (id: number) => {
+      router.push(`/artist/${id}`);
+    };
+
     watch(
       () => tabsState.currentTab,
       (tabValue) => {
@@ -237,10 +240,7 @@ export default defineComponent({
           europeAndAmericaSongs.value.length > 0
         ) {
           return;
-        } else if (
-          tabValue === tabsState.tabs[3].value &&
-          koreaSongs.value.length > 0
-        ) {
+        } else if (tabValue === tabsState.tabs[3].value && koreaSongs.value.length > 0) {
           return;
         } else if (
           tabValue === tabsState.tabs[4].value &&
@@ -263,10 +263,11 @@ export default defineComponent({
       formatNo,
       playAllSong,
       toggleTab,
-      fetchSongs,
       playSong,
       formatArtistListToString,
       transformSecondToMinute,
+      gotoAlbumDetail,
+      gotoArtistDetail,
     };
   },
 });
@@ -333,8 +334,8 @@ export default defineComponent({
           padding: 0 4px;
         }
         .icon-reset {
-          margin-left: 10px;
-          padding: 0 4px;
+          margin-left: 14px;
+          margin-right: 4px;
         }
         .image-wrapper {
           padding: 0 10px;

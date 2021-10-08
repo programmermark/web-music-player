@@ -74,7 +74,6 @@ export default defineComponent({
     const { songList } = toRefs(props);
 
     const handlePlaylist = (id: number) => {
-      console.log("歌单id：" + id);
       const songIds = songList.value.map((song) => song.id);
       store.dispatch("player/setSongListByIds", {
         ids: songIds,

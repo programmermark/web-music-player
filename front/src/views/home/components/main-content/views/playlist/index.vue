@@ -1,13 +1,6 @@
 <template>
   <div
-    class="
-      playlist-wrapper
-      max-width-1100
-      width-100
-      pdl-30
-      pdr-30
-      box-sizing-border-box
-    "
+    class="playlist-wrapper max-width-1100 width-100 pdl-30 pdr-30 box-sizing-border-box"
   >
     <!-- 精品歌单 -->
     <!-- 歌单分类 -->
@@ -26,8 +19,8 @@
     ></div>
     <div class="card-wrapper" v-show="!loading">
       <playlist-card
-        v-for="listItem in playlists"
-        :key="listItem.id"
+        v-for="(listItem, index) in playlists"
+        :key="`${listItem.id}-${index}`"
         :playlist="listItem"
       />
     </div>
@@ -50,14 +43,8 @@
 import { apis } from "@/api";
 import { http } from "@/common/js/http";
 import { useStore } from "@/store";
-import {
-  computed,
-  defineComponent,
-  onMounted,
-  reactive,
-  toRefs,
-  watch,
-} from "vue";
+import { computed, defineComponent, onMounted, reactive, toRefs, watch } from "vue";
+import { useRoute } from "vue-router";
 import CatList from "./components/cat-list/index.vue";
 import PlaylistCard from "./components/playlist-card/index.vue";
 import HotCatList from "./components/hot-cat-list/index.vue";
@@ -72,6 +59,7 @@ export default defineComponent({
   },
   setup() {
     const store = useStore();
+    const route = useRoute();
 
     const state = reactive<IPlaylistState>({
       loading: false,
@@ -112,6 +100,11 @@ export default defineComponent({
       state.page = page;
     };
 
+    /** 切换当前选中的歌单分类 */
+    const handleCatChange = (name = "全部歌单") => {
+      store.commit("catList/setCurrentCat", name);
+    };
+
     watch(
       [currentCat, currentPage, currentLimit],
       ([currentCat, currentPage, currentLimit]) => {
@@ -120,11 +113,19 @@ export default defineComponent({
     );
 
     onMounted(() => {
-      fetchPlayList(store.state.catList.currentCat);
+      const queryCat = route.query.cat;
+      if (queryCat) {
+        handleCatChange(queryCat as string);
+        fetchPlayList(queryCat as string);
+      } else {
+        handleCatChange();
+        fetchPlayList(store.state.catList.currentCat);
+      }
     });
 
     return {
       ...toRefs(state),
+      currentCat,
       handlePageChange,
     };
   },

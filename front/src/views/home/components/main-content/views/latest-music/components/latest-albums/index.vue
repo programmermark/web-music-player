@@ -33,29 +33,18 @@
         <span class="year">{{ formatMonth(new Date().getFullYear()) }}</span>
       </div>
       <div class="albums" v-infinite-scroll="onPageChange">
-        <album-card
-          v-for="album in currentAlbums"
-          :key="album.id"
-          :album="album"
-        />
+        <album-card v-for="album in currentAlbums" :key="album.id" :album="album" />
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import {
-  computed,
-  defineComponent,
-  onMounted,
-  reactive,
-  toRefs,
-  watch,
-} from "vue";
+import { computed, defineComponent, onMounted, reactive, toRefs, watch } from "vue";
 import { useStore } from "@/store";
 import { IAlbumsPayload } from "@/store/modules/interface/latest-music";
 import { ITabsState } from "../../interface/latest-albums";
-import { formatMonth, formatArtistListToString } from "@/common/js/util";
+import { formatMonth } from "@/common/js/util";
 import AlbumCard from "../album-card/index.vue";
 
 export default defineComponent({
@@ -101,9 +90,7 @@ export default defineComponent({
     /** 新歌速递(韩国) */
     const koreaAlbums = computed(() => store.state.latestMusic.koreaAlbums);
     /** 新歌速递(日本) */
-    const japaneseAlbums = computed(
-      () => store.state.latestMusic.japaneseAlbums
-    );
+    const japaneseAlbums = computed(() => store.state.latestMusic.japaneseAlbums);
 
     /** 当前专辑 */
     const currentAlbums = computed(() => {
@@ -224,7 +211,6 @@ export default defineComponent({
       ...toRefs(tabsState),
       currentAlbums,
       formatMonth,
-      formatArtistListToString,
       toggleTab,
       toggleType,
       onPageChange,
