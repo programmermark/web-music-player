@@ -18,11 +18,9 @@
           :src="`${playlistInfo.creator.avatarUrl}?param=100y100`"
           alt="歌单创建者头像"
         />
-        <span
-          class="name"
-          @click="gotoCreatorPage(playlistInfo.creator.userId)"
-          >{{ playlistInfo.creator.nickname }}</span
-        >
+        <span class="name" @click="gotoCreatorPage(playlistInfo.creator.userId)">{{
+          playlistInfo.creator.nickname
+        }}</span>
         <span class="create-time"
           >{{ formatTime(playlistInfo.createTime, "yyyy-MM-dd") }}创建</span
         >
@@ -80,6 +78,7 @@ import { IPlaylistInfo } from "../../interface/playDetail";
 import { formatTime } from "@/common/js/util/index";
 import MPIcon from "@/components/MPIcon.vue";
 import { useStore } from "@/store";
+import router from "@/router";
 
 export default defineComponent({
   components: { "mp-icon": MPIcon },
@@ -107,12 +106,11 @@ export default defineComponent({
     };
 
     const handlePlaylist = (id: number) => {
-      console.log("歌单id：" + id);
       store.dispatch("player/setSongList", { id });
     };
 
     const gotoPlaylistPage = (tagName: string) => {
-      console.log("歌单标签名：", tagName);
+      router.push(`/playlist?cat=${tagName}`);
     };
 
     return {

@@ -1,19 +1,11 @@
 <template>
-  <div class="latest-music-card" @dblclick="handleDbClick">
+  <div class="latest-music-card" @dblclick="playSong" title="双击播放歌曲">
     <div class="wrapper">
       <!-- 歌曲封面（单击播放） -->
-      <div class="cover" @click="playSong">
-        <el-image
-          class="image"
-          :src="`${coverImg}?param=100y100`"
-          alt="歌曲封面图片"
-        >
+      <div class="cover" @click="playSong" title="点击播放歌曲">
+        <el-image class="image" :src="`${coverImg}?param=100y100`" alt="歌曲封面图片">
           <template #placeholder>
-            <img
-              class="no-image"
-              src="@/assets/image/no-img.png"
-              alt="歌曲封面图片"
-            />
+            <img class="no-image" src="@/assets/image/no-img.png" alt="歌曲封面图片" />
           </template>
         </el-image>
         <mp-opt-icon
@@ -37,17 +29,11 @@
           <span v-show="aliasName">（{{ aliasName }}）</span>
         </div>
         <div class="author-name-wrapper text-ellipsis">
-          <div
-            class="author-name"
-            v-for="(artist, index) in artists"
-            :key="artist.id"
-          >
+          <div class="author-name" v-for="(artist, index) in artists" :key="artist.id">
             <span class="text" @click="gotoArtistDetail(artist.id)">{{
               artist.name
             }}</span>
-            <span v-if="index + 1 < artists.length" class="parting-line"
-              >/</span
-            >
+            <span v-if="index + 1 < artists.length" class="parting-line">/</span>
           </div>
         </div>
       </div>
@@ -139,15 +125,10 @@ export default defineComponent({
       router.push(`/mv/${id}`);
     };
 
-    const handleDbClick = () => {
-      console.log("双击事件触发");
-    };
-
     return {
       order,
       gotoArtistDetail,
       gotoMVDetail,
-      handleDbClick,
       playSong,
     };
   },

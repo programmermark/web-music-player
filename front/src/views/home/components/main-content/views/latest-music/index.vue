@@ -4,7 +4,7 @@
     <div class="tab-wrapper">
       <div class="tab">
         <div
-          class="tab-item"
+          class="text-[13px] h-8 leading-8 px-8 rounded-[16px] cursor-pointer hover:bg-gray-100"
           :class="[currentTab === tab.value && 'active']"
           v-for="tab in tabs"
           :key="tab.value"
@@ -75,7 +75,7 @@ export default defineComponent({
       border: 1px solid #bbb;
       height: 32px;
       border-radius: 16px;
-      box-sizing: border-box;
+      box-sizing: content-box;
       .tab-item {
         font-size: 13px;
         color: #333;

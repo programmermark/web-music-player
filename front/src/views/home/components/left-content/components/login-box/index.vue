@@ -1,27 +1,15 @@
 <template>
   <teleport to="#home">
-    <div
-      class="login-box"
-      v-if="visible"
-      @click.stop="changeLoginBoxVisble(true)"
-    >
+    <div class="login-box" v-if="visible" @click.stop="changeLoginBoxVisble(true)">
       <div class="close-icon">
-        <i
-          class="el-icon-close icon-reset"
-          @click.stop="changeLoginBoxVisble(false)"
-        ></i>
+        <i class="el-icon-close icon-reset" @click.stop="changeLoginBoxVisble(false)"></i>
       </div>
       <div class="desc-img-wrapper">
         <img src="./assets/image/login-bg.png" alt="登录背景图" />
       </div>
       <div class="form-box-wrapper">
         <div class="form-box">
-          <el-form
-            :model="formState"
-            :rules="rules"
-            ref="loginFormRef"
-            size="small"
-          >
+          <el-form :model="formState" :rules="rules" ref="loginFormRef" size="small">
             <el-form-item prop="phone">
               <el-input
                 v-model="formState.phone"
@@ -39,9 +27,7 @@
               />
             </el-form-item>
             <el-form-item>
-              <el-button class="submit-btn" @click.stop="handleLogin"
-                >登录</el-button
-              >
+              <el-button class="submit-btn" @click.stop="handleLogin">登录</el-button>
             </el-form-item>
           </el-form>
         </div>
@@ -92,12 +78,10 @@ export default defineComponent({
     /**
      * 切换登录弹窗的显示与隐藏状态
      */
-    const changeLoginBoxVisble = (visible: boolean) =>
-      emit("change-visible", visible);
+    const changeLoginBoxVisble = (visible: boolean) => emit("change-visible", visible);
 
     /** 登录账号 */
     const handleLogin = () => {
-      console.log("执行登录");
       (loginFormRef.value as any).validate((valid: boolean) => {
         if (valid) {
           const userInfo: ILogin = {

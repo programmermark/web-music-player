@@ -85,24 +85,16 @@ export default defineComponent({
       setTimeout(() => {
         const ele = document.querySelector(".recommend-song-card");
         state.eleWidth = ele?.clientWidth || 0;
-        console.log(
-          "ele?.clientWidth || 0",
-          ele?.clientWidth,
-          ele?.clientHeight
-        );
       }, 100);
 
       window.addEventListener("resize", () => {
         const ele = document.querySelector(".recommend-song-card");
-        console.log("eleWidth", ele?.clientWidth || 0);
         state.eleWidth = ele?.clientWidth || 0;
       });
     });
 
     onUnmounted(() => {
-      window.removeEventListener("resize", () =>
-        console.log("清除对resize事件的监听")
-      );
+      window.removeEventListener("resize", () => console.log("清除对resize事件的监听"));
     });
 
     return {

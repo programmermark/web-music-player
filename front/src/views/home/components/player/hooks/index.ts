@@ -1,4 +1,4 @@
-import { computed, ComputedRef, reactive, Ref } from "vue";
+import { computed, reactive, Ref } from "vue";
 import { ElMessage } from "element-plus";
 import { IPlayerState, ISongState, IUsePlayerState } from "../interface";
 import { IUseAudioReturn } from "./interface";
@@ -30,14 +30,9 @@ export const useAudio = (
         console.log("error", error);
       }
     };
+    /** 当 paused 属性由 true 转换为 false 时触发 play 事件，事件触发原因一般为 play() 方法调用，或者 autoplay 标签设置。 */
     // 开始播放音乐
-    ele.onplay = () => {
-      if (isPause.value) {
-        ele.pause();
-      } else {
-        store.commit("player/setIsPause", false);
-      }
-    };
+    ele.onplay = (ev: Event) => {};
     // 获取当前播放时间
     ele.ontimeupdate = () => {
       _.debounce(() => {
@@ -49,11 +44,6 @@ export const useAudio = (
     };
     // 当前音乐播放完毕
     ele.onended = () => {
-      // if (that.mode === playMode.loop) {
-      //   that.loop();
-      // } else {
-      //   that.next();
-      // }
       /** 单曲循环的时候，自动播放下一首应该重新播放当前歌曲 */
       autoEndedPlayNext();
     };

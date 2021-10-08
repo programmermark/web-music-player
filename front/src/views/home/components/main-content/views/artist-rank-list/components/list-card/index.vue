@@ -1,9 +1,5 @@
 <template>
-  <div
-    class="list-card"
-    @click="gotoArtistDetail(artist.id)"
-    title="点击查看歌手详情"
-  >
+  <div class="list-card" @click="gotoArtistDetail(artist.id)" title="点击查看歌手详情">
     <!-- 排名和排名变化 -->
     <div class="rank-wrapper">
       <div class="rank">{{ rank + 1 }}</div>
@@ -24,17 +20,9 @@
     </div>
     <!-- 歌手头像 -->
     <div class="portrait-wrapper" title="歌手头像">
-      <el-image
-        class="portrait"
-        :src="`${artist.picUrl}?param=120y120`"
-        alt="歌手头像"
-      >
+      <el-image class="portrait" :src="`${artist.picUrl}?param=120y120`" alt="歌手头像">
         <template #placeholder>
-          <img
-            class="no-image"
-            src="@/assets/image/no-img.png"
-            alt="歌手头像"
-          />
+          <img class="no-image" src="@/assets/image/no-img.png" alt="歌手头像" />
         </template>
       </el-image>
     </div>
@@ -83,7 +71,6 @@ export default defineComponent({
     });
 
     const gotoArtistDetail = (id: number) => {
-      console.log(`跳转到歌手详情，歌手id：${id}`);
       router.push(`/artist/${id}`);
     };
 

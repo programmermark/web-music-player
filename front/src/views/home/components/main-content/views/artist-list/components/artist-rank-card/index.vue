@@ -63,7 +63,6 @@ export default defineComponent({
       if (typeValue.value) {
         url = "/artistRankList?type=" + typeValue.value;
       }
-      console.log("跳转到歌手排行榜, url", url);
       router.push(url);
     };
     return {

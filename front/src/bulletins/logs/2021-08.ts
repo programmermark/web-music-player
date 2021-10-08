@@ -2,6 +2,12 @@ import { ILog } from "@/store/modules/interface/bulletin";
 
 export const logs: ILog[] = [
   {
+    date: "2021-10-08 08:00:00",
+    title: "更新公告(2021-10-08)",
+    briefContent: `<p>1. 优化了一些交互细节，移除了控制台的调试打印日志</p>`,
+    content: `<p>1. 优化了一些交互细节，移除了控制台的调试打印日志</p>`,
+  },
+  {
     date: "2021-10-06 22:00:00",
     title: "更新公告(2021-10-06)",
     briefContent: `<p>1. 新增了系统更新日志，通过日志可以查看每次发布版本的更新内容</p>`,

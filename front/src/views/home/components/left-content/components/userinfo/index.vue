@@ -38,10 +38,7 @@
     </div>
     <!-- 登录弹窗 -->
     <template v-if="showLoginDialog">
-      <login-box
-        :visible="showLoginDialog"
-        @change-visible="handleLoginBoxVisible"
-      />
+      <login-box :visible="showLoginDialog" @change-visible="handleLoginBoxVisible" />
     </template>
   </div>
 </template>
@@ -73,7 +70,6 @@ export default defineComponent({
     };
 
     const handleLoginBoxVisible = (visible: boolean) => {
-      console.log("visible", visible);
       showLoginDialog.value = visible;
     };
 
