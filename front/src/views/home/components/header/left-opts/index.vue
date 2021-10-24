@@ -10,7 +10,19 @@
         @click="handleIconClick(opt.type)"
       />
     </div>
-    <div class="navigator-wrapper">
+    <div v-if="isShowSongDetail">
+      <mp-opt-icon
+        class="absolute left-20 top-2"
+        icon="arrow-bottom"
+        :size="16"
+        scale="1"
+        color="#666666"
+        bgColor="none"
+        display="always"
+        @click="toogleSongDetail"
+      />
+    </div>
+    <div v-else class="navigator-wrapper">
       <div class="flex-wrapper">
         <div class="flex-reverse-wrapper">
           <div class="navigator-go" @click="navigatorBack">
@@ -42,7 +54,9 @@
 </template>
 
 <script lang="ts">
+import { useStore } from "@/store";
 import { defineComponent } from "@vue/runtime-core";
+import { computed } from "vue";
 import { useRouter } from "vue-router";
 import MPOptIcon from "../../../../../components/MPOptIcon.vue";
 
@@ -51,6 +65,12 @@ export default defineComponent({
   name: "LeftOpts",
   setup() {
     const router = useRouter();
+    const store = useStore();
+
+    /** 是否展示歌曲详情 */
+    const isShowSongDetail = computed(
+      () => store.state.player.isShowSongDetail
+    );
 
     /** 图标的类型 */
     const opts = [
@@ -70,6 +90,13 @@ export default defineComponent({
         type: "maximize",
       },
     ];
+
+    /**
+     * 切换歌曲详情显示状态
+     */
+    const toogleSongDetail = () => {
+      store.commit("player/setIsShowSongDetail", !isShowSongDetail.value);
+    };
 
     /**
      * 点击图标触发的事件
@@ -93,8 +120,10 @@ export default defineComponent({
 
     return {
       opts,
+      isShowSongDetail,
       handleIconClick,
       navigatorGo,
+      toogleSongDetail,
       navigatorBack,
     };
   },

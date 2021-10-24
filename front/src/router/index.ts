@@ -111,11 +111,6 @@ const routes: Array<RouteRecordRaw> = [
     name: "MVDetail",
     component: lazyLoad("home/components/mv-detail/index"),
   },
-  {
-    path: "/song/:id",
-    name: "SongDetail",
-    component: lazyLoad("home/components/song-detail/index"),
-  },
 ];
 
 const router = createRouter({

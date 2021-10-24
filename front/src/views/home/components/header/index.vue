@@ -7,7 +7,7 @@
     </el-col>
     <el-col class="header-right" :span="20">
       <!-- 导航内容 -->
-      <nav-bars v-show="showNavs" />
+      <nav-bars v-show="showNavs && !isShowSongDetail" />
       <!-- 独立导航内容：只显示当前页面的单个标题 -->
       <div class="single-nav-wrapper" v-show="!showNavs && singleNavText">
         <div class="single-nav">
@@ -33,15 +33,13 @@ import { useRoute } from "vue-router";
 import LeftOpts from "./left-opts/index.vue";
 import NavBars from "./navbars/index.vue";
 import Search from "./componnets/search/index.vue";
+import { useStore } from "@/store";
 
 export default defineComponent({
   components: { LeftOpts, NavBars, Search },
   setup() {
     const route = useRoute();
-
-    const currentRouteName = computed(() => {
-      return route.name;
-    });
+    const store = useStore();
 
     /** 列表中的routerName会显示导航条 */
     const showNavRouteNames = reactive([
@@ -59,8 +57,17 @@ export default defineComponent({
     /** 支持独立导航的导航列表 */
     const singleNavs = [{ text: "独家放送", url: "/exclusive-broadcast" }];
 
+    const currentRouteName = computed(() => {
+      return route.name;
+    });
+
     const showNavs = computed(() =>
       showNavRouteNames.includes(currentRouteName.value as string)
+    );
+
+    /** 是否展示歌曲详情 */
+    const isShowSongDetail = computed(
+      () => store.state.player.isShowSongDetail
     );
 
     watch(
@@ -74,6 +81,7 @@ export default defineComponent({
     );
 
     return {
+      isShowSongDetail,
       showNavs,
       singleNavText,
     };

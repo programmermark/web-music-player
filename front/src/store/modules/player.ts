@@ -50,6 +50,7 @@ const ModulePlayer: Module<IPlayerState, IRootStateTypes> = {
     currentTime: 0,
     currentSong: undefined,
     songList: [],
+    isShowSongDetail: false,
   }),
   mutations: {
     setIsPause(state: IPlayerState, isPause: boolean) {
@@ -105,6 +106,9 @@ const ModulePlayer: Module<IPlayerState, IRootStateTypes> = {
     setSongList(state: IPlayerState, list: IPlaySong[]) {
       state.songList = list;
     },
+    setIsShowSongDetail(state: IPlayerState, isShow: boolean) {
+      state.isShowSongDetail = isShow;
+    }
   },
   actions: {
     /** 根据id获取歌曲详情 */
