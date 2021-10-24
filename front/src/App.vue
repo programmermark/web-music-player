@@ -29,6 +29,7 @@ import Header from "./views/home/components/header/index.vue";
 
 #home {
   position: relative;
+  overflow: hidden;
   min-width: 1200px;
   width: calc(100vw - 120px);
   min-height: 600px;

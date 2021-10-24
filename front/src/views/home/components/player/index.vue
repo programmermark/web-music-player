@@ -262,6 +262,8 @@ export default defineComponent({
     const storeCurrentSong = computed<IPlaySong>(() => {
       return store.state.player.currentSong as IPlaySong;
     });
+    /** 是否展示歌曲详情 */
+    const isShowSongDetail = computed(() => store.state.player.isShowSongDetail);   
 
     /** 当前播放的歌曲（没有歌曲播放的时候为undefined）*/
     const playingSong = computed(() => {
@@ -427,10 +429,10 @@ export default defineComponent({
       }
     };
 
-    /** 前往歌曲详情 */
+    /** 展示歌曲详情 */
     const gotoSongDetail = (id: number | undefined) => {
       if (id) {
-        router.push(`/song/${id}`);
+        store.commit('player/setIsShowSongDetail', !isShowSongDetail.value);
       }
     };
 

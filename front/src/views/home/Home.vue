@@ -12,6 +12,9 @@
     </el-row>
   </div>
   <!-- footer -->
+  <!-- 歌曲详情组件 -->
+  <song-detail />
+  <!-- 播放器组件 -->
   <mp-player />
 </template>
 
@@ -24,6 +27,7 @@ import MusicPlayer from "./components/player/index.vue";
 import { logs } from "@/bulletins/logs/2021-08";
 import { useStore } from "@/store";
 import { ILog } from "@/store/modules/interface/bulletin";
+import SongDetail from "./components/song-detail/index.vue";
 
 export default defineComponent({
   name: "Home",
@@ -31,6 +35,7 @@ export default defineComponent({
     LeftContent,
     MainContent,
     "mp-player": MusicPlayer,
+    "song-detail": SongDetail
   },
   setup() {
     const store = useStore();

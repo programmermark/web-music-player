@@ -25,6 +25,7 @@ export interface IPlayerState {
   currentSong?: IPlaySong /** 当前播放的歌曲 */;
   currentTime: number /** 当前歌曲播放到的时间点 */;
   songList: IPlaySong[] /** 歌曲列表 */;
+  isShowSongDetail: boolean /** 是否显示歌曲详情 */;
 }
 
 /** 歌曲TrackId */
