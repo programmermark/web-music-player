@@ -1,11 +1,7 @@
 <template>
   <div class="icon-wrapper" :style="iconBgStyle" @click="handleClick">
     <i :class="['mp-opt-icon', iconClass]" :style="iconStyle"></i>
-    <span
-      class="inner-number"
-      :style="{ top: `${size * 0.5}px`, fontSize: `${size * 0.174}px` }"
-      >{{ iconInnerNumber }}</span
-    >
+    <span class="inner-number" :style="innerStyle">{{ iconInnerNumber }}</span>
   </div>
 </template>
 
@@ -91,6 +87,7 @@ export default defineComponent({
       scale,
       cursor,
       display,
+      innerNumberStyle,
     } = toRefs(props);
 
     /** 图标的class */
@@ -119,6 +116,15 @@ export default defineComponent({
       };
     });
 
+    /** 图标中嵌入的数字的样式 */
+    const innerStyle = computed(() => {
+      return {
+        top: `${size.value * 0.5}px`,
+        fontSize: `${size.value * 0.174}px`,
+        ...innerNumberStyle.value,
+      };
+    });
+
     /** 图标点击事件 */
     const handleClick = (e: Event) => emit("click", e);
 
@@ -126,6 +132,7 @@ export default defineComponent({
       iconClass,
       iconStyle,
       iconBgStyle,
+      innerStyle,
       handleClick,
     };
   },

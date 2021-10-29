@@ -81,6 +81,7 @@ export interface ISongDetail {
   alia: string[] /** 歌曲别名列表 */;
   ar: IArtist[] /** 歌手列表 */;
   dt: number /** 歌曲时长（毫秒） */;
+  mv?: number /** 歌曲MV id */;
 }
 
 /**

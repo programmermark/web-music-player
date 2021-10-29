@@ -26,7 +26,7 @@
     <!-- 推荐歌单 -->
     <link-title url="/playlist" title="推荐歌单" />
     <div class="wrapper">
-      <recommend-song-special-card url="" />
+      <recommend-song-special-card url="/daily-recommend-songs" />
       <recommend-song-card
         v-for="song in recommendSongList"
         :key="song.id"

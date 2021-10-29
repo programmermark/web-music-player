@@ -5,6 +5,8 @@ export default {
   personalBanner: baseUrl + "/banner",
   /** 获取推荐歌单: 默认请求9条 */
   personalSongList: baseUrl + "/personalized?limit=9",
+  /** 获取每日歌曲推荐(需登录) */
+  personalDailyReocommendSongs: baseUrl + "/recommend/songs",
   /** 获取独家放送：默认请求前4条 */
   personalBroadcastList:
     baseUrl + "/personalized/privatecontent/list?limit=4&offset=0",

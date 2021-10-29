@@ -15,6 +15,10 @@
         bgColor="#000"
         :size="eleWidth"
         display="always"
+        :innerNumberStyle="{
+          fontSize: '36px',
+          top: '85px',
+        }"
       />
       <mp-opt-icon
         v-show="showIcon"
@@ -34,6 +38,7 @@
 <script lang="ts">
 import MPOptIcon from "@/components/MPOptIcon.vue";
 import MpOptSpecialIcon from "@/components/MpOptSpecialIcon.vue";
+import router from "@/router";
 import { defineComponent, onMounted, onUnmounted, reactive, toRefs } from "vue";
 
 export default defineComponent({
@@ -61,7 +66,7 @@ export default defineComponent({
       default: "#EDBFBC",
     },
   },
-  setup() {
+  setup(props) {
     const state = reactive({
       showIcon: false,
       eleWidth: 0,
@@ -75,6 +80,7 @@ export default defineComponent({
     };
     const handleCardClick = () => {
       console.log("点击card，打开播放列表详情");
+      router.push(props.url);
     };
     const playSong = (e: Event) => {
       console.log("点击播放音乐");
@@ -94,7 +100,9 @@ export default defineComponent({
     });
 
     onUnmounted(() => {
-      window.removeEventListener("resize", () => console.log("清除对resize事件的监听"));
+      window.removeEventListener("resize", () =>
+        console.log("清除对resize事件的监听")
+      );
     });
 
     return {

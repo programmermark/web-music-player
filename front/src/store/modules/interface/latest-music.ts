@@ -9,6 +9,7 @@ export interface ISong {
   alias: string[] /** 歌曲别名数组 */;
   duration: number /** 歌曲时长（毫秒） */;
   mp3Url?: string /** 歌曲链接 */;
+  mvId?: number /** 歌曲MV id */;
   artists: IArtist[] /** 歌曲作者 */;
   album: IAlbum /** 歌曲专辑 */;
 }

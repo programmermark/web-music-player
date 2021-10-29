@@ -28,6 +28,13 @@ const routes: Array<RouteRecordRaw> = [
         ),
       },
       {
+        path: "/daily-recommend-songs",
+        name: "DailyRecommendSongs",
+        component: lazyLoad(
+          "home/components/main-content/views/daily-recommend-songs/index"
+        ),
+      },
+      {
         path: "/playlist",
         name: "Playlist",
         component: lazyLoad(
