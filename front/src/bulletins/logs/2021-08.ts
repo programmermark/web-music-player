@@ -2,6 +2,12 @@ import { ILog } from "@/store/modules/interface/bulletin";
 
 export const logs: ILog[] = [
   {
+    date: "2021-10-30 01:20:00",
+    title: "更新公告(2021-10-30)",
+    briefContent: `<p>1. 修复错误提示不准确的问题</p><p>2. 新增首页每日歌曲推荐</p>`,
+    content: `<p>1. 修复错误提示不准确的问题</p><p>2. 新增首页每日歌曲推荐</p>`,
+  },
+  {
     date: "2021-10-24 19:47:00",
     title: "更新公告(2021-10-24)",
     briefContent: `<p>1. 把查看歌词的歌曲详情修改为切换显现，还原网易云客户端的显示方式</p>`,

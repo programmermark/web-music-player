@@ -63,9 +63,13 @@ export function http<T>(params: IHttpParams, keyName?: string) {
         }
       })
       .catch((error) => {
+        const errorMsg =
+          (error.response.data && error.response.data.message) ||
+          (error.response.data && error.response.data.message) ||
+          "服务器异常，请联系网站工作人员处理！";
         message({
           type: "error",
-          message: "服务器异常，请联系网站工作人员处理！",
+          message: errorMsg,
           duration: 2000,
         });
         reject(error);
