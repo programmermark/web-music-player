@@ -1,8 +1,9 @@
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
+import path from "path";
 
 function resolve(dir: string) {
-  return new URL(`./${dir}`, import.meta.url).pathname;
+  return `${path.resolve(__dirname, dir)}/`;
 }
 
 export default defineConfig({
