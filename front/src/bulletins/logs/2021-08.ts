@@ -2,6 +2,12 @@ import { ILog } from "@/store/modules/interface/bulletin";
 
 export const logs: ILog[] = [
   {
+    date: "2021-10-30 16:10:00",
+    title: "更新公告(2021-10-30)",
+    briefContent: `<p>1. 歌曲详情的添加歌词翻译、歌词作者、翻译作者</p>`,
+    content: `<p>1. 歌曲详情的添加歌词翻译、歌词作者、翻译作者</p>`,
+  },
+  {
     date: "2021-10-30 01:20:00",
     title: "更新公告(2021-10-30)",
     briefContent: `<p>1. 修复错误提示不准确的问题</p><p>2. 新增首页每日歌曲推荐</p>`,

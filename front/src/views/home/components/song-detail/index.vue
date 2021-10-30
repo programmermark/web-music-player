@@ -2,17 +2,7 @@
   <transition name="song-detail" :persisted="true" mode="out-in">
     <div
       v-show="isShowSongDetail"
-      class="
-        w-full
-        h-[calc(100%-50px)]
-        bg-[#f8f8f8]
-        mt-[50px]
-        absolute
-        top-0
-        left-0
-        z-[99]
-        overflow-hidden
-      "
+      class="w-full h-[calc(100%-50px)] bg-[#f8f8f8] mt-[50px] absolute top-0 left-0 z-[99] overflow-hidden"
     >
       <div class="flex">
         <div class="w-6/12 flex flex-row-reverse">
@@ -28,7 +18,10 @@
           <SongLyric
             v-if="currentSong"
             :song="currentSong"
-            :lyric="songLyric"
+            :lyric="lyricState.lyric"
+            :transLyric="lyricState.transLyric"
+            :lyricUser="lyricState.lyricUser"
+            :transLyricUser="lyricState.transLyricUser"
           />
         </div>
       </div>
@@ -45,10 +38,10 @@ import { apis } from "@/api";
 import { http } from "@/common/js/http";
 import { useStore } from "@/store";
 import { computed } from "@vue/reactivity";
-import { ILyricResponse } from "./interface";
+import { ILyricResponse, ILyricState } from "./interface";
 import RotateCover from "./components/rotate-cover/index.vue";
 import SongLyric from "./components/song-lyric/index.vue";
-import { onMounted, ref, watch } from "vue";
+import { onMounted, reactive, watch } from "vue";
 
 const store = useStore();
 
@@ -56,20 +49,24 @@ const store = useStore();
 const isShowSongDetail = computed(() => store.state.player.isShowSongDetail);
 /** 当前歌曲 */
 const currentSong = computed(() => store.state.player.currentSong);
-/** 歌曲歌词 */
-const songLyric = ref("");
+
+const lyricState = reactive<ILyricState>({
+  lyric: "",
+  lyricUser: undefined,
+  transLyric: "",
+  transLyricUser: undefined,
+});
 
 /** 获取歌曲歌词 */
 const getSongLyric = async (id: number) => {
-  const lrc = await http<ILyricResponse>(
+  const { lrc, lyricUser, tlyric, transUser } = await http<ILyricResponse>(
     { url: `${apis.lyric}?id=${id}` },
-    "lrc"
+    ""
   );
-  if (lrc) {
-    songLyric.value = lrc.lyric;
-  } else {
-    songLyric.value = "";
-  }
+  lyricState.lyric = lrc.lyric;
+  lyricState.transLyric = tlyric.lyric;
+  lyricState.lyricUser = lyricUser;
+  lyricState.transLyricUser = transUser;
 };
 
 watch(

@@ -36,10 +36,22 @@
         <div
           v-for="(lyric, index) in formatedLyrics"
           :key="index"
-          class="lyric-item text-sm text-gray-600 bg-opacity-5"
+          class="lyric-item pb-5 text-sm text-gray-600 bg-opacity-5"
           :class="lyricClass(lyric.text, index)"
         >
-          {{ lyric.text }}
+          <div>{{ lyric.text }}</div>
+          <div>{{ lyric.transText }}</div>
+        </div>
+        <!-- 歌词贡献者 -->
+        <div class="lyric-item pb-5 text-sm text-gray-600 bg-opacity-5" v-if="lyricUser">
+          歌词贡献者：<span>{{ lyricUser.nickname }}</span>
+        </div>
+        <!-- 歌词翻译贡献者 -->
+        <div
+          class="lyric-item pb-5 text-sm text-gray-600 bg-opacity-5"
+          v-if="transLyricUser"
+        >
+          歌词贡献者：<span>{{ transLyricUser.nickname }}</span>
         </div>
       </div>
       <div v-else class="flex items-center justify-center h-full text-sm text-gray-800">
@@ -57,10 +69,14 @@ import { computed } from "@vue/reactivity";
 import { ElMessage } from "element-plus";
 import { ref, watch } from "vue";
 import { useRouter } from "vue-router";
+import { IlyricUser } from "../../interface";
 
 const props = defineProps<{
   song: IPlaySong;
   lyric: string /** 歌曲歌词，为空字符串代表歌曲没有歌词 */;
+  transLyric: string /** 翻译歌曲歌词，为空字符串代表歌曲没有歌词 */;
+  lyricUser?: IlyricUser /** 歌词贡献者 */;
+  transLyricUser?: IlyricUser /** 翻译歌词贡献者 */;
 }>();
 
 const router = useRouter();
@@ -72,12 +88,28 @@ const scrollBarRef = ref();
 const currentLyricIndex = ref(0);
 
 /** 格式化后的歌词数组 */
-const formatedLyrics = computed(() => formatLyric(props.lyric));
+const formatedLyrics = computed(() => {
+  if (!props.transLyric) {
+    return formatLyric(props.lyric);
+  } else {
+    const lyricList = formatLyric(props.lyric);
+    const transLyricList = formatLyric(props.transLyric);
+    return lyricList.map((item) => {
+      const findResult = transLyricList.find((transItem) => item.time === transItem.time);
+      if (findResult) {
+        return {
+          ...item,
+          transText: findResult.text,
+        };
+      }
+      return item;
+    });
+  }
+});
 /** 歌曲当前播放时间 */
 
 const lyricClass = (text: string, index: number) => {
   return {
-    "pb-5": text.includes("作词") || text.includes("作曲") || index % 2 === 0,
     "text-[16px] text-gray-900 font-medium":
       currentLyricIndex.value === index - 1 &&
       !text.includes("作词") &&
