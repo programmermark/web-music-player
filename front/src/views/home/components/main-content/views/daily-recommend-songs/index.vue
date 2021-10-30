@@ -18,23 +18,12 @@
 
         <div class="ml-4 m-2">
           <div class="text-xl text-gray-700 font-semibold">每日歌曲推荐</div>
-          <div class="text-xs mt-1 text-gray-500">
-            根据你的音乐口味生成，每天6:00更新
-          </div>
+          <div class="text-xs mt-1 text-gray-500">根据你的音乐口味生成，每天6:00更新</div>
         </div>
       </div>
       <div>
         <div
-          class="
-            inline-flex
-            items-center
-            h-8
-            rounded-2xl
-            cursor-pointer
-            mb-3
-            bg-red-600
-            hover:bg-red-500
-          "
+          class="inline-flex items-center h-8 rounded-2xl cursor-pointer mb-3 bg-red-600 hover:bg-red-500"
           @click="playAllSongs(dailySongIds)"
           title="播放全部歌曲"
         >
@@ -62,15 +51,7 @@
         </div>
         <!-- 歌曲列表 -->
         <div
-          class="
-            w-full
-            flex
-            items-center
-            h-9
-            text-[13px]
-            hover:bg-gray-100
-            even:bg-gray-50
-          "
+          class="w-full flex items-center h-9 text-[13px] hover:bg-gray-100 even:bg-gray-50"
           v-for="(song, index) in state.dailySongs"
           :key="song.id"
           @dblclick="playSong(song.id, dailySongIds)"
@@ -86,7 +67,7 @@
             v-show="currentSongId === song.id"
             class="w-20 text-gray-400 ml-8 pl-4 box-border"
           >
-            <MpOptIcon
+            <MPOptIcon
               icon="horn-playing-solid"
               color="#d33a31"
               :size="14"
@@ -120,13 +101,7 @@
               :key="artist.id"
             >
               <span
-                class="
-                  px-1
-                  cursor-pointer
-                  max-w-[150px]
-                  text-ellipsis
-                  hover:text-gray-800
-                "
+                class="px-1 cursor-pointer max-w-[150px] text-ellipsis hover:text-gray-800"
                 @click="gotoArtistDetail(artist.id)"
                 title="点击跳转到歌手详情"
                 >{{ artist.name }}</span
@@ -135,22 +110,14 @@
             </div>
           </div>
           <div
-            class="
-              w-60
-              mr-4
-              text-gray-500 text-ellipsis
-              cursor-pointer
-              hover:text-gray-800
-            "
+            class="w-60 mr-4 text-gray-500 text-ellipsis cursor-pointer hover:text-gray-800"
             @click="gotoAlbumDetail(song.album.id)"
             title="点击跳转到专辑详情"
           >
             {{ song.album.name }}
           </div>
           <div class="w-12 mr-8 text-gray-400">
-            {{
-              transformSecondToMinute(Math.floor((song.duration || 0) / 1000))
-            }}
+            {{ transformSecondToMinute(Math.floor((song.duration || 0) / 1000)) }}
           </div>
         </div>
       </template>
@@ -166,7 +133,7 @@ import { apis } from "@/api";
 import { useStore } from "@/store";
 import { http } from "@/common/js/http";
 import { formatNo, transformSecondToMinute } from "@/common/js/util";
-import MpOptIcon from "@/components/MpOptIcon.vue";
+import MPOptIcon from "@/components/MPOptIcon.vue";
 import MpIcon from "@/components/MPIcon.vue";
 import MpOptSpecialIcon from "@/components/MpOptSpecialIcon.vue";
 import { IDailyRecommendSongs, IDailyRecommendSongsState } from "./interface";
