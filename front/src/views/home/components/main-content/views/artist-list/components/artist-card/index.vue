@@ -21,36 +21,16 @@
   </div>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent, PropType, toRefs } from "vue";
-import { useRouter } from "vue-router";
+<script lang="ts" setup>
+import { computed } from "vue";
+import { gotoArtistDetail } from "@/common/js/router";
 import { IArtist } from "../../../artist-detail/interface";
 
-export default defineComponent({
-  name: "ArtistCard",
-  props: {
-    artist: {
-      type: Object as PropType<IArtist>,
-      required: true,
-    },
-  },
-  setup(props) {
-    const router = useRouter();
+const props = defineProps<{
+  artist: IArtist;
+}>();
 
-    const { artist } = toRefs(props);
-
-    const imageUrl = computed(() => artist.value.cover + "?param=140y140");
-
-    /** 跳转到歌手详情 */
-    const gotoArtistDetail = (id: number) => {
-      router.push(`/artist/${id}`);
-    };
-    return {
-      imageUrl,
-      gotoArtistDetail,
-    };
-  },
-});
+const imageUrl = computed(() => props.artist.cover + "?param=140y140");
 </script>
 
 <style lang="scss" scoped>

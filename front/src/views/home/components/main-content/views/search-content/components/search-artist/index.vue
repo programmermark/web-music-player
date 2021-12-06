@@ -51,6 +51,7 @@
 <script lang="ts" setup>
 import { computed } from "vue";
 import { useRouter } from "vue-router";
+import { gotoArtistDetail } from "@/common/js/router";
 import { ISearchContentArtist } from "../../interface";
 
 const props = withDefaults(
@@ -79,13 +80,6 @@ const router = useRouter();
 
 /** 当前页码 */
 const currentPage = computed(() => props.offset / props.pageSize + 1);
-
-/** 跳转到歌手详情 */
-const gotoArtistDetail = (id: number) => {
-  if (id) {
-    router.push(`/artist/${id}`);
-  }
-};
 
 /** 切换分页 */
 const handlePageChange = (page: number) => {

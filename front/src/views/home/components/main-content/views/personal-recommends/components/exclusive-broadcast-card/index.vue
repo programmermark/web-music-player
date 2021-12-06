@@ -2,49 +2,24 @@
   <div class="card" @click="gotoMVDetail(id)">
     <img class="image" :src="`${imgUrl}?param=320y180`" alt="MV封面" />
     <div class="icon">
-      <mp-icon icon="play-caret" color="#fff" bgColor="none" />
+      <MPIcon icon="play-caret" color="#fff" bgColor="none" />
     </div>
     <div class="title">{{ title }}</div>
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import MPIcon from "@/components/MPIcon.vue";
-import { defineComponent } from "vue";
-import { useRouter } from "vue-router";
+import { gotoMVDetail } from "@/common/js/router";
 
 /** 独家放送卡片 */
-export default defineComponent({
-  components: { "mp-icon": MPIcon },
-  name: "ExclusiveBroadcastCard",
-  props: {
-    id: {
-      type: Number,
-      required: true,
-    },
-    /** 图片链接地址 */
-    imgUrl: {
-      type: String,
-      required: true,
-    },
-    /** 卡片标题 */
-    title: {
-      type: String,
-      required: true,
-    },
-  },
-  setup() {
-    const router = useRouter();
-
-    const gotoMVDetail = (id: number) => {
-      router.push(`/mv/${id}`);
-    };
-
-    return {
-      gotoMVDetail,
-    };
-  },
-});
+defineProps<{
+  id: number;
+  /** 图片链接地址 */
+  imgUrl: string;
+  /** 卡片标题 */
+  title: string;
+}>();
 </script>
 
 <style lang="scss" scoped>

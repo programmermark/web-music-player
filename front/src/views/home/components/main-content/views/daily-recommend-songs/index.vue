@@ -41,7 +41,13 @@
     </div>
     <!-- 歌曲列表 -->
     <div class="pb-10 border-t border-gray-100">
-      <template v-if="state.dailySongs && state.dailySongs.length > 0">
+      <template
+        v-if="dailySongs && dailySongs.length > 0"
+        v-loading="!isLoading"
+        element-loading-text="载入中..."
+        element-loading-spinner="el-icon-loading"
+        element-loading-background="rgba(255, 255, 255)"
+      >
         <!-- 歌曲标题 -->
         <div class="w-full flex items-center h-9 text-[13px] text-gray-500">
           <div class="flex-1 ml-28">音乐标题</div>
@@ -52,7 +58,7 @@
         <!-- 歌曲列表 -->
         <div
           class="w-full flex items-center h-9 text-[13px] hover:bg-gray-100 even:bg-gray-50"
-          v-for="(song, index) in state.dailySongs"
+          v-for="(song, index) in dailySongs"
           :key="song.id"
           @dblclick="playSong(song.id, dailySongIds)"
           title="双击播放当前歌曲"
@@ -121,33 +127,28 @@
           </div>
         </div>
       </template>
-      <div class="empty-song-list" v-else>歌单中暂无任何歌曲</div>
+      <div class="text-center text-gray-500 text-base mt-16" v-else>
+        歌单中暂无任何歌曲
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { onMounted, reactive, computed } from "vue";
-import { useRouter } from "vue-router";
+import { computed } from "vue";
+import { useQuery } from "vue-query";
 import { apis } from "@/api";
 import { useStore } from "@/store";
 import { http } from "@/common/js/http";
 import { formatNo, transformSecondToMinute } from "@/common/js/util";
+import { gotoMVDetail, gotoArtistDetail, gotoAlbumDetail } from "@/common/js/router";
 import MPOptIcon from "@/components/MPOptIcon.vue";
 import MpIcon from "@/components/MPIcon.vue";
 import MpOptSpecialIcon from "@/components/MpOptSpecialIcon.vue";
-import { IDailyRecommendSongs, IDailyRecommendSongsState } from "./interface";
+import { IDailyRecommendSongs } from "./interface";
 import { ISong } from "@/store/modules/interface/latest-music";
 
 const store = useStore();
-const router = useRouter();
-
-const state = reactive<IDailyRecommendSongsState>({
-  dailySongs: [],
-});
-
-/** 每日推荐歌曲id数组 */
-const dailySongIds = computed(() => state.dailySongs.map((song) => song.id));
 
 /** 当前播放的歌曲id */
 const currentSongId = computed(() => store.state.player.currentSong?.id);
@@ -156,29 +157,44 @@ const currentSongId = computed(() => store.state.player.currentSong?.id);
  * 获取每日歌曲推荐
  */
 const fetchDailyRecommendSongs = async () => {
-  const { dailySongs } = await http<IDailyRecommendSongs>(
+  return await http<IDailyRecommendSongs>(
     { url: apis.personalDailyReocommendSongs },
     "data"
   );
-  console.log("dailySongs", dailySongs);
-  const formatSongs: ISong[] = dailySongs.map((song) => ({
-    id: song.id /** 歌曲id */,
-    name: song.name /** 歌曲名 */,
-    alias: song.alia /** 歌曲别名数组 */,
-    duration: song.dt /** 歌曲时长（毫秒） */,
-    mvId: song.mv,
-    artists: song.ar.map((artist) => ({
-      id: artist.id,
-      name: artist.name,
-    })),
-    album: {
-      id: song.al.id,
-      name: song.al.name,
-      picUrl: song.al.picUrl,
-    },
-  }));
-  state.dailySongs = formatSongs;
 };
+
+/** 缓存持续时间为：1h */
+const { isLoading, data: dailySongs } = useQuery("dailySongs", fetchDailyRecommendSongs, {
+  staleTime: 1000 * 60 * 60,
+  select: (data) => {
+    const { dailySongs } = data;
+    const formatSongs: ISong[] = dailySongs.map((song) => ({
+      id: song.id /** 歌曲id */,
+      name: song.name /** 歌曲名 */,
+      alias: song.alia /** 歌曲别名数组 */,
+      duration: song.dt /** 歌曲时长（毫秒） */,
+      mvId: song.mv,
+      artists: song.ar.map((artist) => ({
+        id: artist.id,
+        name: artist.name,
+      })),
+      album: {
+        id: song.al.id,
+        name: song.al.name,
+        picUrl: song.al.picUrl,
+      },
+    }));
+    return formatSongs;
+  },
+});
+
+/** 每日推荐歌曲id数组 */
+const dailySongIds = computed(() => {
+  if (!dailySongs.value) {
+    return [];
+  }
+  return dailySongs.value.map((song) => song.id);
+});
 
 /** 播放全部歌曲 */
 const playAllSongs = (songIds: number[]) => {
@@ -190,40 +206,11 @@ const playAllSongs = (songIds: number[]) => {
 
 /** 播放当前歌曲 */
 const playSong = (songId: number, songIds: number[]) => {
-  // store.dispatch("player/setSongList", {
-  //   id: playlistId,
-  //   noSetCurrentSong: true,
-  // });
-  // store.commit("player/setCurrentSongById", songId);
-
   store.dispatch("player/setSongListByIds", {
     ids: songIds,
     currentId: songId,
   });
 };
-
-/** 跳转到MV详情 */
-const gotoMVDetail = (id?: number) => {
-  if (IdleDeadline) {
-    router.push(`/mv/${id}`);
-  }
-};
-
-/** 跳转到歌手详情 */
-const gotoArtistDetail = (id: number) => {
-  if (id) {
-    router.push(`/artist/${id}`);
-  }
-};
-
-/** 前往专辑详情 */
-const gotoAlbumDetail = (id: number) => {
-  router.push(`/albumDetail/${id}`);
-};
-
-onMounted(() => {
-  fetchDailyRecommendSongs();
-});
 </script>
 
 <style lang="scss" scoped></style>

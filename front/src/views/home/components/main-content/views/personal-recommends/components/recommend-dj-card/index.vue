@@ -5,11 +5,7 @@
       <div class="cover">
         <el-image class="image" :src="`${imgUrl}?param=180y180`" alt="电台封面">
           <template #placeholder>
-            <img
-              class="no-image"
-              src="@/assets/image/no-img.png"
-              alt="电台封面"
-            />
+            <img class="no-image" src="@/assets/image/no-img.png" alt="电台封面" />
           </template>
         </el-image>
       </div>
@@ -22,41 +18,17 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
-
-export default defineComponent({
-  name: "RecommendDjCard",
-  props: {
-    id: {
-      type: Number,
-      required: true,
-    },
-    /** 封面图片URL */
-    imgUrl: {
-      type: String,
-      required: true,
-    },
-    /** 电台推荐文字描述 */
-    recommendDesc: {
-      type: String,
-      required: true,
-    },
-    /** 歌手名称 */
-    singer: {
-      type: String,
-      required: true,
-    },
-  },
-  setup() {
-    const gotoDjDetail = (id: number) => {
-      console.log("前往电台详情页面，电台id：" + id);
-    };
-    return {
-      gotoDjDetail,
-    };
-  },
-});
+<script lang="ts" setup>
+import { gotoDjDetail } from "@/common/js/router";
+defineProps<{
+  id: number;
+  /** 封面图片URL */
+  imgUrl: string;
+  /** 电台推荐文字描述 */
+  recommendDesc: string;
+  /** 歌手名称 */
+  singer: string;
+}>();
 </script>
 
 <style lang="scss" scoped>

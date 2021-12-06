@@ -4,11 +4,7 @@
     title="点击查看歌手详情"
     @click="gotoArtistDetail(artist.id)"
   >
-    <el-image
-      class="image"
-      :src="`${artist.img1v1Url}?param=400y400`"
-      alt="歌手头像"
-    >
+    <el-image class="image" :src="`${artist.img1v1Url}?param=400y400`" alt="歌手头像">
       <template #placeholder>
         <img class="no-image" src="@/assets/image/no-img.png" alt="歌手头像" />
       </template>
@@ -17,31 +13,13 @@
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { ISimilarArtist } from "@/store/modules/interface/artist-detail";
-import { defineComponent, PropType } from "vue";
-import { useRouter } from "vue-router";
+import { gotoArtistDetail } from "@/common/js/router";
 
-export default defineComponent({
-  name: "SimilarArtistCard",
-  props: {
-    artist: {
-      type: Object as PropType<ISimilarArtist>,
-      required: true,
-    },
-  },
-  setup() {
-    const router = useRouter();
-
-    const gotoArtistDetail = (id: number) => {
-      router.push(`/artist/${id}`);
-    };
-
-    return {
-      gotoArtistDetail,
-    };
-  },
-});
+defineProps<{
+  artist: ISimilarArtist;
+}>();
 </script>
 
 <style lang="scss" scoped>

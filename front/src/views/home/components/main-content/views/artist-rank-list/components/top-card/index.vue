@@ -11,17 +11,9 @@
         <div class="score">热度：{{ score }}</div>
       </div>
       <div class="portrait-wrapper" title="歌手头像">
-        <el-image
-          class="portrait"
-          :src="`${portrait}?param=200y200`"
-          alt="歌手头像"
-        >
+        <el-image class="portrait" :src="`${portrait}?param=200y200`" alt="歌手头像">
           <template #placeholder>
-            <img
-              class="no-image"
-              src="@/assets/image/no-img.png"
-              alt="歌手头像"
-            />
+            <img class="no-image" src="@/assets/image/no-img.png" alt="歌手头像" />
           </template>
         </el-image>
       </div>
@@ -29,57 +21,24 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
-import { useRoute, useRouter } from "vue-router";
+<script lang="ts" setup>
+import { gotoArtistDetail } from "@/common/js/router";
 
 /** 歌手排行榜 - 排行前三的card */
-export default defineComponent({
-  name: "TopCard",
-  props: {
-    /** 歌手id */
-    id: {
-      type: Number,
-      required: true,
-    },
-    /** 排行顺序 */
-    no: {
-      type: Number,
-      required: true,
-    },
-    /** 歌手名 */
-    name: {
-      type: String,
-      required: true,
-    },
-    /** 歌手名(译名) */
-    trans: {
-      type: String,
-      required: true,
-    },
-    /** 歌手头像url */
-    portrait: {
-      type: String,
-      required: true,
-    },
-    /** 热度 */
-    score: {
-      type: Number,
-      required: true,
-    },
-  },
-  setup() {
-    const router = useRouter();
-
-    const gotoArtistDetail = (id: number) => {
-      router.push(`/artist/${id}`);
-    };
-
-    return {
-      gotoArtistDetail,
-    };
-  },
-});
+defineProps<{
+  /** 歌手id */
+  id: number;
+  /** 排行顺序 */
+  no: number;
+  /** 歌手名 */
+  name: string;
+  /** 歌手名(译名) */
+  trans: string;
+  /** 歌手头像url */
+  portrait: string;
+  /** 热度 */
+  score: number;
+}>();
 </script>
 
 <style lang="scss" scoped>

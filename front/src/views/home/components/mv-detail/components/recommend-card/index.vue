@@ -11,9 +11,7 @@
       />
       <div class="absolute top-1 right-1 flex items-center font-bold">
         <MPIcon icon="play-caret" color="#fff" bgColor="none" />
-        <span class="text-white text-xs">{{
-          translatePlayCount(mv.playCount)
-        }}</span>
+        <span class="text-white text-xs">{{ translatePlayCount(mv.playCount) }}</span>
       </div>
       <div class="absolute bottom-1 right-1 text-xs font-semibold text-white">
         {{ transformSecondToMinute(mv.duration / 1000) }}
@@ -40,19 +38,11 @@
 import { ISimilarMV } from "../../interface";
 import { translatePlayCount, transformSecondToMinute } from "@/common/js/util";
 import MPIcon from "@/components/MPIcon.vue";
-import { useRouter } from "vue-router";
+import { gotoArtistDetail, gotoMVDetail } from "@/common/js/router";
 
 defineProps<{
   mv: ISimilarMV;
 }>();
-
-const router = useRouter();
-
-/** 前往歌手详情页面 */
-const gotoArtistDetail = (id: number) => router.push(`/artist/${id}`);
-
-/** 前往MV详情页面 */
-const gotoMVDetail = (id: number) => router.push(`/mv/${id}`);
 </script>
 
 <style lang="scss" scoped></style>

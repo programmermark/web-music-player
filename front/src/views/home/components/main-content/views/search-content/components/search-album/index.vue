@@ -3,15 +3,7 @@
     <el-scrollbar v-if="!loading">
       <div class="w-full">
         <div
-          class="
-            grid grid-cols-12
-            pl-[30px]
-            pr-9
-            ml-1
-            cursor-pointer
-            text-sm
-            hover:bg-gray-100
-          "
+          class="grid grid-cols-12 pl-[30px] pr-9 ml-1 cursor-pointer text-sm hover:bg-gray-100"
           :class="{ 'bg-gray-50': index % 2 !== 0 }"
           v-for="(album, index) in albums"
           :key="album.id"
@@ -19,22 +11,10 @@
         >
           <div class="col-span-7 flex items-center">
             <img
-              class="
-                w-[60px]
-                h-[60px]
-                rounded
-                my-[10px]
-                mr-[10px]
-                cursor-pointer
-                border border-gray-100
-                box-border
-              "
+              class="w-[60px] h-[60px] rounded my-[10px] mr-[10px] cursor-pointer border border-gray-100 box-border"
               :src="`${album.picUrl}?param=120y120`"
             />
-            <span
-              class="cursor-pointer text-ellipsis"
-              v-html="album.name"
-            ></span>
+            <span class="cursor-pointer text-ellipsis" v-html="album.name"></span>
             <span
               class="text-gray-500 text-ellipsis pr-4"
               v-if="album.alias && album.alias.length > 0"
@@ -43,7 +23,12 @@
           </div>
           <div
             class="col-span-5 flex items-center text-[13px]"
-            @click="(e) => gotoArtistDetail(e, album.artist.id)"
+            @click="
+              (e) => {
+                e.stopPropagation();
+                gotoArtistDetail(album.artist.id);
+              }
+            "
           >
             <span v-html="album.artist.name"></span>
             <span
@@ -104,6 +89,8 @@ const props = withDefaults(
   }
 );
 
+import { gotoAlbumDetail, gotoArtistDetail } from "@/common/js/router";
+
 const emits = defineEmits<{
   (e: "page-change", page: number): void;
 }>();
@@ -112,21 +99,6 @@ const router = useRouter();
 
 /** 当前页码 */
 const currentPage = computed(() => props.offset / props.pageSize + 1);
-
-/** 跳转到专辑详情 */
-const gotoAlbumDetail = (id: number) => {
-  if (id) {
-    router.push(`/albumDetail/${id}`);
-  }
-};
-
-/** 跳转到歌手详情 */
-const gotoArtistDetail = (e: Event, id: number) => {
-  e.stopPropagation();
-  if (id) {
-    router.push(`/artist/${id}`);
-  }
-};
 
 /** 切换分页 */
 const handlePageChange = (page: number) => {

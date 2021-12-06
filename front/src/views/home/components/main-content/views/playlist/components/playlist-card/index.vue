@@ -13,22 +13,18 @@
         alt="歌单封面"
       >
         <template #placeholder>
-          <img
-            class="no-image"
-            src="@/assets/image/no-img.png"
-            alt="歌单封面"
-          />
+          <img class="no-image" src="@/assets/image/no-img.png" alt="歌单封面" />
         </template>
       </el-image>
       <div class="play-count">
-        <mp-icon icon="play-caret" color="#fff" bgColor="none" />
+        <MPIcon icon="play-caret" color="#fff" bgColor="none" />
         <span>{{ translatePlayCount(playlist.playCount) }}</span>
       </div>
       <div class="creator">
-        <mp-icon icon="user-avatar" color="#fff" bgColor="none" />
+        <MPIcon icon="user-avatar" color="#fff" bgColor="none" />
         <span class="name text-ellipsis">{{ playlist.creator.nickname }}</span>
       </div>
-      <mp-opt-icon
+      <MPOptIcon
         v-show="showIcon"
         class="play-button"
         :size="24"
@@ -44,61 +40,36 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, PropType, ref, toRefs } from "vue";
+<script lang="ts" setup>
+import { ref, toRefs } from "vue";
 import { translatePlayCount } from "@/common/js/util";
 import { IPlayListItem } from "../../interface";
 import MPIcon from "@/components/MPIcon.vue";
 import MPOptIcon from "@/components/MPOptIcon.vue";
-import { useRouter } from "vue-router";
 import { useStore } from "@/store";
+import { gotoPlayListDetail } from "@/common/js/router";
 
-export default defineComponent({
-  components: {
-    "mp-icon": MPIcon,
-    "mp-opt-icon": MPOptIcon,
-  },
-  props: {
-    playlist: {
-      type: Object as PropType<IPlayListItem>,
-      required: true,
-    },
-  },
-  setup(props) {
-    const router = useRouter();
-    const store = useStore();
+const props = defineProps<{
+  playlist: IPlayListItem;
+}>();
 
-    const { playlist } = toRefs(props);
+const store = useStore();
 
-    const showIcon = ref(false);
+const { playlist } = toRefs(props);
 
-    const handleMouseEnter = () => {
-      showIcon.value = true;
-    };
-    const handleMouseLeave = () => {
-      showIcon.value = false;
-    };
+const showIcon = ref(false);
 
-    const playSong = (e: Event) => {
-      e.stopPropagation();
-      store.dispatch("player/setSongList", { id: playlist.value.id });
-    };
+const handleMouseEnter = () => {
+  showIcon.value = true;
+};
+const handleMouseLeave = () => {
+  showIcon.value = false;
+};
 
-    /** 跳转到歌单详情 */
-    const gotoPlayListDetail = (id: number) => {
-      router.push(`/playlistDetail/${id}`);
-    };
-
-    return {
-      showIcon,
-      handleMouseEnter,
-      handleMouseLeave,
-      playSong,
-      translatePlayCount,
-      gotoPlayListDetail,
-    };
-  },
-});
+const playSong = (e: Event) => {
+  e.stopPropagation();
+  store.dispatch("player/setSongList", { id: playlist.value.id });
+};
 </script>
 
 <style lang="scss" scoped>

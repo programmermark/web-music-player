@@ -11,64 +11,42 @@
           class="no-image"
           src="@/assets/image/no-img.png"
           alt="排行榜头像"
-          @click="gotoArtistRankList"
+          @click="gotoArtistRankList(typeValue)"
         />
       </template>
     </el-image>
-    <div class="name" @click="gotoArtistRankList">
+    <div class="name" @click="gotoArtistRankList(typeValue)">
       歌手排行榜 <i class="el-icon-arrow-right icon-reset" />
     </div>
   </div>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent, PropType, toRefs } from "vue";
-import { useRouter } from "vue-router";
+<script lang="ts" setup>
+import { computed, toRefs } from "vue";
 import { ArtistAreaLabel } from "../interface/artist-rank-card";
+import { gotoArtistRankList } from "@/common/js/router";
 
-export default defineComponent({
-  name: "ArtistCard",
-  props: {
-    imgUrl: {
-      type: String,
-      required: true,
-    },
-    /** 排行榜分类 */
-    type: {
-      type: String as PropType<ArtistAreaLabel | undefined>,
-      default: undefined,
-    },
-  },
-  setup(props) {
-    const router = useRouter();
+const props = defineProps<{
+  imgUrl: string;
+  /** 排行榜分类 */
+  type?: ArtistAreaLabel;
+}>();
 
-    const { type } = toRefs(props);
+const { type } = toRefs(props);
 
-    const typeValue = computed(() => {
-      if (type.value === "华语") {
-        return 1;
-      } else if (type.value === "欧美") {
-        return 2;
-      } else if (type.value === "韩国") {
-        return 3;
-      } else if (type.value === "日本") {
-        return 4;
-      }
-      return 0;
-    });
-
-    /** 跳转到歌手详情 */
-    const gotoArtistRankList = () => {
-      let url = "/artistRankList";
-      if (typeValue.value) {
-        url = "/artistRankList?type=" + typeValue.value;
-      }
-      router.push(url);
-    };
-    return {
-      gotoArtistRankList,
-    };
-  },
+const typeValue = computed(() => {
+  if (type === undefined) {
+    return 0;
+  } else if (type.value === "华语") {
+    return 1;
+  } else if (type.value === "欧美") {
+    return 2;
+  } else if (type.value === "韩国") {
+    return 3;
+  } else if (type.value === "日本") {
+    return 4;
+  }
+  return 0;
 });
 </script>
 

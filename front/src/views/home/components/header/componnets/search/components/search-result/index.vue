@@ -30,15 +30,7 @@
         />单曲
       </div>
       <div
-        class="
-          pl-7
-          pr-2
-          py-2
-          text-sm
-          cursor-pointer
-          text-gray-700 text-ellipsis
-          hover:bg-gray-100
-        "
+        class="pl-7 pr-2 py-2 text-sm cursor-pointer text-gray-700 text-ellipsis hover:bg-gray-100"
         v-for="song in state.songs"
         :key="song.id"
         @click="playSong(song.id)"
@@ -63,15 +55,7 @@
         />歌手
       </div>
       <div
-        class="
-          pl-7
-          pr-2
-          py-2
-          text-sm
-          cursor-pointer
-          text-gray-700 text-ellipsis
-          hover:bg-gray-100
-        "
+        class="pl-7 pr-2 py-2 text-sm cursor-pointer text-gray-700 text-ellipsis hover:bg-gray-100"
         v-for="artist in state.artists"
         :key="artist.id"
         @click="gotoArtistDetail(artist.id)"
@@ -95,15 +79,7 @@
         />专辑
       </div>
       <div
-        class="
-          pl-7
-          pr-2
-          py-2
-          text-sm
-          cursor-pointer
-          text-gray-700 text-ellipsis
-          hover:bg-gray-100
-        "
+        class="pl-7 pr-2 py-2 text-sm cursor-pointer text-gray-700 text-ellipsis hover:bg-gray-100"
         v-for="album in state.albums"
         :key="album.id"
         @click="gotoAlbumDetail(album.id)"
@@ -128,15 +104,7 @@
         />歌单
       </div>
       <div
-        class="
-          pl-7
-          pr-2
-          py-2
-          text-sm
-          cursor-pointer
-          text-gray-700 text-ellipsis
-          hover:bg-gray-100
-        "
+        class="pl-7 pr-2 py-2 text-sm cursor-pointer text-gray-700 text-ellipsis hover:bg-gray-100"
         v-for="playlist in state.playlists"
         :key="playlist.id"
         @click="gotoPlaylistDetail(playlist.id)"
@@ -157,6 +125,12 @@ import MPOptIcon from "@/components/MPOptIcon.vue";
 import { useStore } from "@/store";
 import { ISearchSuggest } from "../../interface/search-result";
 import { highLightKeywords } from "@/common/js/util";
+import {
+  gotoArtistDetail,
+  gotoAlbumDetail,
+  gotoPlaylistDetail,
+  gotoSearchContent,
+} from "@/common/js/router";
 import { useRouter } from "vue-router";
 
 const props = defineProps<{
@@ -221,26 +195,6 @@ const fetchSearchSuggest = async (keywords: string) => {
 /** 播放歌曲 */
 const playSong = (id: number) => {
   store.dispatch("player/setCurrentSong", id);
-};
-
-/** 跳转到歌手详情页面 */
-const gotoArtistDetail = (id: number) => {
-  router.push(`/artist/${id}`);
-};
-
-/** 跳转到专辑详情页面 */
-const gotoAlbumDetail = (id: number) => {
-  router.push(`/albumDetail/${id}`);
-};
-
-/** 跳转到歌单详情页面 */
-const gotoPlaylistDetail = (id: number) => {
-  router.push(`/playlistDetail/${id}`);
-};
-
-/** 跳转到搜索结果页面 */
-const gotoSearchContent = (keywords: string) => {
-  router.push(`/search-content/${keywords}`);
 };
 
 watch(

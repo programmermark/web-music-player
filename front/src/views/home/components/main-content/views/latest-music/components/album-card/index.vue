@@ -11,7 +11,7 @@
           <img class="no-image" src="@/assets/image/no-img.png" alt="专辑封面" />
         </template>
       </el-image>
-      <mp-opt-icon
+      <MpOptIcon
         v-show="showIcon"
         class="play-button"
         title="点击播放歌曲"
@@ -37,72 +37,39 @@
   </div>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent, PropType, ref, toRefs } from "vue";
-import MpOpeIcon from "@/components/MPOptIcon.vue";
-import { formatMonth } from "@/common/js/util";
+<script lang="ts" setup>
+import { computed, ref, toRefs } from "vue";
+import MpOptIcon from "@/components/MPOptIcon.vue";
+import { gotoAlbumDetail, gotoArtistDetail } from "@/common/js/router";
 import { IAlbum } from "../../../artist-detail/interface";
-import { useRouter } from "vue-router";
 import { useStore } from "@/store";
 
 // 最新音乐 - 新碟上架 - 专辑卡片组件
-export default defineComponent({
-  name: "AlbumCard",
-  components: {
-    "mp-opt-icon": MpOpeIcon,
-  },
-  props: {
-    /** 专辑对象 */
-    album: {
-      type: Object as PropType<IAlbum>,
-      required: true,
-    },
-  },
-  setup(props) {
-    const router = useRouter();
-    const store = useStore();
+const props = defineProps<{
+  /** 专辑对象 */
+  album: IAlbum;
+}>();
 
-    const { album } = toRefs(props);
+const store = useStore();
 
-    const showIcon = ref(false);
+const { album } = toRefs(props);
 
-    const imageUrl = computed(() => album.value.picUrl + `?param=140y140`);
+const showIcon = ref(false);
 
-    const handleMouseEnter = () => {
-      showIcon.value = true;
-    };
-    const handleMouseLeave = () => {
-      showIcon.value = false;
-    };
+const imageUrl = computed(() => album.value.picUrl + `?param=140y140`);
 
-    /** 播放专辑歌曲 */
-    const playAlbumSong = (e: Event, id: number) => {
-      e.stopPropagation();
-      store.dispatch("player/setSongListByAlbumId", id);
-    };
+const handleMouseEnter = () => {
+  showIcon.value = true;
+};
+const handleMouseLeave = () => {
+  showIcon.value = false;
+};
 
-    /** 前往专辑详情 */
-    const gotoAlbumDetail = (id: number) => {
-      router.push(`/albumDetail/${id}`);
-    };
-
-    /** 前往歌手详情 */
-    const gotoArtistDetail = (id: number) => {
-      router.push(`/artist/${id}`);
-    };
-
-    return {
-      showIcon,
-      imageUrl,
-      formatMonth,
-      handleMouseEnter,
-      handleMouseLeave,
-      playAlbumSong,
-      gotoAlbumDetail,
-      gotoArtistDetail,
-    };
-  },
-});
+/** 播放专辑歌曲 */
+const playAlbumSong = (e: Event, id: number) => {
+  e.stopPropagation();
+  store.dispatch("player/setSongListByAlbumId", id);
+};
 </script>
 
 <style lang="scss" scoped>
