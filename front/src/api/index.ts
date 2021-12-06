@@ -12,6 +12,7 @@ import ArtistRankListApis from "./right-content/artist-rank-list/index";
 import ExclusiveBroadcastApis from "./right-content/exclusive-broadcast/index";
 import MVDetailApis from "./common/mv-detail/index";
 import SongDetailApis from "./common/song-detail/index";
+import LoginStatusApis from "./common/login-status/index";
 
 const apis = {
   ...HeaderApis,
@@ -28,6 +29,7 @@ const apis = {
   ...ExclusiveBroadcastApis,
   ...MVDetailApis,
   ...SongDetailApis,
+  ...LoginStatusApis,
 };
 
 export { apis };
