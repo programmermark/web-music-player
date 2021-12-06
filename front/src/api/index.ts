@@ -13,6 +13,7 @@ import ExclusiveBroadcastApis from "./right-content/exclusive-broadcast/index";
 import MVDetailApis from "./common/mv-detail/index";
 import SongDetailApis from "./common/song-detail/index";
 import LoginStatusApis from "./common/login-status/index";
+import videoListApis from "./right-content/video-list";
 
 const apis = {
   ...HeaderApis,
@@ -30,6 +31,7 @@ const apis = {
   ...MVDetailApis,
   ...SongDetailApis,
   ...LoginStatusApis,
+  ...videoListApis,
 };
 
 export { apis };

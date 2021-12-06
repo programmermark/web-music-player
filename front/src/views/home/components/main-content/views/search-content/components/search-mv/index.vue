@@ -4,14 +4,31 @@
       <div class="w-full">
         <div class="pl-[30px] pr-9">
           <div
-            class="inline-block box-border pr-5 md:w-1/3 lg:w-1/4 xl:w-1/5 mv-item"
+            class="
+              inline-block
+              box-border
+              pr-5
+              md:w-1/3
+              lg:w-1/4
+              xl:w-1/5
+              mv-item
+            "
             v-for="mv in mvs"
             :key="mv.vid"
           >
             <!-- MV封面 -->
             <div class="relative cursor-pointer" @click="gotoMVDetail(mv.vid)">
               <el-image
-                class="w-full h-full flex items-center justify-center box-border rounded border border-gray-50"
+                class="
+                  w-full
+                  h-full
+                  flex
+                  items-center
+                  justify-center
+                  box-border
+                  rounded
+                  border border-gray-50
+                "
                 :src="`${mv.coverUrl}?param=480y270`"
                 alt="MV封面"
               >
@@ -23,7 +40,9 @@
                   />
                 </template>
               </el-image>
-              <div class="absolute flex items-center top-1 right-2 cursor-pointer">
+              <div
+                class="absolute flex items-center top-1 right-2 cursor-pointer"
+              >
                 <MPOptIcon
                   icon="play-caret"
                   color="#fff"
@@ -42,7 +61,13 @@
             </div>
             <!-- MV名称 -->
             <div
-              class="flex items-center mt-1 text-[13px] text-gray-800 cursor-pointer"
+              class="
+                flex
+                items-center
+                mt-1
+                text-[13px] text-gray-800
+                cursor-pointer
+              "
               @click="gotoMVDetail(mv.vid)"
             >
               <MPOptIcon
@@ -67,7 +92,9 @@
                 @click="gotoCreatorDetail(creator.userId, mv.type)"
               >
                 <span class="text-ellipsis" v-html="creator.userName"></span
-                ><span v-if="index + 1 < mv.creator.length" class="px-1">/</span>
+                ><span v-if="index + 1 < mv.creator.length" class="px-1"
+                  >/</span
+                >
               </div>
             </div>
           </div>

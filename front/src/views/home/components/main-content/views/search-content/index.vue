@@ -1,5 +1,4 @@
 <template>
-  <!-- <div class="w-full pl-[30px] pr-9 pt-5 box-border"> -->
   <div class="w-full pt-5 box-border">
     <div class="h-10 leading-10 pl-[30px] pr-9">
       <span class="text-[23px] text-gray-800 font-semibold">{{ keywords }}</span>
