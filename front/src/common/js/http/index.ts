@@ -63,10 +63,22 @@ export function http<T>(params: IHttpParams, keyName?: string) {
         }
       })
       .catch((error) => {
-        const errorMsg =
+        const status = error.response.status;
+        let errorMsg =
           (error.response.data && error.response.data.message) ||
-          (error.response.data && error.response.data.msg) ||
-          "服务器异常，请联系网站工作人员处理！";
+          (error.response.data && error.response.data.msg);
+        if (
+          [301, 400].includes(status) &&
+          errorMsg &&
+          errorMsg.includes("登录")
+        ) {
+          errorMsg = "登录已过期，请重新登录";
+        } else {
+          errorMsg =
+            (error.response.data && error.response.data.message) ||
+            (error.response.data && error.response.data.msg) ||
+            "服务器异常，请联系网站工作人员处理！";
+        }
         message({
           type: "error",
           message: errorMsg,
