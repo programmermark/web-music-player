@@ -5,17 +5,9 @@
       title="点击前往播放MV页面"
       @click="gotoMVDetail(broadcast.id)"
     >
-      <el-image
-        class="image"
-        :src="`${broadcast.picUrl}?param=540y200`"
-        alt="MV封面"
-      >
+      <el-image class="image" :src="`${broadcast.picUrl}?param=540y200`" alt="MV封面">
         <template #placeholder>
-          <img
-            class="no-image"
-            src="@/assets/image/no-img-27x10.png"
-            alt="MV封面"
-          />
+          <img class="no-image" src="@/assets/image/no-img-27x10.png" alt="MV封面" />
         </template>
       </el-image>
 
@@ -36,16 +28,9 @@
 <script lang="ts" setup>
 import { IExclusiveBroadcast } from "@/store/modules/interface/exclusive-broadcast";
 import MPIcon from "@/components/MPIcon.vue";
-import { useRouter } from "vue-router";
+import { gotoMVDetail } from "@/common/js/router";
 
 defineProps<{ broadcast: IExclusiveBroadcast }>();
-
-const router = useRouter();
-
-/** 跳转到MV详情 */
-const gotoMVDetail = (id: number) => {
-  router.push(`/mv/${id}`);
-};
 </script>
 
 <style lang="scss" scoped>

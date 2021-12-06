@@ -7,11 +7,18 @@
       <!-- 路由 -->
       <router-view />
     </div>
+    <!--  vue-query 开发者工具 -->
+    <VueQueryDevTools />
   </div>
 </template>
 
 <script lang="ts" setup>
 import Header from "./views/home/components/header/index.vue";
+import { QueryClient, useQueryProvider } from "vue-query";
+import { VueQueryDevTools } from "vue-query/devtools";
+
+/** 初始化queryClient缓存实例，后续页面可以通过useQueryClient()获取该缓存实例 */
+useQueryProvider(new QueryClient());
 </script>
 
 <style lang="scss">

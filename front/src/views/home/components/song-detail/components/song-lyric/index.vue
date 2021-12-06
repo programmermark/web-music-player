@@ -62,13 +62,12 @@
 </template>
 
 <script lang="ts" setup>
+import { ref, watch, computed } from "vue";
+import { useRouter } from "vue-router";
 import { formatLyric } from "@/common/js/util";
+import { gotoArtistDetail, gotoAlbumDetail } from "@/common/js/router";
 import { useStore } from "@/store";
 import { IPlaySong } from "@/store/modules/interface/player";
-import { computed } from "@vue/reactivity";
-import { ElMessage } from "element-plus";
-import { ref, watch } from "vue";
-import { useRouter } from "vue-router";
 import { IlyricUser } from "../../interface";
 
 const props = defineProps<{
@@ -79,7 +78,6 @@ const props = defineProps<{
   transLyricUser?: IlyricUser /** 翻译歌词贡献者 */;
 }>();
 
-const router = useRouter();
 const store = useStore();
 
 /** 滚动条ref */
@@ -115,17 +113,6 @@ const lyricClass = (text: string, index: number) => {
       !text.includes("作词") &&
       !text.includes("作曲"),
   };
-};
-
-/** 跳转到歌手详情 */
-const gotoArtistDetail = (id: number) => router.push(`/artist/${id}`);
-
-/** 跳转到专辑详情 */
-const gotoAlbumDetail = (id: number | undefined) => {
-  ElMessage.warning({
-    message: "功能开发中，敬请期待！",
-    type: "warning",
-  });
 };
 
 watch(

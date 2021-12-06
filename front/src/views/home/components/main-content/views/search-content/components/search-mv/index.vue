@@ -102,11 +102,11 @@
 
 <script lang="ts" setup>
 import { computed } from "vue";
-import { useRouter } from "vue-router";
 import { translatePlayCount, transformSecondToMinute } from "@/common/js/util";
 import MPOptIcon from "@/components/MPOptIcon.vue";
 import { ISearchContentMV } from "../../interface";
 import { ElMessage } from "element-plus";
+import { gotoMVDetail, gotoArtistDetail } from "@/common/js/router";
 
 const props = withDefaults(
   defineProps<{
@@ -130,22 +130,13 @@ const emits = defineEmits<{
   (e: "page-change", page: number): void;
 }>();
 
-const router = useRouter();
-
 /** 当前页码 */
 const currentPage = computed(() => props.offset / props.pageSize + 1);
-
-/** 跳转到MV详情 */
-const gotoMVDetail = (id: string) => {
-  if (id) {
-    router.push(`/mv/${id}`);
-  }
-};
 
 /** 跳转到MV的创建者页面 */
 const gotoCreatorDetail = (userId: number, type: 0 | 1 = 0) => {
   if (type === 0) {
-    router.push(`/artist/${userId}`);
+    gotoArtistDetail(userId);
   } else {
     ElMessage.warning({
       message: "用户主页开发中，敬请期待！",

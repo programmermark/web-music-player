@@ -106,10 +106,10 @@
 <script lang="ts" setup>
 import { formatNo, transformSecondToMinute } from "@/common/js/util";
 import { useStore } from "@/store";
-import { useRouter } from "vue-router";
 import { ISearchContentSong } from "../../interface";
 import MPIcon from "@/components/MPIcon.vue";
 import { computed } from "vue";
+import { gotoArtistDetail, gotoAlbumDetail, gotoMVDetail } from "@/common/js/router";
 
 const props = withDefaults(
   defineProps<{
@@ -136,7 +136,6 @@ const emits = defineEmits<{
 }>();
 
 const store = useStore();
-const router = useRouter();
 
 /** 当前页码 */
 const currentPage = computed(() => props.offset / props.pageSize + 1);
@@ -146,25 +145,6 @@ const currentPage = computed(() => props.offset / props.pageSize + 1);
  */
 const playSong = (id: number) => {
   store.dispatch("player/setCurrentSong", id);
-};
-
-/** 跳转到歌手详情 */
-const gotoArtistDetail = (id: number) => {
-  if (id) {
-    router.push(`/artist/${id}`);
-  }
-};
-
-/** 跳转到专辑详情 */
-const gotoAlbumDetail = (id: number) => {
-  if (id) {
-    router.push(`/albumDetail/${id}`);
-  }
-};
-
-/** 跳转到MV详情 */
-const gotoMVDetail = (id: number) => {
-  router.push(`/mv/${id}`);
 };
 
 /** 切换分页 */

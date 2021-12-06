@@ -8,7 +8,7 @@
             <img class="no-image" src="@/assets/image/no-img.png" alt="歌曲封面图片" />
           </template>
         </el-image>
-        <mp-opt-icon
+        <MPOptIcon
           class="play-button"
           :size="24"
           icon="play-caret-solid"
@@ -39,7 +39,7 @@
       </div>
       <!-- MV图标（有mvId才显示） -->
       <div class="mv-wrapper" v-show="mvId > 0">
-        <mp-icon
+        <MPIcon
           icon="mv"
           :size="32"
           color="#d33333"
@@ -51,88 +51,50 @@
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import MPIcon from "@/components/MPIcon.vue";
 import MPOptIcon from "@/components/MPOptIcon.vue";
-import { computed, defineComponent, PropType, toRefs } from "vue";
+import { computed, toRefs } from "vue";
 import { useStore } from "@/store";
 import { IArtist } from "../../../artist-detail/interface";
-import router from "@/router";
+import { gotoArtistDetail, gotoMVDetail } from "@/common/js/router";
 
-export default defineComponent({
-  components: { "mp-opt-icon": MPOptIcon, "mp-icon": MPIcon },
-  props: {
+const props = withDefaults(
+  defineProps<{
     /** 记录id或者歌曲id */
-    id: {
-      type: Number,
-      required: true,
-    },
+    id: number;
     /** 歌曲MV的id，可能为空 */
-    mvId: {
-      type: Number,
-      default: -1,
-    },
+    mvId: number;
     /** 排序数字 */
-    orderNumber: {
-      type: Number,
-      required: true,
-    },
+    orderNumber: number;
     /** 封面图片URL */
-    coverImg: {
-      type: String,
-      required: true,
-    },
+    coverImg: string;
     /** 歌曲名称 */
-    songName: {
-      type: String,
-      required: true,
-    },
+    songName: string;
     /** 歌曲别名 */
-    aliasName: {
-      type: String,
-      default: "",
-    },
+    aliasName?: string;
     /** 作者数组 */
-    artists: {
-      type: Array as PropType<IArtist[]>,
-      required: true,
-    },
-  },
+    artists: IArtist[];
+  }>(),
+  {
+    aliasName: "",
+  }
+);
 
-  setup(props) {
-    const { id, mvId, orderNumber } = toRefs(props);
-    const store = useStore();
+const { id, orderNumber } = toRefs(props);
+const store = useStore();
 
-    /** 格式化排序数字 */
-    const order = computed(() => {
-      if (orderNumber.value < 10) {
-        return `0${orderNumber.value}`;
-      }
-      return orderNumber.value;
-    });
-
-    const playSong = () => {
-      store.dispatch("player/setCurrentSong", id.value);
-    };
-
-    /** 跳转到歌手详情 */
-    const gotoArtistDetail = (id: number) => {
-      router.push(`/artist/${id}`);
-    };
-
-    /** 跳转到MV详情 */
-    const gotoMVDetail = (id: number) => {
-      router.push(`/mv/${id}`);
-    };
-
-    return {
-      order,
-      gotoArtistDetail,
-      gotoMVDetail,
-      playSong,
-    };
-  },
+/** 格式化排序数字 */
+const order = computed(() => {
+  if (orderNumber.value < 10) {
+    return `0${orderNumber.value}`;
+  }
+  return orderNumber.value;
 });
+
+const playSong = () => {
+  store.dispatch("player/setCurrentSong", id.value);
+};
 </script>
 
 <style lang="scss" scoped>

@@ -54,7 +54,7 @@
 
 <script lang="ts" setup>
 import { computed } from "vue";
-import { useRouter } from "vue-router";
+import { gotoPlaylistDetail } from "@/common/js/router";
 import { ISearchContentPlaylist } from "../../interface";
 
 const props = withDefaults(
@@ -79,17 +79,8 @@ const emits = defineEmits<{
   (e: "page-change", page: number): void;
 }>();
 
-const router = useRouter();
-
 /** 当前页码 */
 const currentPage = computed(() => props.offset / props.pageSize + 1);
-
-/** 跳转到歌单详情 */
-const gotoPlaylistDetail = (id: number) => {
-  if (id) {
-    router.push(`/playlistDetail/${id}`);
-  }
-};
 
 /** 切换分页 */
 const handlePageChange = (page: number) => {

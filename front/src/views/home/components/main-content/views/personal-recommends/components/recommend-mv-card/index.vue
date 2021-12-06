@@ -7,11 +7,11 @@
       alt="MV封面"
       @mouseover="subTitleIsShow = true"
       @mouseleave="subTitleIsShow = false"
-      @click="gotoMvDetail(id)"
+      @click="gotoMVDetail(id)"
     ></div>
     <transition>
       <div v-show="!subTitleIsShow" class="play-count">
-        <mp-icon icon="play-caret" color="#fff" bgColor="none" />
+        <MPIcon icon="play-caret" color="#fff" bgColor="none" />
         <span>{{ translatePlayCount(playCount) }}</span>
       </div>
     </transition>
@@ -22,7 +22,7 @@
       </div>
     </transition>
     <!-- MV名称 -->
-    <div class="cover" @click="gotoMvDetail(id)">{{ name }}</div>
+    <div class="cover" @click="gotoMVDetail(id)">{{ name }}</div>
     <!-- MV作者 -->
     <div class="singer-wrapper text-ellipsis">
       <div
@@ -31,8 +31,7 @@
         :key="artist.id"
         @click="gotoSingerDetail(artist.id)"
       >
-        {{ artist.name
-        }}<mp-icon v-show="artists.length !== index + 1" icon="slash" />
+        {{ artist.name }}<mp-icon v-show="artists.length !== index + 1" icon="slash" />
       </div>
     </div>
   </div>
@@ -43,7 +42,7 @@ import MPIcon from "@/components/MPIcon.vue";
 import { defineComponent, PropType, ref } from "vue";
 import { translatePlayCount } from "@/common/js/util";
 import { IArtist } from "../../../artist-detail/interface";
-import router from "@/router";
+import { gotoMVDetail, gotoSingerDetail } from "@/common/js/router";
 
 /** 推荐MV卡片组件 */
 export default defineComponent({
@@ -83,20 +82,10 @@ export default defineComponent({
   setup() {
     const subTitleIsShow = ref(true);
 
-    /** 跳转至MV详情页面 */
-    const gotoMvDetail = (id: number) => {
-      router.push(`/mv/${id}`);
-    };
-
-    /** 跳转至歌手详情页面 */
-    const gotoSingerDetail = (id: number) => {
-      router.push(`/artist/${id}`);
-    };
-
     return {
       subTitleIsShow,
       translatePlayCount,
-      gotoMvDetail,
+      gotoMVDetail,
       gotoSingerDetail,
     };
   },

@@ -36,49 +36,28 @@
   </div>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent, PropType, toRefs } from "vue";
-import { useRouter } from "vue-router";
+<script lang="ts" setup>
+import { computed, toRefs } from "vue";
+import { gotoArtistDetail } from "@/common/js/router";
 import { IArtistCard } from "@/store/modules/interface/artist-rank-list";
 
-export default defineComponent({
-  name: "ListCard",
-  props: {
-    /** 歌手排名 */
-    rank: {
-      type: Number,
-      required: true,
-    },
-    /** 歌手信息 */
-    artist: {
-      type: Object as PropType<IArtistCard>,
-      required: true,
-    },
-  },
-  setup(props) {
-    const router = useRouter();
+const props = defineProps<{
+  /** 歌手排名 */
+  rank: number;
+  /** 歌手信息 */
+  artist: IArtistCard;
+}>();
 
-    const { rank, artist } = toRefs(props);
+const { rank, artist } = toRefs(props);
 
-    const rankChange = computed(() => {
-      const lastRank = artist.value.lastRank;
-      const currentRank = rank.value;
-      return {
-        unchanged: currentRank === lastRank,
-        rising: currentRank < lastRank,
-        value: Math.abs(currentRank - lastRank),
-      };
-    });
-
-    const gotoArtistDetail = (id: number) => {
-      router.push(`/artist/${id}`);
-    };
-
-    return {
-      rankChange,
-      gotoArtistDetail,
-    };
-  },
+const rankChange = computed(() => {
+  const lastRank = artist.value.lastRank;
+  const currentRank = rank.value;
+  return {
+    unchanged: currentRank === lastRank,
+    rising: currentRank < lastRank,
+    value: Math.abs(currentRank - lastRank),
+  };
 });
 </script>
 

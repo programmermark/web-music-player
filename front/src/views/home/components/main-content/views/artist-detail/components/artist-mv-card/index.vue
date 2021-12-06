@@ -3,11 +3,7 @@
     <div class="cover-wrapper" title="点击查看MV详情" @click="gotoMVDetail(id)">
       <el-image class="image" :src="`${cover}?param=480y270`" alt="MV封面">
         <template #placeholder>
-          <img
-            class="no-image"
-            src="@/assets/image/no-img-16x9.png"
-            alt="MV封面"
-          />
+          <img class="no-image" src="@/assets/image/no-img-16x9.png" alt="MV封面" />
         </template>
       </el-image>
       <div class="play-count">
@@ -18,11 +14,7 @@
         {{ transformSecondToMinute(Math.floor(duration / 1000)) }}
       </div>
     </div>
-    <div
-      class="name text-ellipsis"
-      title="点击查看MV详情"
-      @click="gotoMVDetail(id)"
-    >
+    <div class="name text-ellipsis" title="点击查看MV详情" @click="gotoMVDetail(id)">
       {{ name }}
     </div>
   </div>
@@ -31,7 +23,7 @@
 <script lang="ts" setup>
 import MPIcon from "@/components/MPIcon.vue";
 import { translatePlayCount, transformSecondToMinute } from "@/common/js/util";
-import { useRouter } from "vue-router";
+import { gotoMVDetail } from "@/common/js/router";
 
 defineProps<{
   id: number /** MV id */;
@@ -40,13 +32,6 @@ defineProps<{
   playCount: number /** MV播放量 */;
   duration: number /** MV持续时长 */;
 }>();
-
-const router = useRouter();
-
-/** 查看MV详情 */
-const gotoMVDetail = (id: number) => {
-  router.push(`/mv/${id}`);
-};
 </script>
 
 <style lang="scss" scoped>
