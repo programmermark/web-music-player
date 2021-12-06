@@ -27,7 +27,7 @@
       </div>
       <div class="operates">
         <div class="playlist-btn" @click="handlePlaylist(playlistInfo.id)">
-          <mp-icon
+          <MPIcon
             class="icon"
             icon="play-button-solid"
             :size="20"
@@ -72,56 +72,36 @@
   </div>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent, PropType, toRefs } from "vue";
+<script lang="ts" setup>
+import { computed, toRefs } from "vue";
 import { IPlaylistInfo } from "../../interface/playDetail";
 import { formatTime } from "@/common/js/util/index";
 import MPIcon from "@/components/MPIcon.vue";
 import { useStore } from "@/store";
-import router from "@/router";
+import { gotoPlaylistPage } from "@/common/js/router";
 
-export default defineComponent({
-  components: { "mp-icon": MPIcon },
-  name: "PlaylistInfo",
-  props: {
-    /** 歌单信息 */
-    playlistInfo: {
-      type: Object as PropType<IPlaylistInfo>,
-      required: true,
-    },
-  },
-  setup(props) {
-    const store = useStore();
-    const { playlistInfo } = toRefs(props);
-    const tagsInfo = computed(() => {
-      const tags = playlistInfo.value.tags;
-      return tags.map((tag, index) => ({
-        tag: tag,
-        hasPartingLine: index !== tags.length - 1,
-      }));
-    });
+const props = defineProps<{
+  /** 歌单信息 */
+  playlistInfo: IPlaylistInfo;
+}>();
 
-    const gotoCreatorPage = (userId: number) => {
-      console.log("歌单创建者id：" + userId);
-    };
-
-    const handlePlaylist = (id: number) => {
-      store.dispatch("player/setSongList", { id });
-    };
-
-    const gotoPlaylistPage = (tagName: string) => {
-      router.push(`/playlist?cat=${tagName}`);
-    };
-
-    return {
-      tagsInfo,
-      gotoCreatorPage,
-      formatTime,
-      handlePlaylist,
-      gotoPlaylistPage,
-    };
-  },
+const store = useStore();
+const { playlistInfo } = toRefs(props);
+const tagsInfo = computed(() => {
+  const tags = playlistInfo.value.tags;
+  return tags.map((tag, index) => ({
+    tag: tag,
+    hasPartingLine: index !== tags.length - 1,
+  }));
 });
+
+const gotoCreatorPage = (userId: number) => {
+  console.log("歌单创建者id：" + userId);
+};
+
+const handlePlaylist = (id: number) => {
+  store.dispatch("player/setSongList", { id });
+};
 </script>
 
 <style lang="scss" scoped>

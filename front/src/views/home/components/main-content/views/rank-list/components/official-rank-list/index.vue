@@ -9,7 +9,7 @@
     >
       <img :src="`${imgUrl}?param=170y170`" alt="歌单封面" />
       <div class="text">{{ updateTime }}</div>
-      <mp-opt-icon
+      <MPOptIcon
         v-show="showIcon && type === 'song'"
         class="play-button"
         title="点击播放歌曲"
@@ -55,134 +55,103 @@
   </div>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent, PropType, ref, toRefs } from "vue";
-import {
-  IArtistRank,
-  ISongRankOfficial,
-} from "@/store/modules/interface/ranklist";
+<script lang="ts" setup>
+import { computed, ref, toRefs } from "vue";
+import { IArtistRank, ISongRankOfficial } from "@/store/modules/interface/ranklist";
 import { formatTime } from "@/common/js/util";
 import { useStore } from "@/store";
 import MPOptIcon from "@/components/MPOptIcon.vue";
 import { useRouter } from "vue-router";
+import {
+  gotoArtistDetail,
+  gotoArtistRankList,
+  gotoPlayListDetail,
+} from "@/common/js/router";
 
-export default defineComponent({
-  name: "OfficialRankList",
-  components: {
-    "mp-opt-icon": MPOptIcon,
-  },
-  props: {
-    rankList: {
-      type: Object as PropType<ISongRankOfficial | IArtistRank>,
-      required: true,
-    },
-    type: {
-      type: String as PropType<"song" | "artist">,
-      default: "song",
-    },
-  },
-  setup(props) {
-    const store = useStore();
-    const router = useRouter();
+const props = withDefaults(
+  defineProps<{
+    rankList: ISongRankOfficial | IArtistRank;
+    type: "song" | "artist";
+  }>(),
+  {
+    type: "song",
+  }
+);
 
-    const { rankList, type } = toRefs(props);
+const store = useStore();
+const router = useRouter();
 
-    const showIcon = ref(false);
+const { rankList, type } = toRefs(props);
 
-    /** 排行榜封面 */
-    const imgUrl = computed(() => {
-      let url = "";
-      if (type.value === "song") {
-        url = (rankList.value as ISongRankOfficial).coverImgUrl;
-      } else {
-        url = (rankList.value as IArtistRank).coverUrl;
-      }
-      return url;
-    });
+const showIcon = ref(false);
 
-    /** 更新时间 */
-    const updateTime = computed(() => {
-      let time = "";
-      if (type.value === "song") {
-        time =
-          formatTime(
-            (rankList.value as ISongRankOfficial).trackNumberUpdateTime,
-            "MM月dd日"
-          ) + "更新";
-      } else {
-        time =
-          formatTime((rankList.value as IArtistRank).updateTime, "MM月dd日") +
-          "更新";
-      }
-      return time;
-    });
-
-    /** 歌曲列表 */
-    const songList = computed(
-      () => (rankList.value as ISongRankOfficial).songList
-    );
-
-    /** 歌手列表 */
-    const artistList = computed(
-      () => (rankList.value as IArtistRank).artistList
-    );
-
-    const handleMouseEnter = () => {
-      showIcon.value = true;
-    };
-
-    const handleMouseLeave = () => {
-      showIcon.value = false;
-    };
-
-    /** 播放歌单歌曲，从第一首歌曲开始播放 */
-    const playSong = (e: Event) => {
-      e.stopPropagation();
-      const id = (rankList.value as ISongRankOfficial).id;
-      store.dispatch("player/setSongList", {
-        id,
-      });
-    };
-
-    /** 播放歌单，从选中的当前歌曲开始播放 */
-    const playCurrentSong = (id: number, songName?: string) => {
-      store.dispatch("player/setSongList", {
-        id,
-        noSetCurrentSong: true,
-      });
-      store.commit("player/setCurrentSongByName", songName);
-    };
-
-    /** 跳转到歌手详情 */
-    const gotoArtistDetail = (id: number) => {
-      router.push(`/artist/${id}`);
-    };
-
-    /** 查看全部 */
-    const viewAll = () => {
-      if (type.value === "song") {
-        const id = (rankList.value as ISongRankOfficial).id;
-        router.push(`/playlistDetail/${id}`);
-      } else {
-        router.push("/artistRankList");
-      }
-    };
-
-    return {
-      showIcon,
-      imgUrl,
-      updateTime,
-      songList,
-      artistList,
-      playSong,
-      playCurrentSong,
-      gotoArtistDetail,
-      viewAll,
-      handleMouseEnter,
-      handleMouseLeave,
-    };
-  },
+/** 排行榜封面 */
+const imgUrl = computed(() => {
+  let url = "";
+  if (type.value === "song") {
+    url = (rankList.value as ISongRankOfficial).coverImgUrl;
+  } else {
+    url = (rankList.value as IArtistRank).coverUrl;
+  }
+  return url;
 });
+
+/** 更新时间 */
+const updateTime = computed(() => {
+  let time = "";
+  if (type.value === "song") {
+    time =
+      formatTime(
+        (rankList.value as ISongRankOfficial).trackNumberUpdateTime,
+        "MM月dd日"
+      ) + "更新";
+  } else {
+    time = formatTime((rankList.value as IArtistRank).updateTime, "MM月dd日") + "更新";
+  }
+  return time;
+});
+
+/** 歌曲列表 */
+const songList = computed(() => (rankList.value as ISongRankOfficial).songList);
+
+/** 歌手列表 */
+const artistList = computed(() => (rankList.value as IArtistRank).artistList);
+
+const handleMouseEnter = () => {
+  showIcon.value = true;
+};
+
+const handleMouseLeave = () => {
+  showIcon.value = false;
+};
+
+/** 播放歌单歌曲，从第一首歌曲开始播放 */
+const playSong = (e: Event) => {
+  e.stopPropagation();
+  const id = (rankList.value as ISongRankOfficial).id;
+  store.dispatch("player/setSongList", {
+    id,
+  });
+};
+
+/** 播放歌单，从选中的当前歌曲开始播放 */
+const playCurrentSong = (id: number, songName?: string) => {
+  store.dispatch("player/setSongList", {
+    id,
+    noSetCurrentSong: true,
+  });
+  store.commit("player/setCurrentSongByName", songName);
+};
+
+/** 查看全部 */
+const viewAll = () => {
+  if (type.value === "song") {
+    const id = (rankList.value as ISongRankOfficial).id;
+    gotoPlayListDetail(id);
+  } else {
+    gotoArtistRankList();
+  }
+};
 </script>
 
 <style lang="scss" scoped>

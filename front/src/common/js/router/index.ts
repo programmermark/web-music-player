@@ -34,7 +34,7 @@ export const gotoSearchContent = (keywords: string) => {
 };
 
 /** 跳转到歌手排行榜详情 */
-export const gotoArtistRankList = (type: number) => {
+export const gotoArtistRankList = (type?: number) => {
   let url = "/artistRankList";
   if (type) {
     url = `/artistRankList?type=${type}`;
@@ -59,4 +59,9 @@ export const gotoPlayListDetail = (id?: number) => {
   if (id) {
     router.push(`/playlistDetail/${id}`);
   }
+};
+
+/** 跳转到歌单列表 */
+export const gotoPlaylistPage = (tagName: string) => {
+  router.push(`/playlist?cat=${tagName}`);
 };

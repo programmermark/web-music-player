@@ -31,65 +31,43 @@
         :key="artist.id"
         @click="gotoSingerDetail(artist.id)"
       >
-        {{ artist.name }}<mp-icon v-show="artists.length !== index + 1" icon="slash" />
+        {{ artist.name }}<MPIcon v-show="artists.length !== index + 1" icon="slash" />
       </div>
     </div>
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import MPIcon from "@/components/MPIcon.vue";
-import { defineComponent, PropType, ref } from "vue";
+import { ref } from "vue";
 import { translatePlayCount } from "@/common/js/util";
 import { IArtist } from "../../../artist-detail/interface";
 import { gotoMVDetail, gotoSingerDetail } from "@/common/js/router";
 
 /** 推荐MV卡片组件 */
-export default defineComponent({
-  components: { "mp-icon": MPIcon },
-  name: "RecommendMvCard",
-  props: {
-    id: {
-      type: Number,
-      required: true,
-    },
+withDefaults(
+  defineProps<{
+    id: number;
     /** 播放量 */
-    playCount: {
-      type: Number,
-      default: 0,
-    },
+    playCount?: number;
     /** MV 名称 */
-    name: {
-      type: String,
-      default: "",
-    },
+    name?: string;
     /** 副标题 */
-    subTitle: {
-      type: String,
-      default: "",
-    },
+    subTitle?: string;
     /** MV封面URL */
-    imgUrl: {
-      type: String,
-      default: "",
-    },
-    /** 作者数组 */
-    artists: {
-      type: Array as PropType<IArtist[]>,
-      required: true,
-    },
-  },
-  setup() {
-    const subTitleIsShow = ref(true);
+    imgUrl?: string;
+    /** 歌手列表 */
+    artists: IArtist[];
+  }>(),
+  {
+    playCount: 0,
+    name: "",
+    subTitle: "",
+    imgUrl: "",
+  }
+);
 
-    return {
-      subTitleIsShow,
-      translatePlayCount,
-      gotoMVDetail,
-      gotoSingerDetail,
-    };
-  },
-});
+const subTitleIsShow = ref(true);
 </script>
 
 <style lang="scss" scoped>
