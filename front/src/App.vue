@@ -1,4 +1,5 @@
 <template>
+  <VueQueryDevTools />
   <div id="app-content">
     <!-- 壁纸切换组件 -->
     <div id="home">
@@ -13,9 +14,9 @@
 </template>
 
 <script lang="ts" setup>
-import Header from "./views/home/components/header/index.vue";
-import { QueryClient, useQueryProvider } from "vue-query";
 import { VueQueryDevTools } from "vue-query/devtools";
+import { QueryClient, useQueryProvider } from "vue-query";
+import Header from "./views/home/components/header/index.vue";
 
 /** 初始化queryClient缓存实例，后续页面可以通过useQueryClient()获取该缓存实例 */
 useQueryProvider(new QueryClient());

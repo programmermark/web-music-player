@@ -111,6 +111,14 @@ const routes: Array<RouteRecordRaw> = [
           "home/components/main-content/views/search-content/index"
         ),
       },
+      // 视频列表
+      {
+        path: "videolist",
+        name: "VideoList",
+        component: lazyLoad(
+          "home/components/main-content/views/video-list/index"
+        ),
+      },
     ],
   },
   {
