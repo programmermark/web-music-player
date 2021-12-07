@@ -34,5 +34,5 @@ export interface IVideoItem {
 
 export interface IVideoListResponse {
   datas: IVideoItem[];
-  hasMore: boolean;
+  hasmore: boolean;
 }
