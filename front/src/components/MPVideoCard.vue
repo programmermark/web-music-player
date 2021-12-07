@@ -8,40 +8,27 @@
       @click="gotoMVDetail(videoId)"
     >
       <el-image
-        class="
-          w-full
-          h-full
-          flex
-          items-center
-          justify-center
-          box-border
-          rounded
-          border border-gray-50
-        "
+        class="w-full h-full flex items-center justify-center box-border rounded-md border border-gray-50"
         :src="`${image}?param=480y270`"
         alt="MV封面"
       >
         <template #placeholder>
-          <img
-            class="w-full h-full"
-            src="@/assets/image/no-img-16x9.png"
-            alt="MV封面"
-          />
+          <img class="w-full h-full" src="@/assets/image/no-img-16x9.png" alt="MV封面" />
         </template>
       </el-image>
-      <div class="absolute top-1 right-2">
-        <MPIcon icon="play-caret" :size="16" color="#fff" />
-        <span class="ml-1 text-xs text-white">{{
+      <div class="absolute top-1 right-2 flex items-center">
+        <MPIcon icon="play-caret" :size="16" color="#fff" bgColor="" :scale="0.8" />
+        <span class="text-xs text-white font-medium">{{
           translatePlayCount(playCount)
         }}</span>
       </div>
-      <span class="absolute top-1 right-2 text-xs text-white">{{
+      <span class="absolute bottom-1 right-2 text-xs text-white font-medium">{{
         transformSecondToMinute(duration)
       }}</span>
       <!-- 播放图标 -->
       <MPOptIcon
         v-show="showIcon"
-        class="top-0 right-0 bottom-0 left-0"
+        class="absolute top-[calc(50%-20px)] left-[calc(50%-20px)]"
         :size="40"
         icon="play-caret-solid"
         color="#d33a33"
@@ -52,7 +39,7 @@
     <!-- 卡片标题 -->
     <div
       v-if="title"
-      class="text-sm text-gray-600 my-2 cursor-pointer text-ellipsis"
+      class="text-[13px] text-gray-600 font-medium mt-2 mb-1 cursor-pointer text-ellipsis"
       @click="gotoMVDetail(videoId)"
     >
       {{ title }}
@@ -60,7 +47,7 @@
     <!-- 卡片副标题（可能为空） -->
     <div class="mb-2" v-if="artists && artists.length > 0">
       <div
-        class="cursor-pointer text-gray-300"
+        class="cursor-pointer text-[13px] text-gray-400"
         v-for="artist in artists"
         :key="artist.id"
         @click="gotoArtist(artist.id)"
