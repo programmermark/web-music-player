@@ -22,8 +22,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from "@vue/reactivity";
-import { ElMessage } from "element-plus";
+import { computed } from "vue";
 import { useRouter } from "vue-router";
 import MPIcon from "@/components/MPIcon.vue";
 
@@ -38,22 +37,17 @@ const navList = [
   {
     name: "视频",
     icon: "mv",
-    url: "/mv",
+    url: "/videolist",
   },
 ];
 
 /** 当前路径 */
-const currentPath = computed(() => router.currentRoute.value.path);
+const currentPath = computed(() => {
+  return router.currentRoute.value.path;
+});
 
 const gotoPage = (url: string) => {
-  if (["/mv"].includes(url)) {
-    ElMessage.warning({
-      message: "功能开发中，敬请期待！",
-      type: "warning",
-    });
-  } else {
-    router.push(url);
-  }
+  router.push(url);
 };
 </script>
 

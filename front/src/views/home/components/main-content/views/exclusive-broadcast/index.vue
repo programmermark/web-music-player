@@ -9,9 +9,8 @@
 </template>
 
 <script lang="ts" setup>
+import { computed, onMounted } from "vue";
 import { useStore } from "@/store";
-import { computed } from "@vue/reactivity";
-import { onMounted } from "@vue/runtime-core";
 import BroadcastCard from "./components/broadcast-card/index.vue";
 
 const store = useStore();
