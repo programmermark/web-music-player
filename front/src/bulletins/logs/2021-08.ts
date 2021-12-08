@@ -2,6 +2,12 @@ import { ILog } from "@/store/modules/interface/bulletin";
 
 export const logs: ILog[] = [
   {
+    date: "2021-12-08 08:00:00",
+    title: "更新公告(2021-12-08)",
+    briefContent: `<p>1. 添加视频-视频列表页面，引入“vue-query”管理服务端缓存，减少页面请求次数</p>`,
+    content: `<p>1. 添加视频-视频列表页面，引入“vue-query”管理服务端缓存，减少页面请求次数</p>`,
+  },
+  {
     date: "2021-10-30 16:10:00",
     title: "更新公告(2021-10-30)",
     briefContent: `<p>1. 歌曲详情的添加歌词翻译、歌词作者、翻译作者</p>`,
