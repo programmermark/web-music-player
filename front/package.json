@@ -18,14 +18,13 @@
     "vuex-persistedstate": "^4.0.0"
   },
   "devDependencies": {
-    "@tailwindcss/postcss7-compat": "^2.2.14",
     "@types/node": "^16.9.1",
     "@vitejs/plugin-vue": "^1.6.1",
     "@vue/compiler-sfc": "^3.2.6",
-    "autoprefixer": "^9",
-    "postcss": "^7",
+    "autoprefixer": "^10.4.0",
+    "postcss": "^8.4.4",
     "sass": "^1.39.2",
-    "tailwindcss": "npm:@tailwindcss/postcss7-compat",
+    "tailwindcss": "^2.2.19",
     "typescript": "^4.3.2",
     "vite": "^2.5.4",
     "vue-tsc": "^0.2.2"
