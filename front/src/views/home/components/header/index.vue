@@ -27,8 +27,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, reactive } from "@vue/runtime-core";
-import { ref, watch } from "vue";
+import { ref, watch, computed, defineComponent, reactive } from "vue";
 import { useRoute } from "vue-router";
 import LeftOpts from "./left-opts/index.vue";
 import NavBars from "./navbars/index.vue";
@@ -66,9 +65,7 @@ export default defineComponent({
     );
 
     /** 是否展示歌曲详情 */
-    const isShowSongDetail = computed(
-      () => store.state.player.isShowSongDetail
-    );
+    const isShowSongDetail = computed(() => store.state.player.isShowSongDetail);
 
     watch(
       () => route.path,

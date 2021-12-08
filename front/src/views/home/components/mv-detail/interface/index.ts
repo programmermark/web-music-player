@@ -21,6 +21,8 @@ export interface IMVDetail {
   publishTime: number /** 发布时间 */;
   duration: number /** MV时长（毫秒） */;
   cover: string /** MV封面图片地址 */;
+  coverUrl?: string /** MV封面图片地址 */;
+  imgurl16v9?: string /** MV封面图片地址 */;
   artists: IMVArtist[];
   desc: string /** MV详细描述 */;
   brs: IBR[];

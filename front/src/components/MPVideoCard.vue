@@ -66,6 +66,7 @@ import MPIcon from "./MPIcon.vue";
 import MPOptIcon from "./MPOptIcon.vue";
 import { IArtist } from "@/views/home/components/main-content/views/artist-detail/interface";
 import { translatePlayCount, transformSecondToMinute } from "@/common/js/util";
+import { ElMessage } from "element-plus";
 
 defineProps<{
   // 视频id
@@ -97,8 +98,13 @@ const handleMouseLeave = () => {
  * 跳转到MV详情页
  */
 const gotoMVDetail = (id: number | string) => {
-  if (id) {
+  if (id && typeof id === "number") {
     router.push(`/mv/${id}`);
+  } else if (id && typeof id === "string") {
+    ElMessage.warning({
+      message: "功能开发中，敬请期待！",
+      type: "warning",
+    });
   }
 };
 

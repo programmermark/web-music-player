@@ -54,9 +54,8 @@
 </template>
 
 <script lang="ts">
+import { computed, defineComponent } from "vue";
 import { useStore } from "@/store";
-import { defineComponent } from "@vue/runtime-core";
-import { computed } from "vue";
 import { useRouter } from "vue-router";
 import MPOptIcon from "../../../../../components/MPOptIcon.vue";
 
@@ -68,9 +67,7 @@ export default defineComponent({
     const store = useStore();
 
     /** 是否展示歌曲详情 */
-    const isShowSongDetail = computed(
-      () => store.state.player.isShowSongDetail
-    );
+    const isShowSongDetail = computed(() => store.state.player.isShowSongDetail);
 
     /** 图标的类型 */
     const opts = [

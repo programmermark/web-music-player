@@ -34,14 +34,13 @@
 </template>
 
 <script lang="ts" setup>
+import { onMounted, reactive, watch, computed } from "vue";
 import { apis } from "@/api";
 import { http } from "@/common/js/http";
 import { useStore } from "@/store";
-import { computed } from "@vue/reactivity";
 import { ILyricResponse, ILyricState } from "./interface";
 import RotateCover from "./components/rotate-cover/index.vue";
 import SongLyric from "./components/song-lyric/index.vue";
-import { onMounted, reactive, watch } from "vue";
 
 const store = useStore();
 

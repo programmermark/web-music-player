@@ -10,6 +10,7 @@ import { IPlayerState } from "./player";
 import { IPlaylistState } from "./playlist";
 import { IRankListState } from "./ranklist";
 import { IRecommendState } from "./recommend";
+import { IVideoListState } from "./videolist";
 
 export interface IRootStateTypes {
   player: IPlayerState;
@@ -24,6 +25,7 @@ export interface IRootStateTypes {
   artistRankList: IArtistRankListState;
   artistDetail: IArtistDetailState;
   exclusiveBroadcast: IExclusiveBroadcastState;
+  videolist: IVideoListState;
 }
 export interface IAllStateTypes extends IRootStateTypes {
   ModulePlayer: IPlayerState;
@@ -38,4 +40,5 @@ export interface IAllStateTypes extends IRootStateTypes {
   ModuleArtistRankList: IArtistRankListState;
   ModuleArtistDetail: IArtistDetailState;
   ModuleExclusiveBroadcast: IExclusiveBroadcastState;
+  ModuleVideolist: IVideoListState;
 }

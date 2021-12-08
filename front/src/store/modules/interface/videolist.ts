@@ -1,10 +1,6 @@
-/** 视频标签接口定义 */
-export interface IVideoTag {
-  id: number;
-  name: string;
-}
+import { IVideoCategory } from "@/views/home/components/main-content/views/video-list/interface";
 
 export interface IVideoListState {
-  videoGroupList: IVideoTag[];
-  videoCategoryList: IVideoTag[];
+  /** 当前视频分类 */
+  currentCategory: IVideoCategory | null;
 }
