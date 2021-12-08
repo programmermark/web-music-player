@@ -55,6 +55,10 @@
         <span class="w-3 h-[1px] bg-gray-500"></span>
         <span></span>
       </div>
+      <!-- no data -->
+      <div class="text-center text-[13px] text-gray-600 mt-24" v-show="noData">
+        暂无推荐视频
+      </div>
     </div>
   </div>
 </template>
@@ -172,6 +176,14 @@ const {
   }
 );
 
+console.log({ data: data.value });
+
+/** 页面是否没有数据 */
+const noData = computed(() => {
+  return !data.value?.pages[0].datas.length;
+});
+
+/** 禁用下拉，防止重复请求 */
 const disabled = computed(() => {
   const reuslt = isLoading.value || isFetching.value || !hasNextPage?.value;
   return reuslt;
