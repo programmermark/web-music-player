@@ -36,11 +36,11 @@
 
 上周已完成功能和已修复的问题：
 
-[周报统计](./WEEKCOMPLETE.md)
+[周报统计](./update-plan/WEEKCOMPLETE.md)
 
 所有已完成功能和已修复的问题：
 
-[历史周报统计](./ALLCOMPLETE.md)
+[历史周报统计](./update-plan/ALLCOMPLETE.md)
 
 ## 安装和使用
 
