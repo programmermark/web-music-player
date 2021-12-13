@@ -27,9 +27,18 @@
 ## 在线访问地址
 
 地址 1(部署在**国内**，**定期更新**)：[music-player.immortalboy.cn](https://music-player.immortalboy.cn/)
+
 地址 1(**netlify 外网**部署，**实时同步**)：[music-player2.immortalboy.cn](https://music-player2.immortalboy.cn/)
 
 说明：地址 1 部署在国内，由我定期部署；地址 2 通过 netlify 拉去 github 的 hooks 自动部署，但是网页部署在国外，首页加载很慢。
+
+上周已完成功能和已修复的问题：
+
+[周报统计](./WEEKCOMPLETE.md)
+
+所有已完成功能和已修复的问题：
+
+[历史周报统计](./ALLCOMPLETE.md)
 
 ## 安装和使用
 
