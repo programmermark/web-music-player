@@ -625,7 +625,7 @@ export default defineComponent({
   width: 420px;
   min-height: calc(100% - 110px);
   background-color: #ffffff;
-  box-shadow: 0 4px 4px 0 #fafafa;
+  box-shadow: 0 4px 10px 0 #ccc;
 
   .list-title {
     padding: 20px 0 20px 20px;

@@ -21,6 +21,6 @@ export interface ILyricResponse {
 export interface ILyricState {
   lyric: string /** 歌词 */;
   lyricUser?: IlyricUser /** 歌词贡献者  */;
-  transLyric: string /** 翻译歌词 */;
+  transLyric?: string /** 翻译歌词 */;
   transLyricUser?: IlyricUser /** 翻译歌词贡献者 */;
 }

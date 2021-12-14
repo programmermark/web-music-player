@@ -5,12 +5,15 @@
       trigger="hover"
       :style="{ width: '20px' }"
       popper-class="volume-popover"
+      @show="showPopover"
+      @hide="hidePopover"
     >
       <template #reference>
         <slot name="content"></slot>
       </template>
       <div class="content">
         <volume-progress
+          :visible="visible"
           :percentage="volume"
           @change-progress="onChangeProgress"
         />
@@ -20,7 +23,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 import VolumeProgress from "../progress/index.vue";
 
 export default defineComponent({
@@ -37,12 +40,25 @@ export default defineComponent({
   },
   emits: ["change-volume"],
   setup(prop, { emit }) {
+    const visible = ref(false);
+
     const onChangeProgress = (progress: number) => {
       emit("change-volume", progress / 100);
     };
 
+    const showPopover = () => {
+      visible.value = true;
+    };
+
+    const hidePopover = () => {
+      visible.value = false;
+    };
+
     return {
+      visible,
       onChangeProgress,
+      showPopover,
+      hidePopover,
     };
   },
 });
