@@ -52,7 +52,7 @@ const currentSong = computed(() => store.state.player.currentSong);
 const lyricState = reactive<ILyricState>({
   lyric: "",
   lyricUser: undefined,
-  transLyric: "",
+  transLyric: undefined,
   transLyricUser: undefined,
 });
 
@@ -63,7 +63,7 @@ const getSongLyric = async (id: number) => {
     ""
   );
   lyricState.lyric = lrc.lyric;
-  lyricState.transLyric = tlyric.lyric;
+  lyricState.transLyric = tlyric?.lyric;
   lyricState.lyricUser = lyricUser;
   lyricState.transLyricUser = transUser;
 };
@@ -86,7 +86,6 @@ watch(
 
 onMounted(() => {
   const id = currentSong.value?.id;
-  console.log("id", id);
   if (id) {
     getSongLyric(Number(id));
   }

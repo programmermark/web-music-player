@@ -63,7 +63,6 @@
 
 <script lang="ts" setup>
 import { ref, watch, computed } from "vue";
-import { useRouter } from "vue-router";
 import { formatLyric } from "@/common/js/util";
 import { gotoArtistDetail, gotoAlbumDetail } from "@/common/js/router";
 import { useStore } from "@/store";
@@ -73,7 +72,7 @@ import { IlyricUser } from "../../interface";
 const props = defineProps<{
   song: IPlaySong;
   lyric: string /** 歌曲歌词，为空字符串代表歌曲没有歌词 */;
-  transLyric: string /** 翻译歌曲歌词，为空字符串代表歌曲没有歌词 */;
+  transLyric?: string /** 翻译歌曲歌词，为空字符串代表歌曲没有歌词 */;
   lyricUser?: IlyricUser /** 歌词贡献者 */;
   transLyricUser?: IlyricUser /** 翻译歌词贡献者 */;
 }>();

@@ -1,17 +1,6 @@
 <template>
-  <div class="progress-wrapper">
-    <div
-      ref="progressRef"
-      class="progress-outer"
-      :style="outerStyle"
-      @mousedown="handleDragStart"
-      @touchstart="handleDragStart"
-      @mousemove="handleOnDrag"
-      @touchmove="handleOnDrag"
-      @mouseup="handleDragEnd"
-      @touchend="handleDragEnd"
-      @mouseleave="handleDragEnd"
-    >
+  <div id="music-progress" class="progress-wrapper">
+    <div ref="progressRef" class="progress-outer" :style="outerStyle">
       <div class="progress-inner" :style="innerStyle"></div>
       <div class="change-percentage" :style="percentageStyle"></div>
     </div>
@@ -19,8 +8,8 @@
 </template>
 
 <script lang="ts">
-import _ from "lodash";
-import { computed, defineComponent, toRefs, reactive, ref } from "vue";
+import debounce from "lodash/debounce";
+import { computed, defineComponent, toRefs, reactive, ref, onMounted, watch } from "vue";
 
 export default defineComponent({
   name: "volumeProgress",
@@ -45,10 +34,15 @@ export default defineComponent({
       type: Number,
       default: 60,
     },
+    /** 进度条是否展示 */
+    visible: {
+      type: Boolean,
+      default: false,
+    },
   },
   emits: ["change-progress"],
   setup(props, { emit }) {
-    const { width, outColor, color, percentage } = toRefs(props);
+    const { width, outColor, color, percentage, visible } = toRefs(props);
 
     const progressRef = ref<HTMLAudioElement>(); /** 进度条元素 */
     const dragState = reactive({
@@ -80,28 +74,9 @@ export default defineComponent({
       };
     });
 
-    const handleDragStart = (e: MouseEvent | TouchEvent) => {
-      dragState.dragging = true;
-      if (e instanceof TouchEvent) {
-        dragState.startY = e.changedTouches[0].clientY;
-      } else {
-        dragState.startY = e.clientY;
-      }
-    };
-
-    const handleOnDrag = _.debounce((e: MouseEvent | TouchEvent) => {
-      if (!dragState.dragging) {
-        return false;
-      }
+    const handleProgressChange = debounce((endY = 0) => {
       /** 获取进度条到浏览器的距离 */
-      const eleToTop =
-        progressRef.value?.getBoundingClientRect().top || dragState.startY;
-      let endY = 0;
-      if (e instanceof TouchEvent) {
-        endY = e.changedTouches[0].clientY;
-      } else {
-        endY = e.clientY;
-      }
+      const eleToTop = progressRef.value?.getBoundingClientRect().top || dragState.startY;
       /** 计算鼠标距离进度条底部的百分比 */
       let percent = ((80 - (endY - eleToTop)) / 80) * 100;
       if (percent > 100) {
@@ -111,13 +86,56 @@ export default defineComponent({
       }
       dragState.innerPercentage = percent;
       emit("change-progress", percent);
-    }, 20);
+    }, 10);
 
-    const handleDragEnd = () => {
+    const handleDragStart = (e: MouseEvent | TouchEvent) => {
+      dragState.dragging = true;
+      if (e instanceof TouchEvent) {
+        dragState.startY = e.changedTouches[0].clientY;
+      } else {
+        dragState.startY = e.clientY;
+      }
+      handleProgressChange(dragState.startY);
+      // 为元素添加鼠标移动和松开事件
+      progressRef.value?.addEventListener("mousemove", moveHandler);
+      progressRef.value?.addEventListener("mouseup", moveHandler);
+    };
+
+    const handleOnDrag = (e: MouseEvent | TouchEvent) => {
       if (!dragState.dragging) {
+        return false;
+      }
+      /** 获取进度条到浏览器的距离 */
+      let endY = 0;
+      if (e instanceof TouchEvent) {
+        endY = e.changedTouches[0].clientY;
+      } else {
+        endY = e.clientY;
+      }
+      handleProgressChange(endY);
+    };
+
+    const moveHandler = (e: MouseEvent | TouchEvent) => {
+      if (e.type === "mousedown" || e.type === "touchstart") {
+        handleDragStart(e);
+      } else if (e.type === "mousemove" || e.type === "touchmove") {
+        handleOnDrag(e);
+      } else if (e.type === "mouseup" || e.type === "touchend") {
         dragState.dragging = false;
+        progressRef.value?.removeEventListener("mousemove", moveHandler);
       }
     };
+
+    watch(visible, (val) => {
+      /** 组件不显示的时候，设置dragging为false */
+      if (!val) {
+        dragState.dragging = false;
+      }
+    });
+
+    onMounted(() => {
+      progressRef.value?.addEventListener("mousedown", moveHandler);
+    });
 
     return {
       progressRef,
@@ -126,7 +144,6 @@ export default defineComponent({
       percentageStyle,
       handleDragStart,
       handleOnDrag,
-      handleDragEnd,
     };
   },
 });
@@ -150,6 +167,7 @@ export default defineComponent({
     flex-direction: column-reverse;
     height: 100%;
     position: relative;
+    cursor: pointer;
 
     .progress-inner {
       width: 100%;
