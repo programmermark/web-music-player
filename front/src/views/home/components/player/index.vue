@@ -113,6 +113,10 @@
         </div>
       </div>
       <!-- 歌曲进度条 -->
+      <PlaybackAdjuster
+        class="absolute left-0 top-[-24px]"
+        :percentage="songState.playRate * 100"
+      />
       <div class="progress-bar" :style="{ width: `${songState.playRate * 100}%` }"></div>
     </div>
   </div>
@@ -205,9 +209,14 @@ import MPIcon from "@/components/MPIcon.vue";
 import VolumeAdjuster from "./components/volume-adjuster/index.vue";
 import { playerNextReOrder } from "@/common/js/util/algorithm";
 import { gotoArtistDetail } from "@/common/js/router";
+import PlaybackAdjuster from "./components/playback-adjuster/index.vue";
 
 export default defineComponent({
-  components: { "mp-icon": MPIcon, "volume-adjuster": VolumeAdjuster },
+  components: {
+    "mp-icon": MPIcon,
+    "volume-adjuster": VolumeAdjuster,
+    PlaybackAdjuster,
+  },
   name: "MusicPlayer",
   setup() {
     const store = useStore();
