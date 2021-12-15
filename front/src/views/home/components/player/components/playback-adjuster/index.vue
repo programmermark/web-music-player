@@ -12,6 +12,7 @@
     ></div>
     <!-- 进度条拖拽按钮 -->
     <div
+      id="playback-drag-btn"
       class="w-3 h-3 rounded-md"
       :style="{
         backgroundColor: bgColor,
@@ -37,7 +38,7 @@ const props = withDefaults(
 );
 
 const emits = defineEmits<{
-  (e: "change-progress", innerPercentage: number, percentage?: number): void;
+  (e: "change-percentage", innerPercentage: number, percentage?: number): void;
 }>();
 
 const { percentage } = toRefs(props);
@@ -64,16 +65,17 @@ const currentPercentage = computed(() => {
 /** 切换拖拽按钮是否展示 */
 const toggleDragBtnDisplay = (isDisplay: boolean) => {
   dragBtnDisplay.value = isDisplay;
+  if (!isDisplay) {
+    dragState.dragging = false;
+  }
 };
 
-const handleProgressChange = debounce((endY = 0, withPercentage = false) => {
-  /** 获取进度条到浏览器的距离 */
-  const eleWidth = playbackRef.value?.getBoundingClientRect().width;
-  console.log("eleWidth", eleWidth);
-  console.log(playbackRef.value?.getBoundingClientRect().left);
-  const eleToLeft = playbackRef.value?.getBoundingClientRect().left || dragState.startX;
+const handleProgressChange = debounce((endX = 0, withPercentage = false) => {
+  /** 获取进度条的长度 */
+  const eleWidth = playbackRef.value?.getBoundingClientRect().width as number;
+  const eleToLeft = playbackRef.value?.getBoundingClientRect().left as number;
   /** 计算鼠标距离进度条底部的百分比 */
-  let percent = ((80 - (endY - eleToLeft)) / 80) * 100;
+  let percent = ((endX - eleToLeft) / eleWidth) * 100;
   if (percent > 100) {
     percent = 100;
   } else if (percent < 0) {
@@ -81,18 +83,18 @@ const handleProgressChange = debounce((endY = 0, withPercentage = false) => {
   }
   dragState.innerPercentage = percent;
   if (!withPercentage) {
-    emits("change-progress", percent);
+    emits("change-percentage", percent);
   } else {
-    emits("change-progress", percent, percent);
+    emits("change-percentage", percent, percent);
   }
 }, 10);
 
 const handleDragStart = (e: MouseEvent | TouchEvent) => {
   dragState.dragging = true;
   if (e instanceof TouchEvent) {
-    dragState.startX = e.changedTouches[0].clientY;
+    dragState.startX = e.changedTouches[0].clientX;
   } else {
-    dragState.startX = e.clientY;
+    dragState.startX = e.clientX;
   }
   handleProgressChange(dragState.startX);
   // 为元素添加鼠标移动和松开事件
@@ -105,13 +107,13 @@ const handleOnDrag = (e: MouseEvent | TouchEvent) => {
     return false;
   }
   /** 获取进度条到浏览器的距离 */
-  let endY = 0;
+  let endX = 0;
   if (e instanceof TouchEvent) {
-    endY = e.changedTouches[0].clientY;
+    endX = e.changedTouches[0].clientX;
   } else {
-    endY = e.clientY;
+    endX = e.clientX;
   }
-  handleProgressChange(endY, true);
+  handleProgressChange(endX, true);
 };
 
 const moveHandler = (e: MouseEvent | TouchEvent) => {

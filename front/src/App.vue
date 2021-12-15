@@ -1,5 +1,4 @@
 <template>
-  <VueQueryDevTools />
   <div id="app-content">
     <!-- 壁纸切换组件 -->
     <div id="home">

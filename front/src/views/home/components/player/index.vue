@@ -116,6 +116,7 @@
       <PlaybackAdjuster
         class="absolute left-0 top-[-24px]"
         :percentage="songState.playRate * 100"
+        @change-percentage="handlePlayRateChange"
       />
       <div class="progress-bar" :style="{ width: `${songState.playRate * 100}%` }"></div>
     </div>
@@ -230,6 +231,7 @@ export default defineComponent({
 
     /** 当前歌曲播放状态 */
     const songState = reactive<ISongState>({
+      isAdjusting: false,
       playRate: 0 /** 播放进度 */,
       songDuration: 0 /** 歌曲时长 */,
       playedSongDuration: 0 /** 已播放歌曲时长 */,
@@ -418,6 +420,25 @@ export default defineComponent({
       }
     };
 
+    /** 控制播放进度 */
+    const handlePlayRateChange = (innerPercentage: number, percentage?: number) => {
+      console.log(innerPercentage, percentage);
+      if (percentage !== undefined) {
+        songState.isAdjusting = false;
+        songState.playRate = percentage;
+        songState.playedSongDuration = (songState.songDuration * percentage) / 100;
+      } else {
+        songState.isAdjusting = true;
+        songState.playRate = innerPercentage;
+        songState.playedSongDuration = (songState.songDuration * innerPercentage) / 100;
+      }
+      if (audioPlayerRef.value) {
+        console.log("songState.playedSongDuration", songState.playedSongDuration);
+        console.log("audioPlayerRef.value.duration", audioPlayerRef.value.duration);
+        audioPlayerRef.value.currentTime = songState.playedSongDuration;
+      }
+    };
+
     onMounted(() => {
       if (audioPlayerRef.value !== undefined) {
         audioPlayerRef.value.volume = currentVolume.value;
@@ -465,6 +486,7 @@ export default defineComponent({
       clearPlayList,
       onChangeVolume,
       displaySongDetail,
+      handlePlayRateChange,
     };
   },
 });

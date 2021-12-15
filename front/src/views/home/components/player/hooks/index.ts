@@ -35,12 +35,14 @@ export const useAudio = (
     ele.onplay = (ev: Event) => {};
     // 获取当前播放时间
     ele.ontimeupdate = () => {
-      _.debounce(() => {
-        store.commit("player/setCurrentTime", ele.currentTime.toFixed(3));
-      }, 1000)();
+      if (!songState.isAdjusting) {
+        _.debounce(() => {
+          store.commit("player/setCurrentTime", ele.currentTime.toFixed(3));
+        }, 1000)();
 
-      songState.playedSongDuration = ele.currentTime;
-      songState.playRate = ele.currentTime / ele.duration;
+        songState.playedSongDuration = ele.currentTime;
+        songState.playRate = ele.currentTime / ele.duration;
+      }
     };
     // 当前音乐播放完毕
     ele.onended = () => {
