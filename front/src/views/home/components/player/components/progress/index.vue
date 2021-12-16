@@ -1,7 +1,9 @@
 <template>
   <div id="music-progress" class="progress-wrapper">
     <div ref="progressRef" class="progress-outer" :style="outerStyle">
-      <div class="progress-inner" :style="innerStyle"></div>
+      <div class="progress-inner-wrapper" :style="innerWrapperStyle">
+        <div :style="innerStyle"></div>
+      </div>
       <div class="change-percentage" :style="percentageStyle"></div>
     </div>
   </div>
@@ -17,7 +19,7 @@ export default defineComponent({
     /** 进度条的宽度 */
     width: {
       type: Number,
-      default: 6,
+      default: 4,
     },
     /** 外层进度条的背景颜色 */
     outColor: {
@@ -29,7 +31,7 @@ export default defineComponent({
       type: String,
       default: "#d33a30",
     },
-    /** 进度条的百分比s */
+    /** 进度条的百分比 */
     percentage: {
       type: Number,
       default: 60,
@@ -59,9 +61,15 @@ export default defineComponent({
       };
     });
 
-    const innerStyle = computed(() => {
+    const innerWrapperStyle = computed(() => {
       return {
         height: `${dragState.innerPercentage}%`,
+      };
+    });
+
+    const innerStyle = computed(() => {
+      return {
+        height: "100%",
         "background-color": color.value,
         "border-radius": `${width.value / 2}px`,
       };
@@ -140,6 +148,7 @@ export default defineComponent({
     return {
       progressRef,
       outerStyle,
+      innerWrapperStyle,
       innerStyle,
       percentageStyle,
       handleDragStart,

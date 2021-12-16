@@ -18,6 +18,7 @@ export interface IPlayerState {
 
 /** 歌曲当前状态 */
 export interface ISongState {
+  isAdjusting: boolean /** 是否正在调整播放进度 */;
   playRate: number /** 播放进度 */;
   songDuration: number /** 歌曲时长 */;
   playedSongDuration: number /** 已播放歌曲时长 */;

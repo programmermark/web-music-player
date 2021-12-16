@@ -113,7 +113,13 @@
         </div>
       </div>
       <!-- 歌曲进度条 -->
-      <div class="progress-bar" :style="{ width: `${songState.playRate * 100}%` }"></div>
+      <PlaybackAdjuster
+        class="absolute left-0 top-[-7px]"
+        :percentage="songState.playRate * 100"
+        @change-percentage="handlePlayRateChange"
+        @change-darging-state="handleIsDragingChange"
+      />
+      <!-- <div class="progress-bar" :style="{ width: `${songState.playRate * 100}%` }"></div> -->
     </div>
   </div>
   <!-- 右侧播放列表 -->
@@ -205,9 +211,14 @@ import MPIcon from "@/components/MPIcon.vue";
 import VolumeAdjuster from "./components/volume-adjuster/index.vue";
 import { playerNextReOrder } from "@/common/js/util/algorithm";
 import { gotoArtistDetail } from "@/common/js/router";
+import PlaybackAdjuster from "./components/playback-adjuster/index.vue";
 
 export default defineComponent({
-  components: { "mp-icon": MPIcon, "volume-adjuster": VolumeAdjuster },
+  components: {
+    "mp-icon": MPIcon,
+    "volume-adjuster": VolumeAdjuster,
+    PlaybackAdjuster,
+  },
   name: "MusicPlayer",
   setup() {
     const store = useStore();
@@ -221,6 +232,7 @@ export default defineComponent({
 
     /** 当前歌曲播放状态 */
     const songState = reactive<ISongState>({
+      isAdjusting: false,
       playRate: 0 /** 播放进度 */,
       songDuration: 0 /** 歌曲时长 */,
       playedSongDuration: 0 /** 已播放歌曲时长 */,
@@ -409,6 +421,30 @@ export default defineComponent({
       }
     };
 
+    /** 控制是否在拖拽进度 */
+    const handleIsDragingChange = (isDraging: boolean) => {
+      songState.isAdjusting = isDraging;
+      if (audioPlayerRef.value) {
+        audioPlayerRef.value.currentTime = songState.playedSongDuration;
+      }
+    };
+
+    /** 控制播放进度 */
+    const handlePlayRateChange = (innerPercentage: number, percentage?: number) => {
+      if (percentage !== undefined) {
+        songState.isAdjusting = false;
+        songState.playRate = percentage;
+        songState.playedSongDuration = songState.songDuration * percentage;
+        if (audioPlayerRef.value) {
+          audioPlayerRef.value.currentTime = songState.playedSongDuration;
+        }
+      } else {
+        songState.isAdjusting = true;
+        songState.playRate = innerPercentage;
+        songState.playedSongDuration = songState.songDuration * innerPercentage;
+      }
+    };
+
     onMounted(() => {
       if (audioPlayerRef.value !== undefined) {
         audioPlayerRef.value.volume = currentVolume.value;
@@ -456,6 +492,8 @@ export default defineComponent({
       clearPlayList,
       onChangeVolume,
       displaySongDetail,
+      handleIsDragingChange,
+      handlePlayRateChange,
     };
   },
 });
