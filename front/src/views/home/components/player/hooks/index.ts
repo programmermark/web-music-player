@@ -24,7 +24,7 @@ export const useAudio = (
     ele.onprogress = () => {
       try {
         if (ele.buffered.length > 0) {
-          songState.songDuration = ele.duration;
+          store.commit("player/setCurrentDuration", ele.duration.toFixed(3));
         }
       } catch (error) {
         console.log("error", error);
@@ -40,8 +40,7 @@ export const useAudio = (
           store.commit("player/setCurrentTime", ele.currentTime.toFixed(3));
         }, 1000)();
 
-        songState.playedSongDuration = ele.currentTime;
-        songState.playRate = ele.currentTime / ele.duration;
+        store.commit("player/setCurrentTime", ele.currentTime);
       }
     };
     // 当前音乐播放完毕

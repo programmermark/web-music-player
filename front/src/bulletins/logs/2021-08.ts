@@ -2,6 +2,12 @@ import { ILog } from "@/store/modules/interface/bulletin";
 
 export const logs: ILog[] = [
   {
+    date: "2021-12-16 18:00:00",
+    title: "更新公告(2021-12-16)",
+    briefContent: `<p>1. 优化音量调节交互效果</p><p>2. 添加音乐播放进度调整</p>`,
+    content: `<p>1. 优化音量调节交互效果</p><p>2. 添加音乐播放进度调整</p>`,
+  },
+  {
     date: "2021-12-09 08:00:00",
     title: "更新公告(2021-12-09)",
     briefContent: `<p>1. 修复打包失败的问题，添加一个国内访问地址（无需翻墙，不卡顿）和一个国外访问地址（实时同步，未翻墙会卡顿）</p>`,

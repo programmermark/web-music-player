@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { apis } from "@/api";
 import { http } from "@/common/js/http";
-import { IAlbumDetail } from "@/views/home/components/main-content/views/album-detail/interface";
 import { IArtist } from "@/views/home/components/main-content/views/artist-detail/interface";
 import { IListState } from "@/views/home/components/player/interface";
 import { ActionContext, Module } from "vuex";
@@ -47,6 +46,7 @@ const ModulePlayer: Module<IPlayerState, IRootStateTypes> = {
       },
     ],
     volume: 0.6,
+    currentDuration: 0,
     currentTime: 0,
     currentSong: undefined,
     songList: [],
@@ -83,7 +83,11 @@ const ModulePlayer: Module<IPlayerState, IRootStateTypes> = {
       }
       state.volume = volumeNum;
     },
-    /** 设置当前时间 */
+    /** 设置歌曲时长 */
+    setCurrentDuration(state: IPlayerState, duration: number) {
+      state.currentDuration = duration;
+    },
+    /** 设计歌曲播放到的时间点 */
     setCurrentTime(state: IPlayerState, time: number) {
       state.currentTime = time;
     },
@@ -108,7 +112,7 @@ const ModulePlayer: Module<IPlayerState, IRootStateTypes> = {
     },
     setIsShowSongDetail(state: IPlayerState, isShow: boolean) {
       state.isShowSongDetail = isShow;
-    }
+    },
   },
   actions: {
     /** 根据id获取歌曲详情 */

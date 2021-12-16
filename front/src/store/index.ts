@@ -24,10 +24,14 @@ const dataSet = createPersistedState({
     "login.userInfo",
     /** 播放器 */
     "player.isPause",
-    "player.volume",
     "player.playBackType",
+    "player.playBackTypeList",
+    "player.volume",
     "player.currentSong",
+    "player.currentDuration",
+    "player.currentTime",
     "player.songList",
+    "player.isShowSongDetail",
     /** 歌单 */
     "playlist.currentPlaylist",
     "playlist.allPlayList",
