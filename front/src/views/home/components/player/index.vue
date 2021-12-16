@@ -114,11 +114,12 @@
       </div>
       <!-- 歌曲进度条 -->
       <PlaybackAdjuster
-        class="absolute left-0 top-[-24px]"
+        class="absolute left-0 top-[-7px]"
         :percentage="songState.playRate * 100"
         @change-percentage="handlePlayRateChange"
+        @change-darging-state="handleIsDragingChange"
       />
-      <div class="progress-bar" :style="{ width: `${songState.playRate * 100}%` }"></div>
+      <!-- <div class="progress-bar" :style="{ width: `${songState.playRate * 100}%` }"></div> -->
     </div>
   </div>
   <!-- 右侧播放列表 -->
@@ -420,22 +421,27 @@ export default defineComponent({
       }
     };
 
+    /** 控制是否在拖拽进度 */
+    const handleIsDragingChange = (isDraging: boolean) => {
+      songState.isAdjusting = isDraging;
+      if (audioPlayerRef.value) {
+        audioPlayerRef.value.currentTime = songState.playedSongDuration;
+      }
+    };
+
     /** 控制播放进度 */
     const handlePlayRateChange = (innerPercentage: number, percentage?: number) => {
-      console.log(innerPercentage, percentage);
       if (percentage !== undefined) {
         songState.isAdjusting = false;
         songState.playRate = percentage;
-        songState.playedSongDuration = (songState.songDuration * percentage) / 100;
+        songState.playedSongDuration = songState.songDuration * percentage;
+        if (audioPlayerRef.value) {
+          audioPlayerRef.value.currentTime = songState.playedSongDuration;
+        }
       } else {
         songState.isAdjusting = true;
         songState.playRate = innerPercentage;
-        songState.playedSongDuration = (songState.songDuration * innerPercentage) / 100;
-      }
-      if (audioPlayerRef.value) {
-        console.log("songState.playedSongDuration", songState.playedSongDuration);
-        console.log("audioPlayerRef.value.duration", audioPlayerRef.value.duration);
-        audioPlayerRef.value.currentTime = songState.playedSongDuration;
+        songState.playedSongDuration = songState.songDuration * innerPercentage;
       }
     };
 
@@ -486,6 +492,7 @@ export default defineComponent({
       clearPlayList,
       onChangeVolume,
       displaySongDetail,
+      handleIsDragingChange,
       handlePlayRateChange,
     };
   },

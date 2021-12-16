@@ -38,7 +38,10 @@ const props = withDefaults(
 );
 
 const emits = defineEmits<{
+  /** 调整进度 */
   (e: "change-percentage", innerPercentage: number, percentage?: number): void;
+  /** 是否正在调整 */
+  (e: "change-darging-state", isDraging: boolean): void;
 }>();
 
 const { percentage } = toRefs(props);
@@ -66,31 +69,44 @@ const currentPercentage = computed(() => {
 const toggleDragBtnDisplay = (isDisplay: boolean) => {
   dragBtnDisplay.value = isDisplay;
   if (!isDisplay) {
+    /** 鼠标移出之前正在拖拽则触发 */
+    if (dragState.dragging) {
+      emits("change-darging-state", false);
+    }
+    /** 停止拖拽时，把拖拽时的进度置空，使用外部传入的进度 */
     dragState.dragging = false;
+    dragState.innerPercentage = null;
   }
 };
 
-const handleProgressChange = debounce((endX = 0, withPercentage = false) => {
-  /** 获取进度条的长度 */
-  const eleWidth = playbackRef.value?.getBoundingClientRect().width as number;
-  const eleToLeft = playbackRef.value?.getBoundingClientRect().left as number;
-  /** 计算鼠标距离进度条底部的百分比 */
-  let percent = ((endX - eleToLeft) / eleWidth) * 100;
-  if (percent > 100) {
-    percent = 100;
-  } else if (percent < 0) {
-    percent = 0;
-  }
-  dragState.innerPercentage = percent;
-  if (!withPercentage) {
-    emits("change-percentage", percent);
-  } else {
-    emits("change-percentage", percent, percent);
-  }
-}, 10);
+const handleProgressChange = debounce(
+  (endX = 0, isDraging = true, withPercentage = false) => {
+    /** 获取进度条的长度 */
+    const eleWidth = playbackRef.value?.getBoundingClientRect().width as number;
+    const eleToLeft = playbackRef.value?.getBoundingClientRect().left as number;
+    /** 计算鼠标距离进度条底部的百分比 */
+    let percent = ((endX - eleToLeft) / eleWidth) * 100;
+    if (percent > 100) {
+      percent = 100;
+    } else if (percent < 0) {
+      percent = 0;
+    }
+    dragState.dragging = isDraging;
+    if (isDraging) {
+      dragState.innerPercentage = percent;
+    } else {
+      dragState.innerPercentage = null;
+    }
+    if (!withPercentage) {
+      emits("change-percentage", percent / 100);
+    } else {
+      emits("change-percentage", percent / 100, percent / 100);
+    }
+  },
+  10
+);
 
 const handleDragStart = (e: MouseEvent | TouchEvent) => {
-  dragState.dragging = true;
   if (e instanceof TouchEvent) {
     dragState.startX = e.changedTouches[0].clientX;
   } else {
@@ -98,8 +114,10 @@ const handleDragStart = (e: MouseEvent | TouchEvent) => {
   }
   handleProgressChange(dragState.startX);
   // 为元素添加鼠标移动和松开事件
-  playbackRef.value?.addEventListener("mousemove", moveHandler);
-  playbackRef.value?.addEventListener("mouseup", moveHandler);
+  window.addEventListener("mousemove", handleOnDrag);
+  window.addEventListener("touchmove", handleOnDrag);
+  window.addEventListener("mouseup", handleDragEnd);
+  window.addEventListener("touchend", handleDragEnd);
 };
 
 const handleOnDrag = (e: MouseEvent | TouchEvent) => {
@@ -113,7 +131,23 @@ const handleOnDrag = (e: MouseEvent | TouchEvent) => {
   } else {
     endX = e.clientX;
   }
-  handleProgressChange(endX, true);
+  handleProgressChange(endX);
+};
+
+const handleDragEnd = (e: MouseEvent | TouchEvent) => {
+  /** 获取进度条到浏览器的距离 */
+  let endX = 0;
+  if (e instanceof TouchEvent) {
+    endX = e.changedTouches[0].clientX;
+  } else {
+    endX = e.clientX;
+  }
+  handleProgressChange(endX, false, true);
+  /** 移除事件监听 */
+  window.removeEventListener("mousemove", handleOnDrag);
+  window.removeEventListener("touchmove", handleOnDrag);
+  window.removeEventListener("mouseup", handleDragEnd);
+  window.removeEventListener("touchend", handleDragEnd);
 };
 
 const moveHandler = (e: MouseEvent | TouchEvent) => {
@@ -122,8 +156,7 @@ const moveHandler = (e: MouseEvent | TouchEvent) => {
   } else if (e.type === "mousemove" || e.type === "touchmove") {
     handleOnDrag(e);
   } else if (e.type === "mouseup" || e.type === "touchend") {
-    dragState.dragging = false;
-    playbackRef.value?.removeEventListener("mousemove", moveHandler);
+    handleDragEnd(e);
   }
 };
 
