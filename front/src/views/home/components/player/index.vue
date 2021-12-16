@@ -42,11 +42,11 @@
               </div>
               <div class="play-pace">
                 <span class="time">
-                  {{ transformSecondToMinute(songState.playedSongDuration) }}
+                  {{ transformSecondToMinute(currentSongPlayedDuration) }}
                 </span>
                 <span class="parting-line">/</span>
                 <span class="time">
-                  {{ transformSecondToMinute(songState.songDuration) }}
+                  {{ transformSecondToMinute(currentSongDuration) }}
                 </span>
               </div>
             </div>
@@ -115,11 +115,10 @@
       <!-- 歌曲进度条 -->
       <PlaybackAdjuster
         class="absolute left-0 top-[-7px]"
-        :percentage="songState.playRate * 100"
+        :percentage="currentPlayRate * 100"
         @change-percentage="handlePlayRateChange"
         @change-darging-state="handleIsDragingChange"
       />
-      <!-- <div class="progress-bar" :style="{ width: `${songState.playRate * 100}%` }"></div> -->
     </div>
   </div>
   <!-- 右侧播放列表 -->
@@ -233,9 +232,6 @@ export default defineComponent({
     /** 当前歌曲播放状态 */
     const songState = reactive<ISongState>({
       isAdjusting: false,
-      playRate: 0 /** 播放进度 */,
-      songDuration: 0 /** 歌曲时长 */,
-      playedSongDuration: 0 /** 已播放歌曲时长 */,
     });
 
     /** 播放器是否暂停 */
@@ -243,6 +239,17 @@ export default defineComponent({
 
     /** 播放器音量 */
     const currentVolume = computed(() => store.state.player.volume);
+
+    /** 当前歌曲的时长 */
+    const currentSongDuration = computed(() => store.state.player.currentDuration);
+
+    /** 当前歌曲的已播放的时长 */
+    const currentSongPlayedDuration = computed(() => store.state.player.currentTime);
+
+    /** 当前歌曲的播放进度 */
+    const currentPlayRate = computed(
+      () => currentSongPlayedDuration.value / currentSongDuration.value
+    );
 
     /** 当前播放顺序 */
     const currentPlayBackType = computed(() => store.state.player.playBackType);
@@ -387,6 +394,10 @@ export default defineComponent({
     const playSong = () => {
       if (audioPlayerRef.value !== undefined) {
         changeIsPause(false);
+        /** 如果当前歌曲已经播放，则设置当前播放时长 */
+        if (currentSongPlayedDuration.value) {
+          audioPlayerRef.value.currentTime = currentSongPlayedDuration.value;
+        }
         audioPlayerRef.value.play();
       }
     };
@@ -425,7 +436,7 @@ export default defineComponent({
     const handleIsDragingChange = (isDraging: boolean) => {
       songState.isAdjusting = isDraging;
       if (audioPlayerRef.value) {
-        audioPlayerRef.value.currentTime = songState.playedSongDuration;
+        audioPlayerRef.value.currentTime = currentSongPlayedDuration.value;
       }
     };
 
@@ -433,15 +444,16 @@ export default defineComponent({
     const handlePlayRateChange = (innerPercentage: number, percentage?: number) => {
       if (percentage !== undefined) {
         songState.isAdjusting = false;
-        songState.playRate = percentage;
-        songState.playedSongDuration = songState.songDuration * percentage;
+        store.commit("player/setCurrentTime", currentSongDuration.value * percentage);
         if (audioPlayerRef.value) {
-          audioPlayerRef.value.currentTime = songState.playedSongDuration;
+          audioPlayerRef.value.currentTime = currentSongPlayedDuration.value;
         }
       } else {
         songState.isAdjusting = true;
-        songState.playRate = innerPercentage;
-        songState.playedSongDuration = songState.songDuration * innerPercentage;
+        store.commit(
+          "player/setCurrentTime",
+          currentSongDuration.value * innerPercentage
+        );
       }
     };
 
@@ -473,10 +485,12 @@ export default defineComponent({
       playingSongArtistStr,
       artists,
       currentSongUrl,
-      songState,
       playerState,
       isPause,
       currentVolume,
+      currentSongDuration,
+      currentSongPlayedDuration,
+      currentPlayRate,
       currentPlayBackType,
       storeSongList,
       changeCurrentPlayBackType,
