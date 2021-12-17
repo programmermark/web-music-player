@@ -5,7 +5,7 @@
       class="relative cursor-pointer"
       @mouseenter="handleMouseEnter"
       @mouseleave="handleMouseLeave"
-      @click="gotoMVDetail(videoId)"
+      @click="gotoMVDetail(videoId, videoType)"
     >
       <el-image
         class="w-full h-full flex items-center justify-center box-border rounded-md border border-gray-50"
@@ -16,15 +16,27 @@
           <img class="w-full h-full" src="@/assets/image/no-img-16x9.png" alt="MV封面" />
         </template>
       </el-image>
-      <div class="absolute top-1 right-2 flex items-center">
+      <div v-if="playCount" class="absolute top-1 right-2 flex items-center">
         <MPIcon icon="play-caret" :size="16" color="#fff" bgColor="" :scale="0.8" />
         <span class="text-xs text-white font-medium">{{
           translatePlayCount(playCount)
         }}</span>
       </div>
-      <span class="absolute bottom-1 right-2 text-xs text-white font-medium">{{
-        transformSecondToMinute(duration)
-      }}</span>
+      <span
+        v-if="duration"
+        class="absolute bottom-1 right-2 text-xs text-white font-medium"
+        >{{ transformSecondToMinute(duration) }}</span
+      >
+      <div v-if="popularityDegree" class="absolute top-1 right-2 flex items-center">
+        <MPIcon
+          icon="popularity-degree"
+          :size="16"
+          color="#fff"
+          bgColor=""
+          :scale="0.8"
+        />
+        <span class="text-xs text-white font-medium">{{ popularityDegree }}</span>
+      </div>
       <!-- 播放图标 -->
       <MPOptIcon
         v-show="showIcon"
@@ -40,7 +52,7 @@
     <div
       v-if="title"
       class="text-[13px] text-gray-600 font-medium mt-2 mb-1 cursor-pointer text-ellipsis"
-      @click="gotoMVDetail(videoId)"
+      @click="gotoMVDetail(videoId, videoType)"
     >
       {{ title }}
     </div>
@@ -50,7 +62,7 @@
         class="cursor-pointer text-[13px] text-gray-400"
         v-for="artist in artists"
         :key="artist.id"
-        @click="gotoArtist(artist.id)"
+        @click="gotoArtist(artist)"
       >
         {{ artist.name }}
       </div>
@@ -64,23 +76,30 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 import MPIcon from "./MPIcon.vue";
 import MPOptIcon from "./MPOptIcon.vue";
-import { IArtist } from "@/views/home/components/main-content/views/artist-detail/interface";
 import { translatePlayCount, transformSecondToMinute } from "@/common/js/util";
 import { ElMessage } from "element-plus";
+import {
+  IFormatArtist,
+  VideoType,
+} from "@/views/home/components/main-content/views/video-list/interface";
 
 defineProps<{
   // 视频id
   videoId: number | string;
+  // 视频类型
+  videoType: VideoType;
   // 视频图片
   image: string;
   // 视频标题
   title: string;
   // 视频播放量
-  playCount: number;
+  playCount?: number;
+  // 直播间热度
+  popularityDegree?: number;
   // 视频时长
-  duration: number;
+  duration?: number;
   // 视频作者
-  artists?: IArtist[];
+  artists?: IFormatArtist[];
 }>();
 
 const router = useRouter();
@@ -97,22 +116,44 @@ const handleMouseLeave = () => {
 /**
  * 跳转到MV详情页
  */
-const gotoMVDetail = (id: number | string) => {
-  if (id && typeof id === "number") {
-    router.push(`/mv/${id}`);
-  } else if (id && typeof id === "string") {
-    ElMessage.warning({
-      message: "功能开发中，敬请期待！",
-      type: "warning",
-    });
+const gotoMVDetail = (id: number | string, videoType: VideoType) => {
+  if (id) {
+    switch (videoType) {
+      /** 视频 */
+      case 1:
+        router.push(`/mv/${id}`);
+        break;
+      /** MV */
+      case 2:
+        ElMessage.warning({
+          message: "MV详情页面开发中，敬请期待！",
+          type: "warning",
+        });
+        break;
+      /** 直播 */
+      case 7:
+        const liveRoomUrl = `https://look.163.com/live?id=${id}`;
+        window.open(liveRoomUrl);
+        break;
+      default:
+        router.push(`/mv/${id}`);
+        break;
+    }
   }
 };
 
 /**
  * 跳转到歌手详情
  */
-const gotoArtist = (id: number) => {
-  router.push(`/artist/${id}`);
+const gotoArtist = (artist: IFormatArtist) => {
+  if (artist.isArtist) {
+    router.push(`/artist/${artist.id}`);
+  } else {
+    ElMessage.warning({
+      message: "用户详情页面开发中，敬请期待！",
+      type: "warning",
+    });
+  }
 };
 </script>
 
