@@ -2,7 +2,7 @@
   <div class="volume-adjuster">
     <el-popover
       placement="top"
-      trigger="click"
+      trigger="hover"
       :style="{ width: '30px' }"
       popper-class="volume-popover"
       @show="showPopover"

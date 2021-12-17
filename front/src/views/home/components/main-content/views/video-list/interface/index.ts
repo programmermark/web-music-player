@@ -8,6 +8,8 @@ import { IArtist } from "../../artist-detail/interface";
  */
 export type Gender = 0 | 1 | 2;
 
+export type VideoType = 1 | 2 | 7; // 1: 视频 2: MV 7: 直播
+
 export interface IVideoCategory {
   id: number;
   name: string;
@@ -43,22 +45,48 @@ export interface IMVVideo {
   desc: string /** MV详细描述 */;
 }
 
+/** 直播电台接口定义 */
+export interface IRadioVideo {
+  liveData: {
+    type: string;
+    liveRoom: {
+      coverTag: string /** 直播间标签 */;
+      coverUrl: string /** 直播间封面图片 */;
+      liveId: number /** 直播间数据id（唯一标识） */;
+      liveRoomNo: string /** 直播间id */;
+      liveStatus: number /** 直播间状态（0：未开播，1：直播中） */;
+      popularity: number /** 直播间人气 */;
+      title: string /** 直播间标题 */;
+    };
+    liveUser: {
+      avatarUrl: string /** 用户头像 */;
+      nickName: string /** 用户昵称 */;
+      userId: number /** 用户id */;
+    };
+  };
+}
+
+export interface IFormatArtist {
+  id: number;
+  name: string /** 视频作者 */;
+  isArtist: boolean /** 用户类型，true: 歌手， false: 普通用户 */;
+}
+
 /** 格式化后统一的video接口 */
 export interface IFormatVideo {
   id: string | number /** 视频id */;
-  type: 1 | 2; // 1: 视频 2: MV
+  type: VideoType;
   title: string /** 视频标题 */;
-  playCount: number /** 播放量 */;
-  duration: number /** MV时长（毫秒） */;
+  playCount?: number /** 播放量 */;
+  popularityDegree?: number /** 直播间热度 */;
+  duration?: number /** MV时长（毫秒） */;
   cover: string /** MV封面图片地址 */;
-  artists: IArtist[];
+  artists: IFormatArtist[];
 }
 
 export interface IVideoItem {
-  // type: 1 | 2; // 1: 视频 2: MV
-  // data: IVideo;
-  type: 1 | 2; // 1: 视频 2: MV
-  data: IVideo | IMVVideo;
+  type: VideoType;
+  data: IVideo | IMVVideo | IRadioVideo;
 }
 
 export interface IVideoListResponse {

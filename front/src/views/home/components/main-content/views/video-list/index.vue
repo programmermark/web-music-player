@@ -29,10 +29,12 @@
           <MPVideoCard
             class="mr-5"
             :video-id="video.id"
+            :video-type="video.type"
             :image="video.cover"
             :title="video.title"
             :playCount="video.playCount"
-            :duration="Math.round(video.duration / 1000)"
+            :duration="video.duration"
+            :popularityDegree="video.popularityDegree"
             :artists="video.artists"
           />
         </div>
@@ -73,6 +75,7 @@ import GroupFilter from "./components/group-filter/index.vue";
 import {
   IFormatVideo,
   IMVVideo,
+  IRadioVideo,
   IVideo,
   IVideoCategory,
   IVideoListResponse,
@@ -122,41 +125,62 @@ const {
   {
     select: (data) => {
       const pages = data.pages.map((pageData) => {
-        const formatDatas = pageData.datas.map((result) => {
-          let formatVideoData: IFormatVideo;
-          if (result.type === 1) {
-            const videoData = result.data as IVideo;
-            formatVideoData = {
-              id: videoData.vid,
-              type: result.type,
-              title: videoData.title,
-              playCount: videoData.playTime,
-              duration: videoData.durationms,
-              cover: videoData.coverUrl,
-              artists: [
-                {
-                  id: videoData.creator?.userId,
-                  name: videoData.creator?.nickname,
-                },
-              ],
-            };
-          } else {
-            const videoData = result.data as IMVVideo;
-            formatVideoData = {
-              id: videoData.id,
-              type: result.type,
-              title: videoData.name,
-              playCount: videoData.playCount,
-              duration: videoData.duration,
-              cover: videoData.imgurl16v9,
-              artists: videoData.artists.map((artist) => ({
-                id: artist.id,
-                name: artist.name,
-              })),
-            };
-          }
-          return formatVideoData;
-        });
+        const formatDatas = pageData.datas
+          .filter((result) => [1, 2, 7].includes(result.type))
+          .map((result) => {
+            let formatVideoData: IFormatVideo;
+            if (result.type === 1) {
+              const videoData = result.data as IVideo;
+              formatVideoData = {
+                id: videoData.vid,
+                type: result.type,
+                title: videoData.title,
+                playCount: videoData.playTime,
+                duration: Math.round(videoData.durationms / 1000),
+                cover: videoData.coverUrl,
+                artists: [
+                  {
+                    id: videoData.creator?.userId,
+                    name: videoData.creator?.nickname,
+                    isArtist: false,
+                  },
+                ],
+              };
+            } else if (result.type === 2) {
+              const videoData = result.data as IMVVideo;
+              formatVideoData = {
+                id: videoData.id,
+                type: result.type,
+                title: videoData.name,
+                playCount: videoData.playCount,
+                duration: Math.round(videoData.duration / 1000),
+                cover: videoData.imgurl16v9,
+                artists: videoData.artists.map((artist) => ({
+                  id: artist.id,
+                  name: artist.name,
+                  isArtist: true,
+                })),
+              };
+            } else {
+              const videoData = result.data as IRadioVideo;
+              const { liveRoom, liveUser } = videoData.liveData;
+              formatVideoData = {
+                id: liveRoom.liveRoomNo,
+                type: result.type,
+                title: liveRoom.title,
+                popularityDegree: liveRoom.popularity,
+                cover: liveRoom.coverUrl,
+                artists: [
+                  {
+                    id: liveUser.userId,
+                    name: liveUser.nickName,
+                    isArtist: false,
+                  },
+                ],
+              };
+            }
+            return formatVideoData;
+          });
         return {
           ...pageData,
           datas: formatDatas,
@@ -175,8 +199,6 @@ const {
     },
   }
 );
-
-console.log({ data: data.value });
 
 /** 页面是否没有数据 */
 const noData = computed(() => {
