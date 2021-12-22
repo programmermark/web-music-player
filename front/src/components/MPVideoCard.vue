@@ -5,7 +5,7 @@
       class="relative cursor-pointer"
       @mouseenter="handleMouseEnter"
       @mouseleave="handleMouseLeave"
-      @click="gotoMVDetail(videoId, videoType)"
+      @click="gotoMvDetail(videoId, videoType)"
     >
       <el-image
         class="w-full h-full flex items-center justify-center box-border rounded-md border border-gray-50"
@@ -52,7 +52,7 @@
     <div
       v-if="title"
       class="text-[13px] text-gray-600 font-medium mt-2 mb-1 cursor-pointer text-ellipsis"
-      @click="gotoMVDetail(videoId, videoType)"
+      @click="gotoMvDetail(videoId, videoType)"
     >
       {{ title }}
     </div>
@@ -82,6 +82,7 @@ import {
   IFormatArtist,
   VideoType,
 } from "@/views/home/components/main-content/views/video-list/interface";
+import { gotoMVDetail } from "@/common/js/router";
 
 defineProps<{
   // 视频id
@@ -116,19 +117,20 @@ const handleMouseLeave = () => {
 /**
  * 跳转到MV详情页
  */
-const gotoMVDetail = (id: number | string, videoType: VideoType) => {
+const gotoMvDetail = (id: number | string, videoType: VideoType) => {
   if (id) {
     switch (videoType) {
       /** 视频 */
       case 1:
-        router.push(`/mv/${id}`);
+        // ElMessage.warning({
+        //   message: "MV详情页面开发中，敬请期待！",
+        //   type: "warning",
+        // });
+        gotoMVDetail(id, 2);
         break;
       /** MV */
       case 2:
-        ElMessage.warning({
-          message: "MV详情页面开发中，敬请期待！",
-          type: "warning",
-        });
+        gotoMVDetail(id);
         break;
       /** 直播 */
       case 7:
@@ -136,7 +138,7 @@ const gotoMVDetail = (id: number | string, videoType: VideoType) => {
         window.open(liveRoomUrl);
         break;
       default:
-        router.push(`/mv/${id}`);
+        gotoMVDetail(id);
         break;
     }
   }
