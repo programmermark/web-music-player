@@ -9,39 +9,39 @@
           <span class="text">视频详情</span>
         </div>
         <!-- MV 播放器 -->
-        <MPVideoPlayer v-if="mvDetailState.mvUrl" :src="mvDetailState.mvUrl.url" />
+        <MPVideoPlayer v-if="videoUrl" :src="videoUrl" />
         <!-- MV详细信息 -->
-        <div class="detail-info" v-if="mvDetailState.mvDetail">
+        <div class="detail-info" v-if="videoDetail">
           <div class="artist">
             <img
-              v-if="mvDetailFirstArtist && mvDetailFirstArtist.img1v1Url"
+              v-if="mvDetailFirstArtist && mvDetailFirstArtist.avatarUrl"
               class="avatar"
-              :src="`${mvDetailFirstArtist.img1v1Url}?param=100y100`"
+              :src="`${mvDetailFirstArtist.avatarUrl}?param=100y100`"
               alt="头像"
-              @click="mvDetailFirstArtist && gotoArtistDetail(mvDetailFirstArtist.id)"
+              @click="mvDetailFirstArtist && gotoArtistDetail(mvDetailFirstArtist.userId)"
             />
             <img
-              v-if="mvDetailFirstArtist && !mvDetailFirstArtist.img1v1Url"
+              v-if="mvDetailFirstArtist && !mvDetailFirstArtist.avatarUrl"
               class="avatar"
               src="@/assets/image/no-img.png"
               alt="头像"
-              @click="mvDetailFirstArtist && gotoArtistDetail(mvDetailFirstArtist.id)"
+              @click="mvDetailFirstArtist && gotoArtistDetail(mvDetailFirstArtist.userId)"
             />
             <div class="artist-wrapper" v-if="mvDetailArtist">
               <div
                 class="artist-text"
                 v-for="(artist, index) in mvDetailArtist"
-                :key="artist.id"
+                :key="artist.userId"
               >
-                <span class="name" @click="gotoArtistDetail(artist.id)">{{
-                  artist.name
+                <span class="name" @click="gotoArtistDetail(artist.userId)">{{
+                  artist.nickname
                 }}</span>
                 <span v-if="index + 1 < mvDetailArtist.length" class="part-line">/</span>
               </div>
             </div>
           </div>
           <div class="title-wrapper">
-            <div class="title">{{ mvDetailState.mvDetail.name }}</div>
+            <div class="title">{{ videoDetail.title }}</div>
             <i
               :class="[
                 !mvDetailState.showMVDesc ? 'el-icon-caret-bottom' : 'el-icon-caret-top',
@@ -52,45 +52,76 @@
           </div>
 
           <div class="other-info">
-            <div class="item">发布：{{ mvDetailState.mvDetail.publishTime }}</div>
+            <div class="item">发布：{{ videoDetail.publishTime }}</div>
             <div class="item">
-              播放：{{ translatePlayCount(mvDetailState.mvDetail.playCount) }}次
+              播放：{{ translatePlayCount(videoDetail.playTime || 0) }}次
             </div>
           </div>
           <div class="desc" v-show="mvDetailState.showMVDesc">
-            {{ mvDetailState.mvDetail.desc }}
+            {{ videoDetail.description }}
           </div>
         </div>
       </div>
       <!-- 相关推荐 -->
       <div class="recommend-mvs">
         <div class="text-base font-bold mb-4">相关推荐</div>
-        <RecommendCard v-for="mv in similarMvState.list" :key="mv.id" :mv="mv" />
+        <template v-if="relatedVideoList && relatedVideoList.length > 0">
+          <RecommendCard v-for="mv in relatedVideoList" :key="mv.vid" :mv="mv" />
+        </template>
       </div>
     </div>
   </el-scrollbar>
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, reactive, watch } from "vue";
+import { computed, reactive } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { apis } from "@/api";
-import { http } from "@/common/js/http";
 import { translatePlayCount } from "@/common/js/util";
 import MPIcon from "@/components/MPIcon.vue";
 import MPVideoPlayer from "@/components/MPVideoPlayer.vue";
 import RecommendCard from "./components/recommend-card/index.vue";
-import {
-  IMVDetail,
-  IMVDetailState,
-  IMVUrl,
-  ISimilarMV,
-  ISimilarMVState,
-} from "./interface";
+import { IMVDetailState, IMVInfo } from "./interface";
 import { gotoArtistDetail } from "@/common/js/router";
+import { useVideoDetail, useVideoInfo, useVideoUrl } from "./hooks/useVideoDetail";
+import { useRelatedVideo } from "./hooks/useSimilarVideo";
 
 const router = useRouter();
 const route = useRoute();
+
+/** 视频id */
+const videoId = computed(() => {
+  return route.params.id as string | number;
+});
+
+/** 视频类型 */
+const videoType = computed(() => {
+  return route.query.type as string;
+});
+
+/** 视频详情 */
+const { data: videoDetail } = useVideoDetail(videoId.value, Number(videoType.value));
+/** MV详情信息 */
+const { data: videoInfo } = useVideoInfo(videoId.value);
+
+/** 相似视频 */
+const { data: relatedVideoList } = useRelatedVideo(
+  videoId.value,
+  Number(videoType.value)
+);
+/** 视频url */
+const { data: videoUrl } = useVideoUrl(videoId.value, Number(videoType.value));
+
+/** 视频统计补充信息 */
+const MVDetailInfo = computed(() => {
+  if (videoType.value === "1") {
+    return videoInfo.value;
+  } else {
+    return {
+      shareCount: videoDetail.value?.shareCount,
+      commentCount: videoDetail.value?.commentCount,
+    } as IMVInfo;
+  }
+});
 
 const mvDetailState = reactive<IMVDetailState>({
   mvDetail: undefined,
@@ -98,67 +129,16 @@ const mvDetailState = reactive<IMVDetailState>({
   showMVDesc: false,
 });
 
-/** 相似MV列表 */
-const similarMvState = reactive<ISimilarMVState>({
-  list: [],
+/** MV详情艺术家 */
+const mvDetailArtist = computed(() => videoDetail.value?.creators);
+
+/** MV详情艺术家 */
+const mvDetailFirstArtist = computed(() => {
+  if (videoDetail.value && videoDetail.value.creators) {
+    return videoDetail.value.creators[0];
+  }
+  return undefined;
 });
-
-/** MV详情艺术家 */
-const mvDetailArtist = computed(() => mvDetailState.mvDetail?.artists);
-
-/** MV详情艺术家 */
-const mvDetailFirstArtist = computed(() => mvDetailState.mvDetail?.artists[0]);
-
-/**
- * 获取MV视频地址
- */
-const getMVRealAddress = async (id: number) => {
-  const data = await http<IMVUrl>({ url: `${apis.mvUrl}?id=${id}` }, "data");
-  const mvUrl: IMVUrl = {
-    id: data.id,
-    url: data.url,
-  };
-  mvDetailState.mvUrl = mvUrl;
-};
-
-/**
- * 获取MV详情
- */
-const getMVDetail = async (id: number) => {
-  const data = await http<IMVDetail>({ url: `${apis.mvDetail}?mvid=${id}` }, "data");
-  const mvDetail: IMVDetail = {
-    id: data.id,
-    name: data.name,
-    playCount: data.playCount,
-    publishTime: data.publishTime,
-    duration: data.duration,
-    cover: data.cover,
-    artists: data.artists,
-    desc: data.desc,
-    brs: data.brs,
-  };
-  mvDetailState.mvDetail = mvDetail;
-};
-
-/**
- * 获取相似MV
- */
-const getSimilarMV = async (id: number) => {
-  const mvs = await http<ISimilarMV[]>(
-    { url: `${apis.similarMvList}?mvid=${id}` },
-    "mvs"
-  );
-  const formatMvList: ISimilarMV[] = mvs.map((mv) => ({
-    id: mv.id,
-    name: mv.name,
-    playCount: mv.playCount,
-    duration: mv.duration,
-    cover: mv.cover,
-    artistId: mv.artistId,
-    artistName: mv.artistName,
-  }));
-  similarMvState.list = formatMvList;
-};
 
 /** 路由回退到上一页 */
 const gotBack = () => router.go(-1);
@@ -167,26 +147,6 @@ const gotBack = () => router.go(-1);
 const toggleShowMVDesc = () => {
   mvDetailState.showMVDesc = !mvDetailState.showMVDesc;
 };
-
-watch(
-  () => route.params.id,
-  (id) => {
-    if (id && route.name === "MVDetail") {
-      getMVRealAddress(Number(route.params.id));
-      getMVDetail(Number(route.params.id));
-      getSimilarMV(Number(route.params.id));
-    }
-  }
-);
-
-onMounted(() => {
-  const id = route.params.id;
-  if (id) {
-    getMVRealAddress(Number(route.params.id));
-    getMVDetail(Number(route.params.id));
-    getSimilarMV(Number(route.params.id));
-  }
-});
 </script>
 
 <style lang="scss" scoped>

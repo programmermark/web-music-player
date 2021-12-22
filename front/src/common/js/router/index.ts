@@ -1,9 +1,9 @@
 import router from "@/router";
 
 /** 跳转到MV详情 */
-export const gotoMVDetail = (id?: number | string) => {
+export const gotoMVDetail = (id?: number | string, type = 1) => {
   if (id) {
-    router.push(`/mv/${id}`);
+    router.push({ path: `/mv/${id}`, query: { type } });
   }
 };
 
