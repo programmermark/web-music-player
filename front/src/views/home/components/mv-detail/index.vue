@@ -74,8 +74,8 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, reactive } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { computed, reactive, ref } from "vue";
+import { onBeforeRouteUpdate, useRoute, useRouter } from "vue-router";
 import { translatePlayCount } from "@/common/js/util";
 import MPIcon from "@/components/MPIcon.vue";
 import MPVideoPlayer from "@/components/MPVideoPlayer.vue";
@@ -89,31 +89,30 @@ const router = useRouter();
 const route = useRoute();
 
 /** 视频id */
-const videoId = computed(() => {
-  return route.params.id as string | number;
-});
+const videoId = ref(route.params.id as string | number);
 
 /** 视频类型 */
 const videoType = computed(() => {
-  return route.query.type as string;
+  if (!isNaN(Number(videoId.value))) {
+    return 1;
+  } else {
+    return 2;
+  }
 });
 
 /** 视频详情 */
-const { data: videoDetail } = useVideoDetail(videoId.value, Number(videoType.value));
+const { data: videoDetail } = useVideoDetail(videoId, videoType);
 /** MV详情信息 */
-const { data: videoInfo } = useVideoInfo(videoId.value);
+const { data: videoInfo } = useVideoInfo(videoId);
 
 /** 相似视频 */
-const { data: relatedVideoList } = useRelatedVideo(
-  videoId.value,
-  Number(videoType.value)
-);
+const { data: relatedVideoList } = useRelatedVideo(videoId, videoType);
 /** 视频url */
-const { data: videoUrl } = useVideoUrl(videoId.value, Number(videoType.value));
+const { data: videoUrl } = useVideoUrl(videoId, videoType);
 
 /** 视频统计补充信息 */
 const MVDetailInfo = computed(() => {
-  if (videoType.value === "1") {
+  if (videoType.value === 1) {
     return videoInfo.value;
   } else {
     return {
@@ -147,6 +146,10 @@ const gotBack = () => router.go(-1);
 const toggleShowMVDesc = () => {
   mvDetailState.showMVDesc = !mvDetailState.showMVDesc;
 };
+
+onBeforeRouteUpdate(() => {
+  videoId.value = route.params.id as string | number;
+});
 </script>
 
 <style lang="scss" scoped>

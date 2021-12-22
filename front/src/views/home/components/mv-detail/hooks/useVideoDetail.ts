@@ -1,7 +1,7 @@
 import { apis } from "@/api";
 import { http } from "@/common/js/http";
 import { formatTime } from "@/common/js/util";
-import { toRefs, ref } from "vue";
+import { ComputedRef, reactive, Ref } from "vue";
 import { useQuery } from "vue-query";
 import {
   IMVDetail,
@@ -102,14 +102,17 @@ const fetchVideoUrl = async (id: number | string, type: number) => {
  * @param type 视频类型：1-MV，2-视频
  * @returns
  */
-export const useVideoDetail = (id: number | string, type: number) => {
-  if (type === 1) {
-    return useQuery(["fetchVideoDetail", { id, type }], () =>
-      fetchMVDetail(id as number, type)
+export const useVideoDetail = (
+  id: Ref<number | string>,
+  type: ComputedRef<number>
+) => {
+  if (type.value === 1) {
+    return useQuery(reactive(["fetchVideoDetail", { id, type }]), () =>
+      fetchMVDetail(id.value as number, type.value)
     );
   } else {
-    return useQuery(["fetchVideoDetail", { id, type }], () =>
-      fetchVideoDetail(id as string, type)
+    return useQuery(reactive(["fetchVideoDetail", { id, type }]), () =>
+      fetchVideoDetail(id.value as string, type.value)
     );
   }
 };
@@ -119,8 +122,10 @@ export const useVideoDetail = (id: number | string, type: number) => {
  * @param id 视频id
  * @returns
  */
-export const useVideoInfo = (id: number | string) => {
-  return useQuery(["fetchMVIfo", { id }], () => fetchMVIfo(id as number));
+export const useVideoInfo = (id: Ref<number | string>) => {
+  return useQuery(reactive(["fetchMVIfo", { id }]), () =>
+    fetchMVIfo(id.value as number)
+  );
 };
 
 /**
@@ -129,8 +134,11 @@ export const useVideoInfo = (id: number | string) => {
  * @param type 视频类型：1-MV，2-视频
  * @returns
  */
-export const useVideoUrl = (id: number | string, type: number) => {
-  return useQuery(["fetchVideoUrl", { id, type }], () =>
-    fetchVideoUrl(id, type)
+export const useVideoUrl = (
+  id: Ref<number | string>,
+  type: ComputedRef<number>
+) => {
+  return useQuery(reactive(["fetchVideoUrl", { id, type }]), () =>
+    fetchVideoUrl(id.value as string, type.value)
   );
 };
