@@ -126,7 +126,7 @@ const gotoMvDetail = (id: number | string, videoType: VideoType) => {
         //   message: "MV详情页面开发中，敬请期待！",
         //   type: "warning",
         // });
-        gotoMVDetail(id, 2);
+        gotoMVDetail(id);
         break;
       /** MV */
       case 2:

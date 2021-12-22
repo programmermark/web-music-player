@@ -1,5 +1,6 @@
 import { apis } from "@/api";
 import { http } from "@/common/js/http";
+import { ComputedRef, reactive, Ref } from "vue";
 import { useQuery } from "vue-query";
 import { IRelatedVideo, IRelatedVideoFormat, ISimilarMV } from "../interface";
 
@@ -54,14 +55,17 @@ const fetchRelatedVideo = async (id: string, type = 2) => {
  * @param type 视频类型：1-MV，2-视频
  * @returns
  */
-export const useRelatedVideo = (id: number | string, type: number) => {
-  if (type === 1) {
-    return useQuery(["fetchSimilarVideo", { id, type }], () =>
-      fetchSimilarMV(id as number, type)
+export const useRelatedVideo = (
+  id: Ref<number | string>,
+  type: ComputedRef<number>
+) => {
+  if (type.value === 1) {
+    return useQuery(reactive(["fetchSimilarVideo", { id, type }]), () =>
+      fetchSimilarMV(id.value as number, type.value)
     );
   } else {
-    return useQuery(["fetchSimilarVideo", { id, type }], () =>
-      fetchRelatedVideo(id as string, type)
+    return useQuery(reactive(["fetchSimilarVideo", { id, type }]), () =>
+      fetchRelatedVideo(id.value as string, type.value)
     );
   }
 };

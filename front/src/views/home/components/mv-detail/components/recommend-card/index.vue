@@ -26,7 +26,7 @@
       </div>
       <div
         class="text-sm mt-1 text-gray-400 cursor-pointer"
-        @click="gotoArtistDetail(mv.creators[0].userId)"
+        @click="gotoVideoCreator(mv.creators[0].userId, mv.type)"
       >
         {{ mv.creators[0].userName }}
       </div>
@@ -39,10 +39,22 @@ import { IRelatedVideoFormat } from "../../interface";
 import { translatePlayCount, transformSecondToMinute } from "@/common/js/util";
 import MPIcon from "@/components/MPIcon.vue";
 import { gotoArtistDetail, gotoMVDetail } from "@/common/js/router";
+import { ElMessage } from "element-plus";
 
 defineProps<{
   mv: IRelatedVideoFormat;
 }>();
+
+const gotoVideoCreator = (userId: number, type: number) => {
+  if (type === 1) {
+    gotoArtistDetail(userId);
+  } else {
+    ElMessage.warning({
+      message: "用户主页开发中，敬请期待！",
+      type: "warning",
+    });
+  }
+};
 </script>
 
 <style lang="scss" scoped></style>
