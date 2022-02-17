@@ -4,8 +4,8 @@
   "description": "仿网易云音乐（mac 客户端）web 版，使用 Vue3 + Typescript + 网易云音乐 api 开发",
   "main": "index.js",
   "scripts": {
-    "install": "cd front && npm install && cd ../NeteaseCloudMusicApi && npm install cd .. && exit 0",
-    "start": "cd NeteaseCloudMusicApi && npm start & cd front && npm run dev",
+    "install": "cd front && npm install && cd ../server && npm install cd .. && exit 0",
+    "start": "cd server && npm start & cd front && npm run dev",
     "build": "cd front && npm run build"
   },
   "repository": {
