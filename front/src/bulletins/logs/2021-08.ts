@@ -2,6 +2,12 @@ import { ILog } from "@/store/modules/interface/bulletin";
 
 export const logs: ILog[] = [
   {
+    date: "2022-02-18 00:00:38",
+    title: "更新公告(2022-02-18)",
+    briefContent: `<p>1. 实现了歌曲评论功能初版</p><p>2. 同步了服务端最新代码</p>`,
+    content: `<p>1. 实现了歌曲评论功能初版</p><p>2. 同步了服务端最新代码</p>`,
+  },
+  {
     date: "2021-12-22 16:00:00",
     title: "更新公告(2021-12-22)",
     briefContent: `<p>1. 优化视频列表，支持显示视频、MV、直播数据</p><p>2. 视频播放页面支持播放视频和MV</p>`,

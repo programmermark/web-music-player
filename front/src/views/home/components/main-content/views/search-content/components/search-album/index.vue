@@ -70,6 +70,7 @@
 import { computed } from "vue";
 import { useRouter } from "vue-router";
 import { ISearchContentAlbum } from "../../interface";
+import { gotoAlbumDetail, gotoArtistDetail } from "@/common/js/router";
 
 const props = withDefaults(
   defineProps<{
@@ -88,8 +89,6 @@ const props = withDefaults(
     loading: false,
   }
 );
-
-import { gotoAlbumDetail, gotoArtistDetail } from "@/common/js/router";
 
 const emits = defineEmits<{
   (e: "page-change", page: number): void;
