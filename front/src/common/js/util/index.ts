@@ -183,3 +183,86 @@ export const highLightKeywords = (
     `<span class="${classString}">${keywords}</span>`
   );
 };
+
+/**
+ * 格式化时间为文字：如10分钟前
+ * @param {*} time 时间字符串或者时间戳
+ * @param {*} isTimeStamp 是否为时间戳格式
+ */
+export const formatDateToText = (
+  time: string | number,
+  isTimeStamp = false
+) => {
+  let timeString = "";
+  if (time) {
+    let intervalTime = 0;
+    if (!isTimeStamp) {
+      intervalTime = Math.floor(
+        (Date.now() - Date.parse(time as string)) / 1000
+      );
+    } else {
+      intervalTime = Math.floor((Date.now() - (time as number)) / 1000);
+    }
+    if (intervalTime < 60) {
+      timeString = "1分钟前";
+    } else if (intervalTime >= 60 && intervalTime < 3600) {
+      timeString = Math.floor(intervalTime / 60) + "分钟前";
+    } else if (intervalTime >= 3600 && intervalTime < 3600 * 24) {
+      timeString = Math.floor(intervalTime / 3600) + "小时前";
+    } else if (intervalTime >= 3600 * 24 && intervalTime < 3600 * 24 * 7) {
+      timeString = Math.floor(intervalTime / (3600 * 24)) + "天前";
+    } else if (intervalTime >= 3600 * 24 * 7 && intervalTime < 3600 * 24 * 30) {
+      timeString = Math.floor(intervalTime / (3600 * 24 * 7)) + "周前";
+    } else if (
+      intervalTime >= 3600 * 24 * 30 &&
+      intervalTime < 3600 * 24 * 365
+    ) {
+      timeString = Math.floor(intervalTime / (3600 * 24 * 30)) + "个月前";
+    } else if (intervalTime >= 3600 * 24 * 365) {
+      timeString = Math.floor(intervalTime / (3600 * 24 * 365)) + "年前";
+    }
+  } else {
+    timeString = "缺少时间参数";
+  }
+  return timeString;
+};
+
+/**
+ * 歌曲评论格式化时间为文字
+ * @param {*} time 时间字符串或者时间戳
+ * @param {*} isTimeStamp 是否为时间戳格式
+ * @returns
+ */
+export const formatDateToTextInCommentCase = (
+  time: string | number,
+  isTimeStamp = false
+) => {
+  let timeString = "";
+  if (time) {
+    let intervalTime = 0;
+    if (!isTimeStamp) {
+      intervalTime = Math.floor(
+        (Date.now() - Date.parse(time as string)) / 1000
+      );
+    } else {
+      intervalTime = Math.floor((Date.now() - (time as number)) / 1000);
+    }
+    if (intervalTime < 60) {
+      timeString = "刚刚";
+    } else if (intervalTime >= 60 && intervalTime < 3600) {
+      timeString = Math.floor(intervalTime / 60) + "分钟前";
+    } else if (intervalTime >= 3600 && intervalTime < 3600 * 24) {
+      timeString = formatTime(time, "hh:mm");
+    } else if (
+      intervalTime >= 3600 * 24 &&
+      new Date(time).getFullYear() < new Date().getFullYear()
+    ) {
+      timeString = `昨天 ${formatTime(time, "hh:mm")}`;
+    } else {
+      timeString = formatTime(time, "yyyy年MM月dd日 hh:mm");
+    }
+  } else {
+    timeString = "缺少时间参数";
+  }
+  return timeString;
+};

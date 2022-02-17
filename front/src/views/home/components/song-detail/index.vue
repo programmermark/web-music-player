@@ -2,33 +2,40 @@
   <transition name="song-detail" :persisted="true" mode="out-in">
     <div
       v-show="isShowSongDetail"
-      class="w-full h-[calc(100%-50px)] bg-[#f8f8f8] mt-[50px] absolute top-0 left-0 z-[99] overflow-hidden"
+      class="w-full h-[calc(100%-110px)] bg-[#f8f8f8] mt-[50px] mb-[60px] absolute top-0 left-0 z-[99] overflow-hidden"
     >
-      <div class="flex">
-        <div class="w-6/12 flex flex-row-reverse">
-          <!-- 歌词封面（播放时旋转） -->
-          <RotateCover
-            v-if="currentSong"
-            class="mr-16 mt-16"
-            :img="currentSong?.coverImg"
-          />
+      <el-scrollbar>
+        <div class="flex">
+          <div class="w-6/12 flex flex-row-reverse">
+            <!-- 歌词封面（播放时旋转） -->
+            <RotateCover
+              v-if="currentSong"
+              class="mr-16 mt-16"
+              :img="currentSong?.coverImg"
+            />
+          </div>
+          <div class="w-6/12">
+            <!-- 歌词组件（词曲作者、歌词） -->
+            <SongLyric
+              v-if="currentSong"
+              :song="currentSong"
+              :lyric="lyricState.lyric"
+              :transLyric="lyricState.transLyric"
+              :lyricUser="lyricState.lyricUser"
+              :transLyricUser="lyricState.transLyricUser"
+            />
+          </div>
         </div>
-        <div class="w-6/12">
-          <!-- 歌词组件（词曲作者、歌词） -->
-          <SongLyric
-            v-if="currentSong"
-            :song="currentSong"
-            :lyric="lyricState.lyric"
-            :transLyric="lyricState.transLyric"
-            :lyricUser="lyricState.lyricUser"
-            :transLyricUser="lyricState.transLyricUser"
-          />
-        </div>
-      </div>
 
-      <!-- 歌曲评论 -->
-      <!-- 包含该歌曲的歌单 -->
-      <!-- 相似歌曲 -->
+        <div v-if="currentSongId" class="mt-16 px-[200px] flex">
+          <!-- 歌曲评论 -->
+          <SongComments :songId="currentSongId" :songName="currentSong?.name || ''" />
+          <div class="w-[280px]">
+            <!-- 包含该歌曲的歌单 -->
+            <!-- 相似歌曲 -->
+          </div>
+        </div>
+      </el-scrollbar>
     </div>
   </transition>
 </template>
@@ -41,6 +48,7 @@ import { useStore } from "@/store";
 import { ILyricResponse, ILyricState } from "./interface";
 import RotateCover from "./components/rotate-cover/index.vue";
 import SongLyric from "./components/song-lyric/index.vue";
+import SongComments from "./components/song-comments/index.vue";
 
 const store = useStore();
 
@@ -48,6 +56,8 @@ const store = useStore();
 const isShowSongDetail = computed(() => store.state.player.isShowSongDetail);
 /** 当前歌曲 */
 const currentSong = computed(() => store.state.player.currentSong);
+/** 当前歌曲id */
+const currentSongId = computed(() => store.state.player.currentSong?.id);
 
 const lyricState = reactive<ILyricState>({
   lyric: "",

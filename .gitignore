@@ -5,8 +5,8 @@ workspace.code-workspace
 /package-lock.json
 /yarn.lock
 
-/wangyiyun-server/.DS_Store
-/wangyiyun-server/node_modules
+/NeteaseCloudMusicApi/.DS_Store
+/NeteaseCloudMusicApi/node_modules
 
 
 /front/.DS_Store
@@ -27,8 +27,8 @@ workspace.code-workspace
 /front-vite/.env.*.local
 
 # lock files
-/wangyiyun-server/package-lock.json
-/wangyiyun-server/yarn.lock
+/NeteaseCloudMusicApi/package-lock.json
+/NeteaseCloudMusicApi/yarn.lock
 /front/package-lock.json
 /front/yarn.lock
 /front-vite/package-lock.json
