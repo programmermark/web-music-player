@@ -10,12 +10,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/callmehui/web-music-player.git"
+    "url": "git+https://github.com/programmermark/web-music-player.git"
   },
   "author": "马克豚",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/callmehui/web-music-player/issues"
+    "url": "https://github.com/programmermark/web-music-player/issues"
   },
-  "homepage": "https://github.com/callmehui/web-music-player#readme"
+  "homepage": "https://github.com/programmermark/web-music-player#readme"
 }

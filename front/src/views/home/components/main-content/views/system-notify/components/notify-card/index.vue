@@ -1,14 +1,6 @@
 <template>
   <div
-    class="
-      w-full
-      flex
-      border-b border-gray-200
-      pt-5
-      cursor-pointer
-      last:border-0
-      hover:bg-gray-50
-    "
+    class="w-full flex border-b border-gray-200 pt-5 cursor-pointer last:border-0 hover:bg-gray-50"
   >
     <MPOptIcon
       icon="find-music"
@@ -48,7 +40,7 @@ defineProps<{
 
 const admin = {
   name: "系统管理员",
-  url: "https://github.com/callmehui/web-music-player",
+  url: "https://github.com/programmermark/web-music-player",
 };
 
 /** 打开新窗口，跳转到指定链接 */

@@ -1,0 +1,13 @@
+/*! @import */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .text-ellipsis {
+    @apply overflow-hidden whitespace-nowrap overflow-ellipsis break-all;
+  }
+  .text-primary {
+    color: #c3473a;
+  }
+}
