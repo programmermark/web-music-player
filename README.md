@@ -1,20 +1,32 @@
 <h1 align="center">Welcome to web-music-player 👋</h1>
 <p>
   <img alt="Version" src="https://img.shields.io/badge/version-1.0.0-blue.svg?cacheSeconds=2592000" />
-  <a href="https://github.com/callmehui/web-music-player#readme" target="_blank">
+  <a href="https://github.com/programmermark/web-music-player#readme" target="_blank">
     <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg" />
   </a>
-  <a href="https://github.com/callmehui/web-music-player/graphs/commit-activity" target="_blank">
+  <a href="https://github.com/programmermark/web-music-player/graphs/commit-activity" target="_blank">
     <img alt="Maintenance" src="https://img.shields.io/badge/Maintained%3F-yes-green.svg" />
   </a>
-  <a href="https://github.com/callmehui/web-music-player/blob/main/LICENSE" target="_blank">
-    <img alt="License: MIT" src="https://img.shields.io/github/license/callmehui/web-music-player" />
+  <a href="https://github.com/programmermark/web-music-player/blob/main/LICENSE" target="_blank">
+    <img alt="License: MIT" src="https://img.shields.io/github/license/programmermark/web-music-player" />
   </a>
 </p>
 
 > 仿网易云音乐（mac 客户端）web 版，使用 Vue3 + Typescript + 网易云音乐 api([NeteaseCloudMusicApi](https://github.com/Binaryify/NeteaseCloudMusicApi)) 开发。
 
-### 🏠 [Homepage](https://github.com/callmehui/web-music-player#readme)
+### 🏠 [Homepage](https://github.com/programmermark/web-music-player#readme)
+
+### 自 2022 年 3 月 8 日起，本项目将开始进行小规模重构，主要涉及以下内容：
+
+1. 更新 Vue3、Element-plus 版本为正式版本；
+2. 优化前期未设计好的路由结构；
+3. 使用 pinia 代替 vuex4；
+4. 更新前期使用的`defineComponent`语法的部分代码为`setup`语法；
+5. 更新前期使用的自定义 css 类为`tailwindcss`原子类；
+6. `vue-query`覆盖到前期代码，管理服务端状态；
+7. 掉线机制，提供给用户掉线后的提示；
+
+> 我今后将投入精力开始维护这个开源项目，目标是覆盖到网易云音乐 Mac 客户端的全部功能（在有接口数据的前提下），**主播电台**下的功能将会最后覆盖。
 
 ## 免责声明
 
@@ -138,12 +150,12 @@ cd wangyiyun-server & npm start
 👤 **钟辉**
 
 - Website: https://immortalboy.cn
-- Github: [@callmehui](https://github.com/callmehui)
+- Github: [@programmermark](https://github.com/programmermark)
 - WeChat: a13720141463
 
 ## 🤝 Contributing
 
-欢迎贡献代码与我一起共建这个开源项目，欢迎 issues!<br />请随时查看 [问题页](https://github.com/callmehui/web-music-player/issues).
+欢迎贡献代码与我一起共建这个开源项目，欢迎 issues!<br />请随时查看 [问题页](https://github.com/programmermark/web-music-player/issues).
 
 ## 支持与赞助
 
@@ -151,8 +163,8 @@ cd wangyiyun-server & npm start
 
 ## 📝 License
 
-Copyright © 2021 [钟辉](https://github.com/callmehui).<br />
-This project is [MIT](https://github.com/callmehui/web-music-player/blob/main/LICENSE) licensed.
+Copyright © 2021 [钟辉](https://github.com/programmermark).<br />
+This project is [MIT](https://github.com/programmermark/web-music-player/blob/main/LICENSE) licensed.
 
 ---
 
