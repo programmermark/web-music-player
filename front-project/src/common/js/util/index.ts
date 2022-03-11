@@ -1,6 +1,6 @@
-import { IArtist } from "@/views/home/components/main-content/views/artist-detail/interface";
-import { ILyric } from "@/views/home/components/song-detail/interface/song-lyric";
-import { IDateFormat } from "./interface";
+import type { IArtist } from "@/views/home/views/find-music/views/artist-detail/interface";
+import type { ILyric } from "@/views/song-detail/interface/song-lyric";
+import type { IDateFormat } from "./interface";
 
 /** 返回指定类型的对象的键名数组 */
 export function keysOf<T>(obj: T) {

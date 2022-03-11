@@ -1,5 +1,5 @@
 import isEqual from "lodash/isEqual";
-import { PlayBackType } from "@/views/home/components/player/interface";
+import type { PlayBackType } from "@/views/player/interface";
 
 /**
  * 随机算法

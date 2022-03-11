@@ -1,120 +1,50 @@
-<script setup lang="ts">
-import { RouterLink, RouterView } from "vue-router";
-import HelloWorld from "@/components/HelloWorld.vue";
-</script>
-
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-      <el-button type="primary">点击</el-button>
-      <div class="text-primary">测试文字</div>
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
+  <div id="app-content">
+    <!-- 壁纸切换组件 -->
+    <div id="home">
+      <!-- Header -->
+      <Header />
+      <!-- 路由 -->
+      <router-view />
     </div>
-  </header>
-
-  <RouterView />
+    <!--  vue-query 开发者工具 -->
+    <VueQueryDevTools />
+  </div>
 </template>
 
-<style>
-@import "@/assets/base.css";
+<script lang="ts" setup>
+import { VueQueryDevTools } from "vue-query/devtools";
+import { QueryClient, useQueryProvider } from "vue-query";
+import Header from "./views/home/components/header/index.vue";
 
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+/** 初始化queryClient缓存实例，后续页面可以通过useQueryClient()获取该缓存实例 */
+useQueryProvider(new QueryClient());
+</script>
 
-  font-weight: normal;
+<style lang="scss">
+#app-content {
+  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB",
+    "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  position: relative;
 }
 
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-a,
-.green {
-  text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  transition: 0.4s;
-}
-
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
-}
-
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-  }
-
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  }
-
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
+#home {
+  position: relative;
+  overflow: hidden;
+  min-width: 1200px;
+  width: calc(100vw - 120px);
+  min-height: 600px;
+  height: calc(100vh - 60px);
+  margin: 30px;
+  box-sizing: border-box;
+  border: 1px solid rgba($color: #c9c9c9, $alpha: 0.6);
+  border-radius: 8px;
+  box-shadow: 20px 0 20px 2px #e6e6e6, -20px 0 20px 2px #e6e6e6, 0 20px 20px 2px #e6e6e6;
 }
 </style>
