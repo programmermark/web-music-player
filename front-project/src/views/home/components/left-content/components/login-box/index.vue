@@ -16,7 +16,7 @@
       </div>
       <div class="form-box-wrapper">
         <div class="form-box">
-          <el-form :model="formState" :rules="rules" ref="loginFormRef" size="small">
+          <el-form :model="formState" :rules="rules" ref="loginFormRef">
             <el-form-item prop="phone">
               <el-input
                 v-model="formState.phone"
