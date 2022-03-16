@@ -4,7 +4,6 @@ import {
   createWebHistory,
   type RouteRecordRaw,
 } from "vue-router";
-import HomeView from "../views/HomeView.vue";
 
 /**
  * 实现路由懒加载的工具函数
@@ -12,22 +11,94 @@ import HomeView from "../views/HomeView.vue";
  */
 export function lazyLoad(viewPath: string) {
   const modules = import.meta.glob("../views/**/*.vue");
-  return modules[`../views/${viewPath}.vue`];
+  return modules[`../views/${viewPath}/index.vue`];
 }
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
-    name: "home",
-    component: HomeView,
+    name: "Home",
+    component: lazyLoad("home"),
+    children: [
+      {
+        path: "/",
+        name: "Personal",
+        component: lazyLoad("home/views/find-music/views/personal-recommends"),
+      },
+      {
+        path: "/daily-recommend-songs",
+        name: "DailyRecommendSongs",
+        component: lazyLoad(
+          "home/views/find-music/views/daily-recommend-songs"
+        ),
+      },
+      {
+        path: "/playlist",
+        name: "Playlist",
+        component: lazyLoad("home/views/find-music/views/playlist"),
+      },
+      {
+        path: "playlistDetail/:id",
+        name: "PlaylistDetail",
+        component: lazyLoad("home/views/find-music/views/playlist-detail"),
+      },
+      {
+        path: "rankList",
+        name: "RankList",
+        component: lazyLoad("home/views/find-music/views/rank-list"),
+      },
+      {
+        path: "artistList",
+        name: "ArtistList",
+        component: lazyLoad("home/views/find-music/views/artist-list"),
+      },
+      {
+        path: "latestMusic",
+        name: "LatestMusic",
+        component: lazyLoad("home/views/find-music/views/latest-music"),
+      },
+      {
+        path: "system-notify",
+        name: "SystemNotify",
+        component: lazyLoad("home/views/find-music/views/system-notify"),
+      },
+      {
+        path: "albumDetail/:id",
+        name: "AlbumDetail",
+        component: lazyLoad("home/views/find-music/views/album-detail"),
+      },
+      {
+        path: "artistRankList",
+        name: "ArtistRankList",
+        component: lazyLoad("home/views/find-music/views/artist-rank-list"),
+      },
+      {
+        path: "artist/:id",
+        name: "Artist",
+        component: lazyLoad("home/views/find-music/views/artist-detail"),
+      },
+      {
+        path: "exclusive-broadcast",
+        name: "ExclusiveBroadcast",
+        component: lazyLoad("home/views/find-music/views/exclusive-broadcast"),
+      },
+      {
+        path: "search-content/:keywords",
+        name: "SearchContent",
+        component: lazyLoad("home/views/find-music/views/search-content"),
+      },
+      // 视频列表
+      {
+        path: "videolist",
+        name: "VideoList",
+        component: lazyLoad("home/views/find-music/views/video-list"),
+      },
+    ],
   },
   {
-    path: "/about",
-    name: "about",
-    // route level code-splitting
-    // this generates a separate chunk (About.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import("../views/AboutView.vue"),
+    path: "/mv/:id",
+    name: "MVDetail",
+    component: lazyLoad("mv-detail"),
   },
 ];
 
