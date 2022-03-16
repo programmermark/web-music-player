@@ -3,19 +3,13 @@
     <!-- 排名和排名变化 -->
     <div class="rank-wrapper">
       <div class="rank">{{ rank + 1 }}</div>
-      <div class="rank-change">
-        <i
-          :class="[
-            rankChange.unchanged
-              ? 'el-icon-minus'
-              : rankChange.rising
-              ? 'el-icon-top color-top'
-              : 'el-icon-bottom color-bottom',
-
-            'icon-reset',
-          ]"
-        />
-        <span>{{ rankChange.value }}</span>
+      <div class="text-base text-[#999999] scale-50 flex items-center">
+        <el-icon class="font-bold" :color="cardIconColor">
+          <minus v-if="rankChange.unchanged" />
+          <top v-else-if="rankChange.rising" />
+          <bottom v-else />
+        </el-icon>
+        <span class="ml-1">{{ rankChange.value }}</span>
       </div>
     </div>
     <!-- 歌手头像 -->
@@ -50,6 +44,14 @@ const props = defineProps<{
 
 const { rank, artist } = toRefs(props);
 
+const cardIconColor = computed(() => {
+  return rankChange.value.unchanged
+    ? ""
+    : rankChange.value.rising
+    ? "#cc2829"
+    : "#2c77ca";
+});
+
 const rankChange = computed(() => {
   const lastRank = artist.value.lastRank;
   const currentRank = rank.value;
@@ -80,27 +82,6 @@ const rankChange = computed(() => {
       color: #999;
       font-size: 16px;
       font-weight: 500;
-    }
-    .rank-change {
-      font-size: 16px;
-      transform: scale(0.5);
-      color: #999;
-
-      .color-bottom {
-        color: #2c77ca;
-      }
-
-      .color-top {
-        color: #cc2829;
-      }
-
-      .icon-reset {
-        font-weight: bold;
-      }
-
-      & > span {
-        margin-right: 2px;
-      }
     }
   }
 

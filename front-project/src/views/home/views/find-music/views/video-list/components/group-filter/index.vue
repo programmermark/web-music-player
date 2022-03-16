@@ -11,7 +11,9 @@
           class="flex items-center border border-gray-300 rounded-2xl py-1 px-4 cursor-pointer"
         >
           <span class="text-[13px] text-gray-700">{{ currentCategory.name }}</span>
-          <i class="el-icon-arrow-right"></i>
+          <el-icon>
+            <arrow-right />
+          </el-icon>
         </div>
       </template>
       <el-scrollbar>
@@ -61,7 +63,7 @@ import { computed, toRefs } from "vue";
 import { apis } from "@/api";
 import { http } from "@/common/js/http";
 import { useQuery } from "vue-query";
-import { IVideoCategory } from "../../interface";
+import type { IVideoCategory } from "../../interface";
 
 const props = defineProps<{
   category: IVideoCategory | null;

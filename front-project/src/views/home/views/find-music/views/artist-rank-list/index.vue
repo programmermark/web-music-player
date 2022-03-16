@@ -1,8 +1,8 @@
 <template>
-  <div class="w-full h-full">
+  <div class="w-full h-full px-10">
     <Tabs />
-    <div class="content-wrapper" v-show="!loading">
-      <div class="top-card-wrapper">
+    <div class="content-wrapper pb-5" v-show="!loading">
+      <div class="w-full pt-14 px-10 pb-5 flex items-center">
         <TopCard
           v-for="(artist, index) in topCardList"
           :key="artist.id"
@@ -14,7 +14,7 @@
           :score="artist.score"
         />
       </div>
-      <div class="card-list-wrapper">
+      <div class="pt-5 pb-12">
         <ListCard
           v-for="(artist, index) in otherCardList"
           :key="index + 1"
@@ -24,7 +24,7 @@
       </div>
     </div>
     <div
-      class="card-wrapper-loading"
+      class="h-[calc(100%-130px)] top-20 card-wrapper-loading"
       v-show="loading"
       v-loading="loading"
       element-loading-text="载入中..."
@@ -55,40 +55,4 @@ const otherCardList = computed(() =>
 );
 </script>
 
-<style lang="scss" scoped>
-.artist-rank-list {
-  height: 100%;
-  .content-wrapper {
-    .top-card-wrapper {
-      width: calc(100% - 70px);
-      padding: 70px 40px 20px 30px;
-      display: flex;
-      align-items: center;
-    }
-
-    .card-list-wrapper {
-      padding-top: 20px;
-      padding-bottom: 50px;
-    }
-  }
-
-  .card-wrapper-loading {
-    top: 96px;
-    height: calc(100% - 146px);
-    :deep(.el-loading-spinner) {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    :deep(.el-icon-loading) {
-      color: #666;
-    }
-
-    :deep(.el-loading-text) {
-      margin-left: 2px;
-      color: #666;
-    }
-  }
-}
-</style>
+<style lang="scss" scoped></style>

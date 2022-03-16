@@ -42,13 +42,10 @@
           </div>
           <div class="title-wrapper">
             <div class="title">{{ videoDetail.title }}</div>
-            <i
-              :class="[
-                !mvDetailState.showMVDesc ? 'el-icon-caret-bottom' : 'el-icon-caret-top',
-              ]"
-              class="icon-reset"
-              @click="toggleShowMVDesc"
-            ></i>
+            <el-icon class="text-2xl ml-2 cursor-pointer" @click="toggleShowMVDesc">
+              <caret-bottom v-if="!mvDetailState.showMVDesc"></caret-bottom>
+              <caret-top v-else></caret-top>
+            </el-icon>
           </div>
 
           <div class="other-info">
@@ -218,11 +215,6 @@ onBeforeRouteUpdate(() => {
         .title {
           width: 100%;
           font-size: 22px;
-        }
-        .icon-reset {
-          font-size: 24px;
-          margin-left: 8px;
-          cursor: pointer;
         }
       }
 

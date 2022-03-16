@@ -46,7 +46,6 @@
       v-show="loading"
       v-loading="loading"
       element-loading-text="载入中..."
-      element-loading-spinner="el-icon-loading"
       element-loading-background="rgba(255, 255, 255)"
     ></div>
   </div>

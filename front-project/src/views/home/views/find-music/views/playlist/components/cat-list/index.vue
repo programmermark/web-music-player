@@ -9,7 +9,9 @@
       <template #reference>
         <div class="current-cat-list">
           <span class="text">{{ currentCat }}</span>
-          <i class="el-icon-arrow-right icon-reset"></i>
+          <el-icon class="text-base text-[#666666]">
+            <arrow-right />
+          </el-icon>
         </div>
       </template>
       <el-scrollbar>
@@ -25,7 +27,7 @@
         <div class="cat-list-wrapper">
           <div class="cat-item-wrapper" v-for="cat in catList" :key="cat.category">
             <div class="cat-item">
-              <mp-opt-icon
+              <MPOptIcon
                 :icon="cat.icon"
                 :size="22"
                 scale="1"
@@ -51,7 +53,7 @@
                   {{ subCat.name }}
                   <MPOptIcon
                     v-if="subCat.hot"
-                    class="icon-reset"
+                    class="text-base text-[#666666]"
                     icon="hot-text"
                     scale="0.6"
                     color="#dd625a"
@@ -144,10 +146,6 @@ onMounted(() => {
 
     .text {
       color: #333;
-    }
-    .icon-reset {
-      color: #666;
-      font-size: 16px;
     }
   }
 }

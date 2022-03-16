@@ -43,7 +43,7 @@ export const useArtistRankListStore = defineStore({
         lastRank: artist.lastRank,
       }));
       this.artistList = formatList;
-      // this.loading = false;
+      this.loading = false;
     },
   },
   persist: true,

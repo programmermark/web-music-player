@@ -45,7 +45,6 @@
         v-if="dailySongs && dailySongs.length > 0"
         v-loading="!isLoading"
         element-loading-text="载入中..."
-        element-loading-spinner="el-icon-loading"
         element-loading-background="rgba(255, 255, 255)"
       >
         <!-- 歌曲标题 -->

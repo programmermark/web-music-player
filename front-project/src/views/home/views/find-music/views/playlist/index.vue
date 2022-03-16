@@ -12,11 +12,10 @@
       v-show="state.loading"
       v-loading="state.loading"
       element-loading-text="载入中..."
-      element-loading-spinner="el-icon-loading"
       element-loading-background="rgba(255, 255, 255)"
     ></div>
     <div class="card-wrapper" v-show="!state.loading">
-      <playlist-card
+      <PlaylistCard
         v-for="(listItem, index) in state.playlists"
         :key="`${listItem.id}-${index}`"
         :playlist="listItem"
@@ -40,7 +39,7 @@
 <script lang="ts" setup>
 import { apis } from "@/api";
 import { http } from "@/common/js/http";
-import { computed, onMounted, reactive, toRefs, watch } from "vue";
+import { computed, onMounted, reactive, watch } from "vue";
 import { useRoute } from "vue-router";
 import CatList from "./components/cat-list/index.vue";
 import PlaylistCard from "./components/playlist-card/index.vue";

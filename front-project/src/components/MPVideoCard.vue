@@ -78,11 +78,11 @@ import MPIcon from "./MPIcon.vue";
 import MPOptIcon from "./MPOptIcon.vue";
 import { translatePlayCount, transformSecondToMinute } from "@/common/js/util";
 import { ElMessage } from "element-plus";
-import {
+import { gotoMVDetail } from "@/common/js/router";
+import type {
   IFormatArtist,
   VideoType,
-} from "@/views/home/components/main-content/views/video-list/interface";
-import { gotoMVDetail } from "@/common/js/router";
+} from "@/views/home/views/find-music/views/video-list/interface";
 
 defineProps<{
   // 视频id

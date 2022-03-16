@@ -49,7 +49,9 @@
       </div>
       <div class="view-detail" @click="viewAll">
         <span>查看全部</span>
-        <i class="el-icon-arrow-right icon-reset"></i>
+        <el-icon class="text-sm text-[#666666] ml-1">
+          <arrow-right />
+        </el-icon>
       </div>
     </div>
   </div>
@@ -70,7 +72,7 @@ import { usePlayerStore } from "@/stores/player";
 const props = withDefaults(
   defineProps<{
     rankList: ISongRankOfficial | IArtistRank;
-    type: "song" | "artist";
+    type?: "song" | "artist";
   }>(),
   {
     type: "song",

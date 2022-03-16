@@ -2,7 +2,9 @@
   <div class="link-title">
     <router-link class="link" :to="url">
       <span>{{ title }}</span>
-      <i class="el-icon-arrow-right"></i>
+      <el-icon>
+        <arrow-right />
+      </el-icon>
     </router-link>
   </div>
 </template>

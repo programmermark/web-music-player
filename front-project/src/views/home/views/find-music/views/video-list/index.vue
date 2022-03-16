@@ -44,7 +44,9 @@
         class="flex justify-center items-center pb-6"
         v-show="(isLoading || isFetching) && hasNextPage"
       >
-        <i class="el-icon-loading text-gray-500"></i>
+        <el-icon class="text-gray-500">
+          <loading />
+        </el-icon>
         <div class="ml-2 text-gray-500 text-xs">载入中...</div>
       </div>
       <!-- noMore data -->

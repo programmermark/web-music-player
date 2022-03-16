@@ -11,7 +11,7 @@
           <img class="no-image" src="@/assets/image/no-img.png" alt="专辑封面" />
         </template>
       </el-image>
-      <MpOptIcon
+      <MPOptIcon
         v-show="showIcon"
         class="play-button"
         title="点击播放歌曲"
@@ -39,7 +39,7 @@
 
 <script lang="ts" setup>
 import { computed, ref, toRefs } from "vue";
-import MpOptIcon from "@/components/MPOptIcon.vue";
+import MPOptIcon from "@/components/MPOptIcon.vue";
 import { gotoAlbumDetail, gotoArtistDetail } from "@/common/js/router";
 import type { IAlbum } from "../../../artist-detail/interface";
 import { usePlayerStore } from "@/stores/player";

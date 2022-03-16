@@ -57,7 +57,7 @@
 import { usePlayerStore } from "@/stores/player";
 import { computed } from "vue";
 import { useRouter } from "vue-router";
-import MPOptIcon from "../../../../../components/MPOptIcon.vue";
+import MPOptIcon from "@/components/MPOptIcon.vue";
 
 const router = useRouter();
 const storePlayer = usePlayerStore();
