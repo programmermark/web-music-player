@@ -6,7 +6,10 @@
   "scripts": {
     "install": "cd front && npm install && cd ../server && npm install cd .. && exit 0",
     "start": "cd server && npm start & cd front && npm run dev",
-    "build": "cd front && npm run build"
+    "build": "cd front && npm run build",
+    "install-project": "cd front-project && npm install && cd ../server && npm install cd .. && exit 0",
+    "start-project": "cd server && npm start & cd front-project && npm run dev",
+    "build-project": "cd front-project && npm run build"
   },
   "repository": {
     "type": "git",
