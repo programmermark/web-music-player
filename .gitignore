@@ -5,44 +5,28 @@ workspace.code-workspace
 /package-lock.json
 /yarn.lock
 
-/NeteaseCloudMusicApi/.DS_Store
-/NeteaseCloudMusicApi/node_modules
 
-
-/front/.DS_Store
-/front/node_modules
-/front/dist
-/front/music-player
-
-/front-vite/.DS_Store
-/front-vite/node_modules
-/front-vite/dist
-/front-vite/music-player
-
+/.DS_Store
+/node_modules
+/dist
+/music-player
 
 # local env files
-/front/.env.local
-/front/.env.*.local
-/front-vite/.env.local
-/front-vite/.env.*.local
+/.env.local
+/.env.*.local
+/.env.local
+/.env.*.local
 
-# lock files
-/NeteaseCloudMusicApi/package-lock.json
-/NeteaseCloudMusicApi/yarn.lock
-/front/package-lock.json
-/front/yarn.lock
-/front-vite/package-lock.json
-/front-vite/yarn.lock
 
 # Log files
-/front/npm-debug.log*
-/front/yarn-debug.log*
-/front/yarn-error.log*
-/front/pnpm-debug.log*
-/front-vite/npm-debug.log*
-/front-vite/yarn-debug.log*
-/front-vite/yarn-error.log*
-/front-vite/pnpm-debug.log*
+/npm-debug.log*
+/yarn-debug.log*
+/yarn-error.log*
+/pnpm-debug.log*
+/npm-debug.log*
+/yarn-debug.log*
+/yarn-error.log*
+/pnpm-debug.log*
 
 # Editor directories and files
 .idea
