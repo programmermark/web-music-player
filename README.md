@@ -16,15 +16,16 @@
 
 ### 🏠 [Homepage](https://github.com/programmermark/web-music-player#readme)
 
-### 自 2022 年 3 月 8 日起，本项目将开始进行小规模重构，主要涉及以下内容：
+### 当前分支只包含前端部分代码，将不再提供服务端代码，获取服务端代码请切换到 mian 分支或者请前往[NeteaseCloudMusicApi](https://github.com/Binaryify/NeteaseCloudMusicApi)。
 
-1. 更新 Vue3、Element-plus 版本为正式版本；
+### 说明事项，该分支已更新的部分包括：
+
+1. 更新 Vue3、Element-plus 版本为正式版本并替换部分新语法；
 2. 优化前期未设计好的路由结构；
 3. 使用 pinia 代替 vuex4；
-4. 更新前期使用的`defineComponent`语法的部分代码为`setup`语法；
-5. 更新前期使用的自定义 css 类为`tailwindcss`原子类；
-6. `vue-query`覆盖到前期代码，管理服务端状态；
-7. 掉线机制，提供给用户掉线后的提示；
+4. 全部替换为 vue3.2 的代码为`setup`语法；
+5. 更新前期使用的自定义 css 类为`tailwindcss`原子类（持续进行中）；
+6. `vue-query`覆盖到前期代码，管理服务端状态（持续进行中）；
 
 > 我今后将投入精力开始维护这个开源项目，目标是覆盖到网易云音乐 Mac 客户端的全部功能（在有接口数据的前提下），**主播电台**下的功能将会最后覆盖。
 
