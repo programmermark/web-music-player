@@ -1,11 +1,11 @@
 <template>
-  <div class="latest-albums pl-[30px] pr-[30px] w-full box-sizing-border-box">
-    <div class="header">
+  <div class="latest-albums pl-[30px] w-full box-sizing-border-box">
+    <div class="header pr-[30px]">
       <div class="tab-wrapper">
         <div
           class="tab-item"
           :class="[currentTab === tab.value && 'active']"
-          v-for="tab in tabsState.tabs"
+          v-for="tab in tabs"
           :key="tab.value"
           @click="toggleTab(tab.value)"
         >
@@ -17,7 +17,7 @@
           <div
             class="operate-item"
             :class="[currentType === type.value && 'active']"
-            v-for="type in tabsState.types"
+            v-for="type in types"
             :key="type.value"
             @click="toggleType(type.value)"
           >
@@ -32,87 +32,91 @@
         <span class="month">{{ formatMonth(new Date().getMonth() + 1) }}</span>
         <span class="year">{{ formatMonth(new Date().getFullYear()) }}</span>
       </div>
-      <div class="albums" v-infinite-scroll="onPageChange">
-        <album-card
-          v-for="album in currentAlbums"
-          :key="album.id"
-          :album="album"
-        />
+      <div class="flex-1">
+        <div
+          v-if="currentAlbums && currentAlbums.pages.length > 0"
+          class="flex flex-wrap pr-14 overflow-y-scroll max-h-[calc(100vh-276px)]"
+          v-infinite-scroll="onPageChange"
+          :infinite-scroll-disabled="disabled"
+        >
+          <template v-for="(group, index) in currentAlbums.pages" :key="index">
+            <album-card v-for="album in group" :key="album.id" :album="album" />
+          </template>
+        </div>
+        <!-- isLoading -->
+        <div
+          class="flex justify-center items-center pb-6"
+          v-show="(isLoading || isFetching) && hasNextPage"
+        >
+          <el-icon class="text-gray-500">
+            <loading />
+          </el-icon>
+          <div class="ml-2 text-gray-500 text-xs">载入中...</div>
+        </div>
+        <!-- noMore data -->
+        <div
+          v-show="(isLoading || isFetching) && !hasNextPage"
+          class="flex items-center justify-center text-gray-500 text-xs py-5"
+        >
+          <span class="w-3 h-[1px] bg-gray-500"></span>
+          <span class="px-2">没有更多歌曲</span>
+          <span class="w-3 h-[1px] bg-gray-500"></span>
+          <span></span>
+        </div>
+        <!-- no data -->
+        <div class="text-center text-[13px] text-gray-600 mt-24" v-show="noData">
+          暂无新上架歌曲
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, reactive, toRefs, watch } from "vue";
-import type { IAlbumsPayload } from "@/stores/interface/latest-music";
-import type { ITabsState } from "../../interface/latest-albums";
 import { formatMonth } from "@/common/js/util";
 import AlbumCard from "../album-card/index.vue";
-import { useLatestMusicStore } from "@/stores/latest-music";
+import { useNewAlbum } from "../../hooks/useNewAlbum";
 
-const latestMusicStore = useLatestMusicStore();
+const tabs = [
+  { label: "全部", value: "ALL" },
+  { label: "华语", value: "ZH" },
+  { label: "欧美", value: "EA" },
+  { label: "日本", value: "KR" },
+  { label: "韩国", value: "JP" },
+];
+const types = [
+  { label: "推荐", value: "hot" },
+  { label: "全部", value: "new" },
+];
+const currentTab = ref("ALL");
+const currentType = ref("hot");
+const limit = 20;
 
-const tabsState = reactive<ITabsState>({
-  currentTab: "ALL",
-  tabs: [
-    { label: "全部", value: "ALL" },
-    { label: "华语", value: "ZH" },
-    { label: "欧美", value: "EA" },
-    { label: "日本", value: "KR" },
-    { label: "韩国", value: "JP" },
-  ],
-  currentType: "hot",
-  types: [
-    { label: "推荐", value: "hot" },
-    { label: "全部", value: "new" },
-  ],
-  currentAlbumId: undefined,
-  limit: 20,
-  offset: 0,
+const {
+  isLoading,
+  isFetching,
+  isFetched,
+  data: currentAlbums,
+  hasNextPage,
+  fetchNextPage,
+} = useNewAlbum(currentTab, currentType, limit);
+
+const noData = computed(() => {
+  return !currentAlbums.value?.pages[0].length;
 });
 
-const currentTab = computed(() => tabsState.currentTab);
-const currentType = computed(() => tabsState.currentType);
-const limit = computed(() => tabsState.limit);
-const offset = computed(() => tabsState.offset);
-
-/** 新歌速递(全部) */
-const allAlbums = computed(() => latestMusicStore.allAlbums);
-/** 新歌速递(华语) */
-const chineseAlbums = computed(() => latestMusicStore.chineseAlbums);
-/** 新歌速递(欧美) */
-const europeAndAmericaAlbums = computed(
-  () => latestMusicStore.europeAndAmericaAlbums
-);
-/** 新歌速递(韩国) */
-const koreaAlbums = computed(() => latestMusicStore.koreaAlbums);
-/** 新歌速递(日本) */
-const japaneseAlbums = computed(() => latestMusicStore.japaneseAlbums);
-
-/** 当前专辑 */
-const currentAlbums = computed(() => {
-  const { currentTab, tabs } = toRefs(tabsState);
-  if (currentTab.value === tabs.value[0].value) {
-    return allAlbums.value;
-  } else if (currentTab.value === tabs.value[1].value) {
-    return chineseAlbums.value;
-  } else if (currentTab.value === tabs.value[2].value) {
-    return europeAndAmericaAlbums.value;
-  } else if (currentTab.value === tabs.value[3].value) {
-    return koreaAlbums.value;
-  } else if (currentTab.value === tabs.value[4].value) {
-    return japaneseAlbums.value;
-  }
-  return allAlbums.value;
+/** 禁用下拉，防止重复请求 */
+const disabled = computed(() => {
+  const reuslt = isLoading.value || isFetching.value || !hasNextPage?.value;
+  return reuslt;
 });
 
 /**
  * 切换tab
  */
 const toggleTab = (value: string) => {
-  if (value !== tabsState.currentTab) {
-    tabsState.currentTab = value;
+  if (value !== currentTab.value) {
+    currentTab.value = value;
   }
 };
 
@@ -120,8 +124,8 @@ const toggleTab = (value: string) => {
  * 切换type
  */
 const toggleType = (value: string) => {
-  if (value !== tabsState.currentType) {
-    tabsState.currentType = value;
+  if (value !== currentType.value) {
+    currentType.value = value;
   }
 };
 
@@ -129,81 +133,11 @@ const toggleType = (value: string) => {
  * 向下滚动时加载数据
  */
 const onPageChange = () => {
-  tabsState.offset += tabsState.limit;
-};
-
-/** 获取专辑 */
-const fetchAlbums = (payload: IAlbumsPayload) => {
-  latestMusicStore.setAlbumsByType(payload);
-};
-
-watch(
-  [currentTab, currentType, limit, offset],
-  (
-    [currentTab, currentType, limit, offset],
-    [oldCurrentTab, oldCurrentType, oldLimit, oldOffset]
-  ) => {
-    let payload: IAlbumsPayload;
-    /** 如果当前tab的歌曲列表有数据则不再请求，使用缓存的数据（最新歌曲数据短时间不会变化） */
-    if (limit === oldLimit && offset === oldOffset) {
-      if (
-        currentTab === tabsState.tabs[0].value &&
-        allAlbums.value.length > 0 &&
-        currentType === oldCurrentType
-      ) {
-        return;
-      } else if (
-        currentTab === tabsState.tabs[1].value &&
-        chineseAlbums.value.length > 0 &&
-        currentType === oldCurrentType
-      ) {
-        return;
-      } else if (
-        currentTab === tabsState.tabs[2].value &&
-        europeAndAmericaAlbums.value.length > 0 &&
-        currentType === oldCurrentType
-      ) {
-        return;
-      } else if (
-        currentTab === tabsState.tabs[3].value &&
-        koreaAlbums.value.length > 0 &&
-        currentType === oldCurrentType
-      ) {
-        return;
-      } else if (
-        currentTab === tabsState.tabs[4].value &&
-        japaneseAlbums.value.length > 0 &&
-        currentType === oldCurrentType
-      ) {
-        return;
-      }
-      payload = {
-        offset: 0,
-        limit: limit,
-        area: currentTab,
-        type: currentType,
-      };
-    } else {
-      payload = {
-        offset,
-        limit,
-        area: currentTab,
-        type: currentType,
-      };
-    }
-    fetchAlbums(payload);
+  console.log("onPageChange");
+  if (isFetched.value && hasNextPage?.value) {
+    fetchNextPage.value();
   }
-);
-
-onMounted(() => {
-  const payload: IAlbumsPayload = {
-    offset: tabsState.offset,
-    limit: tabsState.limit,
-    area: tabsState.currentTab,
-    type: tabsState.currentType,
-  };
-  fetchAlbums(payload);
-});
+};
 </script>
 
 <style lang="scss" scoped>
