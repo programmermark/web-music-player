@@ -1,7 +1,7 @@
-import {
+import type {
   IAlbum,
   IArtist,
-} from "@/views/home/components/main-content/views/artist-detail/interface";
+} from "@/views/home/views/find-music/views/artist-detail/interface";
 
 export interface ISong {
   id: number /** 歌曲id */;

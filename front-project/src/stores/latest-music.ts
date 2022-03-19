@@ -101,7 +101,7 @@ export const useLatestMusicStore = defineStore({
       } else if (type === 96) {
         this.europeAndAmericaSongs = songList;
       } else if (type === 8) {
-        this, (this.koreaSongs = songList);
+        this.koreaSongs = songList;
       } else if (type === 16) {
         this.japaneseSongs = songList;
       }

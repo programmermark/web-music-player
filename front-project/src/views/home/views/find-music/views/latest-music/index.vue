@@ -1,7 +1,7 @@
 <template>
-  <div class="lastest-music max-w-[1100px] w-full">
+  <div class="lastest-music max-w-[1100px] w-full flex flex-wrap flex-row">
     <!-- tab -->
-    <div class="tab-wrapper">
+    <div class="tab-wrapper w-full">
       <div class="tab">
         <div
           class="text-[13px] h-8 leading-8 px-8 rounded-[16px] cursor-pointer hover:bg-gray-100"
@@ -15,7 +15,7 @@
       </div>
     </div>
     <!-- tab content -->
-    <div class="content-wrapper">
+    <div class="content-wrapper flex-1 w-full h-[calc(100%-64px)]">
       <latest-songs v-if="tabsState.currentTab === tabsState.tabs[0].value" />
       <latest-albums v-if="tabsState.currentTab === tabsState.tabs[1].value" />
     </div>

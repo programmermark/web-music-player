@@ -1,11 +1,11 @@
 <template>
-  <div class="latest-songs">
+  <div class="latest-songs h-full">
     <div class="header pl-[30px] pr-[30px]">
-      <div class="tab-wrapper">
+      <div class="tab-wrapper text-center">
         <div
           class="tab-item"
-          :class="[tabsState.currentTab === tab.value && 'active']"
-          v-for="tab in tabsState.tabs"
+          :class="[currentTab === tab.value && 'active']"
+          v-for="tab in tabs"
           :key="tab.value"
           @click="toggleTab(tab.value)"
         >
@@ -29,83 +29,76 @@
       </div>
     </div>
     <div class="content">
-      <div class="song-list" v-infinite-scroll="onPageChange">
-        <div
-          class="song-item"
-          v-for="(song, index) in currentSongs"
-          :key="song.id"
-        >
-          <span class="no" v-show="tabsState.currentSongId !== song.id">{{
-            formatNo(index + 1)
-          }}</span>
-          <MPOptIcon
-            v-show="tabsState.currentSongId === song.id"
-            class="icon-reset"
-            icon="horn-playing-solid"
-            color="#d33a31"
-            :size="14"
-            scale="1"
-            bgColor="none"
-            display="always"
-          />
-          <div class="image-wrapper" @click="playSong(song.id)">
-            <el-image
-              class="image"
-              :src="`${song.album.picUrl}?param=100y100`"
-              alt="歌曲专辑封面"
-              lazy
-            >
-              <template #placeholder>
-                <img
-                  class="no-image"
-                  src="@/assets/image/no-img.png"
-                  alt="歌曲专辑封面"
-                />
-              </template>
-            </el-image>
+      <div class="song-list">
+        <template v-if="allSongs && allSongs.length > 0">
+          <div class="song-item" v-for="(song, index) in allSongs" :key="song.id">
+            <span class="no" v-show="currentSongId !== song.id">{{
+              formatNo(index + 1)
+            }}</span>
             <MPOptIcon
-              class="play-button"
-              title="点击播放歌曲"
-              :size="24"
-              icon="play-caret-solid"
-              color="#d33a33"
-              bgColor="#dddddd"
+              v-show="currentSongId === song.id"
+              class="icon-reset"
+              icon="horn-playing-solid"
+              color="#d33a31"
+              :size="14"
+              scale="1"
+              bgColor="none"
               display="always"
-              @click="playSong(song.id)"
             />
-          </div>
-          <div
-            class="song-name text-ellipsis"
-            @dblclick="playSong(song.id)"
-            title="双击播放歌曲"
-          >
-            {{ song.name
-            }}{{ song.alias && song.alias[0] ? `(${song.alias[0]})` : "" }}
-          </div>
-          <div
-            class="artist text-ellipsis"
-            :title="formatArtistListToString(song.artists)"
-          >
-            <span v-for="(artist, index) in song.artists" :key="artist.id">
-              <span
-                class="cursor-pointer"
-                @click="gotoArtistDetail(artist.id)"
-                >{{ artist.name }}</span
+            <div class="image-wrapper" @click="playSong(song.id)">
+              <el-image
+                class="image"
+                :src="`${song.album.picUrl}?param=100y100`"
+                alt="歌曲专辑封面"
+                lazy
               >
-              <span v-if="index + 1 < song.artists.length" class="px-1">/</span>
-            </span>
+                <template #placeholder>
+                  <img
+                    class="no-image"
+                    src="@/assets/image/no-img.png"
+                    alt="歌曲专辑封面"
+                  />
+                </template>
+              </el-image>
+              <MPOptIcon
+                class="play-button"
+                title="点击播放歌曲"
+                :size="24"
+                icon="play-caret-solid"
+                color="#d33a33"
+                bgColor="#dddddd"
+                display="always"
+                @click="playSong(song.id)"
+              />
+            </div>
+            <div
+              class="song-name text-ellipsis"
+              @dblclick="playSong(song.id)"
+              title="双击播放歌曲"
+            >
+              {{ song.name }}{{ song.alias && song.alias[0] ? `(${song.alias[0]})` : "" }}
+            </div>
+            <div
+              class="artist text-ellipsis"
+              :title="formatArtistListToString(song.artists)"
+            >
+              <span v-for="(artist, index) in song.artists" :key="artist.id">
+                <span class="cursor-pointer" @click="gotoArtistDetail(artist.id)">{{
+                  artist.name
+                }}</span>
+                <span v-if="index + 1 < song.artists.length" class="px-1">/</span>
+              </span>
+            </div>
+            <div class="album text-ellipsis" @click="gotoAlbumDetail(song.album.id)">
+              {{ song.album.name }}
+            </div>
+            <div class="duration">
+              {{ transformSecondToMinute(Math.floor((song.duration || 0) / 1000)) }}
+            </div>
           </div>
-          <div
-            class="album text-ellipsis"
-            @click="gotoAlbumDetail(song.album.id)"
-          >
-            {{ song.album.name }}
-          </div>
-          <div class="duration">
-            {{
-              transformSecondToMinute(Math.floor((song.duration || 0) / 1000))
-            }}
-          </div>
+        </template>
+        <div v-else class="flex items-center">
+          <div class="w-full py-6 text-center text-sm text-gray-400">暂无数据</div>
         </div>
       </div>
     </div>
@@ -113,158 +106,60 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, reactive, toRefs, watch } from "vue";
+import { computed } from "vue";
 import MPOptIcon from "@/components/MPOptIcon.vue";
-import type {
-  ICurrentSongsState,
-  ITabsState,
-} from "../../interface/latest-songs";
 import { formatNo } from "@/common/js/util";
-import {
-  formatArtistListToString,
-  transformSecondToMinute,
-} from "@/common/js/util";
-import type { ISong } from "@/stores/interface/latest-music";
+import { formatArtistListToString, transformSecondToMinute } from "@/common/js/util";
 import { gotoAlbumDetail, gotoArtistDetail } from "@/common/js/router";
-import { useLatestMusicStore } from "@/stores/latest-music";
 import { usePlayerStore } from "@/stores/player";
+import { useTopSong } from "../../hooks/useTopSong";
 
-const latestMusicStore = useLatestMusicStore();
 const playerStore = usePlayerStore();
 
-const tabsState = reactive<ITabsState>({
-  currentTab: 0,
-  tabs: [
-    { label: "全部", value: 0 },
-    { label: "华语", value: 7 },
-    { label: "欧美", value: 96 },
-    { label: "日本", value: 8 },
-    { label: "韩国", value: 12 },
-  ],
-  currentSongId: undefined,
-});
+const tabs = [
+  { label: "全部", value: 0 },
+  { label: "华语", value: 7 },
+  { label: "欧美", value: 96 },
+  { label: "日本", value: 8 },
+  { label: "韩国", value: 16 },
+];
 
-/** 当前歌曲分页参数 */
-const currentSongsState = reactive<ICurrentSongsState>({
-  limit: 10,
-  offset: 0,
-});
+const currentTab = ref(0);
+const currentSongId = ref<number | undefined>(undefined);
 
-/** 新歌速递(全部) */
-const allSongs = computed(() => latestMusicStore.allSongs);
-/** 新歌速递(华语) */
-const chineseSongs = computed(() => latestMusicStore.chineseSongs);
-/** 新歌速递(欧美) */
-const europeAndAmericaSongs = computed(
-  () => latestMusicStore.europeAndAmericaSongs
-);
-/** 新歌速递(韩国) */
-const koreaSongs = computed(() => latestMusicStore.koreaSongs);
-/** 新歌速递(日本) */
-const japaneseSongs = computed(() => latestMusicStore.japaneseSongs);
+const { data: allSongs } = useTopSong(currentTab);
 
-/** 当前歌曲(没有被分页筛选过的所有歌曲) */
-const allCurrentSongs = computed(() => {
-  const { currentTab, tabs } = toRefs(tabsState);
-  let songList: ISong[] = [];
-  if (currentTab.value === tabs.value[0].value) {
-    songList = allSongs.value;
-  } else if (currentTab.value === tabs.value[1].value) {
-    songList = chineseSongs.value;
-  } else if (currentTab.value === tabs.value[2].value) {
-    songList = europeAndAmericaSongs.value;
-  } else if (currentTab.value === tabs.value[3].value) {
-    songList = koreaSongs.value;
-  } else if (currentTab.value === tabs.value[4].value) {
-    songList = japaneseSongs.value;
+const allSongIds = computed(() => {
+  if (allSongs.value) {
+    return allSongs.value.map((song) => song.id);
   }
-  return songList;
+  return [];
 });
-
-/** 当前歌曲（所有）的条数 */
-const allCurrentSongsLength = computed(() => allCurrentSongs.value.length);
-
-/** 当前歌曲 */
-const currentSongs = computed(() =>
-  allCurrentSongs.value.filter(
-    (item, index) => index < currentSongsState.limit + currentSongsState.offset
-  )
-);
-
-/** 当前歌曲id */
-const currentSongIds = computed(() =>
-  currentSongs.value.map((item) => item.id)
-);
-
-/**
- * 向下滚动时加载数据
- */
-const onPageChange = () => {
-  if (currentSongsState.offset < allCurrentSongsLength.value) {
-    currentSongsState.offset += currentSongsState.limit;
-  }
-};
 
 /** 切换歌曲tab */
 const toggleTab = (value: number) => {
-  tabsState.currentTab = value;
+  currentTab.value = value;
 };
 
 /** 播放全部 */
 const playAllSong = () => {
-  playerStore.setSongListByIds({
-    ids: currentSongIds.value,
-  });
+  if (allSongIds.value.length > 0) {
+    playerStore.setSongListByIds({
+      ids: allSongIds.value,
+    });
+  }
 };
 
 /** 播放当前歌曲 */
 const playSong = (id: number) => {
-  tabsState.currentSongId = id;
-  playerStore.setSongListByIds({
-    ids: currentSongIds.value,
-    currentId: id,
-  });
-};
-
-/** 获取歌曲 */
-const fetchSongs = (tabValue: string | number) => {
-  latestMusicStore.setSongsByType(Number(tabValue));
-};
-
-watch(
-  () => tabsState.currentTab,
-  (tabValue) => {
-    /** 如果当前tab的歌曲列表有数据则不再请求，使用缓存的数据（最新歌曲数据短时间不会变化） */
-    if (tabValue === tabsState.tabs[0].value && allSongs.value.length > 0) {
-      return;
-    } else if (
-      tabValue === tabsState.tabs[1].value &&
-      chineseSongs.value.length > 0
-    ) {
-      return;
-    } else if (
-      tabValue === tabsState.tabs[2].value &&
-      europeAndAmericaSongs.value.length > 0
-    ) {
-      return;
-    } else if (
-      tabValue === tabsState.tabs[3].value &&
-      koreaSongs.value.length > 0
-    ) {
-      return;
-    } else if (
-      tabValue === tabsState.tabs[4].value &&
-      japaneseSongs.value.length > 0
-    ) {
-      return;
-    }
-    fetchSongs(tabValue);
+  if (allSongIds.value) {
+    currentSongId.value = id;
+    playerStore.setSongListByIds({
+      ids: allSongIds.value,
+      currentId: id,
+    });
   }
-);
-
-onMounted(() => {
-  fetchSongs(tabsState.currentTab);
-});
+};
 </script>
 
 <style lang="scss" scoped>
